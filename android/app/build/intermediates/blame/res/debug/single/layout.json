@@ -29,7 +29,7 @@
     },
     {
         "merged": "C:\\Users\\KEME\\AlphaRides\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout\\redbox_view.xml",
-        "source": "C:\\Users\\KEME\\.android\\build-cache\\c75a4b5a1128285fb14fdabf46f6dfc9d305eba9\\output\\res\\layout\\redbox_view.xml"
+        "source": "C:\\Users\\KEME\\.android\\build-cache\\91f4ff0fdbe5afa8fc6e0aa8afe5e15b8eb873db\\output\\res\\layout\\redbox_view.xml"
     },
     {
         "merged": "C:\\Users\\KEME\\AlphaRides\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout\\notification_template_big_media_narrow.xml",
@@ -44,16 +44,16 @@
         "source": "C:\\Users\\KEME\\.android\\build-cache\\fe62240fd266798a6e2e9e8114cc9d02d57e974e\\output\\res\\layout\\abc_action_bar_title_item.xml"
     },
     {
-        "merged": "C:\\Users\\KEME\\AlphaRides\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_activity_chooser_view_list_item.xml",
-        "source": "C:\\Users\\KEME\\.android\\build-cache\\fe62240fd266798a6e2e9e8114cc9d02d57e974e\\output\\res\\layout\\abc_activity_chooser_view_list_item.xml"
-    },
-    {
         "merged": "C:\\Users\\KEME\\AlphaRides\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_alert_dialog_title_material.xml",
         "source": "C:\\Users\\KEME\\.android\\build-cache\\fe62240fd266798a6e2e9e8114cc9d02d57e974e\\output\\res\\layout\\abc_alert_dialog_title_material.xml"
     },
     {
+        "merged": "C:\\Users\\KEME\\AlphaRides\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_activity_chooser_view_list_item.xml",
+        "source": "C:\\Users\\KEME\\.android\\build-cache\\fe62240fd266798a6e2e9e8114cc9d02d57e974e\\output\\res\\layout\\abc_activity_chooser_view_list_item.xml"
+    },
+    {
         "merged": "C:\\Users\\KEME\\AlphaRides\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout\\dev_loading_view.xml",
-        "source": "C:\\Users\\KEME\\.android\\build-cache\\c75a4b5a1128285fb14fdabf46f6dfc9d305eba9\\output\\res\\layout\\dev_loading_view.xml"
+        "source": "C:\\Users\\KEME\\.android\\build-cache\\91f4ff0fdbe5afa8fc6e0aa8afe5e15b8eb873db\\output\\res\\layout\\dev_loading_view.xml"
     },
     {
         "merged": "C:\\Users\\KEME\\AlphaRides\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_alert_dialog_material.xml",
@@ -76,12 +76,12 @@
         "source": "C:\\Users\\KEME\\.android\\build-cache\\5d632f7d20f9093abfcdffb4d332639e75a81a48\\output\\res\\layout\\notification_template_icon_group.xml"
     },
     {
-        "merged": "C:\\Users\\KEME\\AlphaRides\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_screen_content_include.xml",
-        "source": "C:\\Users\\KEME\\.android\\build-cache\\fe62240fd266798a6e2e9e8114cc9d02d57e974e\\output\\res\\layout\\abc_screen_content_include.xml"
-    },
-    {
         "merged": "C:\\Users\\KEME\\AlphaRides\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout\\notification_action_tombstone.xml",
         "source": "C:\\Users\\KEME\\.android\\build-cache\\5d632f7d20f9093abfcdffb4d332639e75a81a48\\output\\res\\layout\\notification_action_tombstone.xml"
+    },
+    {
+        "merged": "C:\\Users\\KEME\\AlphaRides\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_screen_content_include.xml",
+        "source": "C:\\Users\\KEME\\.android\\build-cache\\fe62240fd266798a6e2e9e8114cc9d02d57e974e\\output\\res\\layout\\abc_screen_content_include.xml"
     },
     {
         "merged": "C:\\Users\\KEME\\AlphaRides\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_search_view.xml",
@@ -133,7 +133,7 @@
     },
     {
         "merged": "C:\\Users\\KEME\\AlphaRides\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout\\redbox_item_title.xml",
-        "source": "C:\\Users\\KEME\\.android\\build-cache\\c75a4b5a1128285fb14fdabf46f6dfc9d305eba9\\output\\res\\layout\\redbox_item_title.xml"
+        "source": "C:\\Users\\KEME\\.android\\build-cache\\91f4ff0fdbe5afa8fc6e0aa8afe5e15b8eb873db\\output\\res\\layout\\redbox_item_title.xml"
     },
     {
         "merged": "C:\\Users\\KEME\\AlphaRides\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout\\abc_list_menu_item_icon.xml",
@@ -181,11 +181,11 @@
     },
     {
         "merged": "C:\\Users\\KEME\\AlphaRides\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout\\fps_view.xml",
-        "source": "C:\\Users\\KEME\\.android\\build-cache\\c75a4b5a1128285fb14fdabf46f6dfc9d305eba9\\output\\res\\layout\\fps_view.xml"
+        "source": "C:\\Users\\KEME\\.android\\build-cache\\91f4ff0fdbe5afa8fc6e0aa8afe5e15b8eb873db\\output\\res\\layout\\fps_view.xml"
     },
     {
         "merged": "C:\\Users\\KEME\\AlphaRides\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout\\redbox_item_frame.xml",
-        "source": "C:\\Users\\KEME\\.android\\build-cache\\c75a4b5a1128285fb14fdabf46f6dfc9d305eba9\\output\\res\\layout\\redbox_item_frame.xml"
+        "source": "C:\\Users\\KEME\\.android\\build-cache\\91f4ff0fdbe5afa8fc6e0aa8afe5e15b8eb873db\\output\\res\\layout\\redbox_item_frame.xml"
     },
     {
         "merged": "C:\\Users\\KEME\\AlphaRides\\android\\app\\build\\intermediates\\res\\merged\\debug\\layout\\select_dialog_multichoice_material.xml",

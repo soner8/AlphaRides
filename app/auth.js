@@ -16,7 +16,7 @@ export const firstUser = () => {
 };
 
 export const isFirstUser = () => {
-  return newPromise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     AsyncStorage.getItem(FIRST_USER_KEY)
       .then(res => {
         if (res !== null) {
