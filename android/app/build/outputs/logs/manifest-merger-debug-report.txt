@@ -1,0 +1,128 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml:1:1-26:12
+	package
+		ADDED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml:2:5-29
+		INJECTED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml:1:11-69
+	android:versionCode
+		INJECTED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml
+uses-permission#android.permission.INTERNET
+ADDED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml:4:5-67
+	android:name
+		ADDED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml:4:22-64
+uses-permission#android.permission.SYSTEM_ALERT_WINDOW
+ADDED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml:5:5-77
+MERGED from [com.facebook.react:react-native:0.55.4] C:\Users\KEME\.android\build-cache\c75a4b5a1128285fb14fdabf46f6dfc9d305eba9\output\AndroidManifest.xml:11:5-78
+	android:name
+		ADDED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml:5:22-75
+application
+ADDED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml:7:5-24:19
+MERGED from [com.facebook.react:react-native:0.55.4] C:\Users\KEME\.android\build-cache\c75a4b5a1128285fb14fdabf46f6dfc9d305eba9\output\AndroidManifest.xml:13:5-20
+MERGED from [com.android.support:appcompat-v7:26.1.0] C:\Users\KEME\.android\build-cache\fe62240fd266798a6e2e9e8114cc9d02d57e974e\output\AndroidManifest.xml:25:5-29:19
+MERGED from [com.android.support:support-v4:26.1.0] C:\Users\KEME\.android\build-cache\855cf6185d4f885f3ee5a2749db2380d68f21553\output\AndroidManifest.xml:25:5-29:19
+MERGED from [com.android.support:support-media-compat:26.1.0] C:\Users\KEME\.android\build-cache\dc190cb52a9fa65e23e85808a64f95b3cda12536\output\AndroidManifest.xml:25:5-29:19
+MERGED from [com.android.support:support-fragment:26.1.0] C:\Users\KEME\.android\build-cache\3f00ceb9266c03f53a9320c0438423a19af3b064\output\AndroidManifest.xml:25:5-29:19
+MERGED from [com.android.support:support-core-utils:26.1.0] C:\Users\KEME\.android\build-cache\f4290ecf3ac9e1305dba9f0884601c1609b7f752\output\AndroidManifest.xml:25:5-29:19
+MERGED from [com.android.support:animated-vector-drawable:26.1.0] C:\Users\KEME\.android\build-cache\0a0ab827c189a7e08269758c4fbb8bfae3819fc1\output\AndroidManifest.xml:22:5-26:19
+MERGED from [com.android.support:support-vector-drawable:26.1.0] C:\Users\KEME\.android\build-cache\5c5af58dbbb2b3b9f0f05f77b8b00e4bcccfeb32\output\AndroidManifest.xml:22:5-26:19
+MERGED from [com.android.support:support-core-ui:26.1.0] C:\Users\KEME\.android\build-cache\69a69734059191ca916f6b3ee4a9f7c1e25cbbd5\output\AndroidManifest.xml:25:5-29:19
+MERGED from [com.android.support:support-compat:26.1.0] C:\Users\KEME\.android\build-cache\5d632f7d20f9093abfcdffb4d332639e75a81a48\output\AndroidManifest.xml:25:5-29:19
+MERGED from [android.arch.lifecycle:runtime:1.0.0] C:\Users\KEME\.android\build-cache\bf492310c422903f9517e9159a4163c7a7c2da23\output\AndroidManifest.xml:24:5-28:19
+MERGED from [com.facebook.soloader:soloader:0.1.0] C:\Users\KEME\.android\build-cache\d89e66f069a3ce02f7c4d3237152c01a921f1e36\output\AndroidManifest.xml:3:3-17
+MERGED from [org.webkit:android-jsc:r174650] C:\Users\KEME\.android\build-cache\cd8812c4bf2f4a2287d0e8948b272e4d20ee6517\output\AndroidManifest.xml:2:3-17
+	android:label
+		ADDED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml:9:7-39
+	android:allowBackup
+		ADDED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml:11:7-34
+	android:icon
+		ADDED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml:10:7-41
+	android:theme
+		ADDED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml:12:7-38
+	android:name
+		ADDED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml:8:7-38
+activity#com.alpharides.MainActivity
+ADDED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml:13:7-22:18
+	android:label
+		ADDED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml:15:9-41
+	android:windowSoftInputMode
+		ADDED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml:17:9-51
+	android:configChanges
+		ADDED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml:16:9-79
+	android:name
+		ADDED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml:14:9-37
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml:18:9-21:25
+action#android.intent.action.MAIN
+ADDED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml:19:13-65
+	android:name
+		ADDED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml:19:21-62
+category#android.intent.category.LAUNCHER
+ADDED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml:20:13-73
+	android:name
+		ADDED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml:20:23-70
+activity#com.facebook.react.devsupport.DevSettingsActivity
+ADDED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml:23:7-84
+	android:name
+		ADDED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml:23:17-81
+uses-sdk
+INJECTED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+MERGED from [com.facebook.react:react-native:0.55.4] C:\Users\KEME\.android\build-cache\c75a4b5a1128285fb14fdabf46f6dfc9d305eba9\output\AndroidManifest.xml:7:5-9:41
+MERGED from [com.android.support:appcompat-v7:26.1.0] C:\Users\KEME\.android\build-cache\fe62240fd266798a6e2e9e8114cc9d02d57e974e\output\AndroidManifest.xml:21:5-23:78
+MERGED from [com.android.support:support-v4:26.1.0] C:\Users\KEME\.android\build-cache\855cf6185d4f885f3ee5a2749db2380d68f21553\output\AndroidManifest.xml:21:5-23:54
+MERGED from [com.android.support:support-media-compat:26.1.0] C:\Users\KEME\.android\build-cache\dc190cb52a9fa65e23e85808a64f95b3cda12536\output\AndroidManifest.xml:21:5-23:63
+MERGED from [com.android.support:support-fragment:26.1.0] C:\Users\KEME\.android\build-cache\3f00ceb9266c03f53a9320c0438423a19af3b064\output\AndroidManifest.xml:21:5-23:60
+MERGED from [com.android.support:support-core-utils:26.1.0] C:\Users\KEME\.android\build-cache\f4290ecf3ac9e1305dba9f0884601c1609b7f752\output\AndroidManifest.xml:21:5-23:61
+MERGED from [com.android.support:animated-vector-drawable:26.1.0] C:\Users\KEME\.android\build-cache\0a0ab827c189a7e08269758c4fbb8bfae3819fc1\output\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:26.1.0] C:\Users\KEME\.android\build-cache\5c5af58dbbb2b3b9f0f05f77b8b00e4bcccfeb32\output\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-ui:26.1.0] C:\Users\KEME\.android\build-cache\69a69734059191ca916f6b3ee4a9f7c1e25cbbd5\output\AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support:support-compat:26.1.0] C:\Users\KEME\.android\build-cache\5d632f7d20f9093abfcdffb4d332639e75a81a48\output\AndroidManifest.xml:21:5-23:58
+MERGED from [android.arch.lifecycle:runtime:1.0.0] C:\Users\KEME\.android\build-cache\bf492310c422903f9517e9159a4163c7a7c2da23\output\AndroidManifest.xml:20:5-22:41
+MERGED from [com.facebook.fbui.textlayoutbuilder:textlayoutbuilder:1.0.0] C:\Users\KEME\.android\build-cache\da1d822722856753b442b3ef9820ef3633107f56\output\AndroidManifest.xml:14:5-16:41
+MERGED from [com.facebook.fresco:fresco:1.3.0] C:\Users\KEME\.android\build-cache\637a8ccea9c3791c54207a79ccaa5b19d3184469\output\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:drawee:1.3.0] C:\Users\KEME\.android\build-cache\e229051be0e2d6ba86f675296fa757727764616b\output\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-okhttp3:1.3.0] C:\Users\KEME\.android\build-cache\0aac3829d87282febbcad33be1e8dae15b761859\output\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline:1.3.0] C:\Users\KEME\.android\build-cache\78f84c2fe24895a5790cb04d6a4a1e5778f77448\output\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:imagepipeline-base:1.3.0] C:\Users\KEME\.android\build-cache\8baf9aa9308ba70458bc54024e14719b73bad0d5\output\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.fresco:fbcore:1.3.0] C:\Users\KEME\.android\build-cache\0eed7112a2085ecdeefb36d13a0b88ce5edf1491\output\AndroidManifest.xml:5:5-7:41
+MERGED from [com.facebook.soloader:soloader:0.1.0] C:\Users\KEME\.android\build-cache\d89e66f069a3ce02f7c4d3237152c01a921f1e36\output\AndroidManifest.xml:2:3-70
+	tools:overrideLibrary
+		ADDED from [com.android.support:appcompat-v7:26.1.0] C:\Users\KEME\.android\build-cache\fe62240fd266798a6e2e9e8114cc9d02d57e974e\output\AndroidManifest.xml:23:9-75
+	android:targetSdkVersion
+		INJECTED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml
+meta-data#android.support.VERSION
+ADDED from [com.android.support:appcompat-v7:26.1.0] C:\Users\KEME\.android\build-cache\fe62240fd266798a6e2e9e8114cc9d02d57e974e\output\AndroidManifest.xml:26:9-28:38
+MERGED from [com.android.support:support-v4:26.1.0] C:\Users\KEME\.android\build-cache\855cf6185d4f885f3ee5a2749db2380d68f21553\output\AndroidManifest.xml:26:9-28:38
+MERGED from [com.android.support:support-media-compat:26.1.0] C:\Users\KEME\.android\build-cache\dc190cb52a9fa65e23e85808a64f95b3cda12536\output\AndroidManifest.xml:26:9-28:38
+MERGED from [com.android.support:support-fragment:26.1.0] C:\Users\KEME\.android\build-cache\3f00ceb9266c03f53a9320c0438423a19af3b064\output\AndroidManifest.xml:26:9-28:38
+MERGED from [com.android.support:support-core-utils:26.1.0] C:\Users\KEME\.android\build-cache\f4290ecf3ac9e1305dba9f0884601c1609b7f752\output\AndroidManifest.xml:26:9-28:38
+MERGED from [com.android.support:animated-vector-drawable:26.1.0] C:\Users\KEME\.android\build-cache\0a0ab827c189a7e08269758c4fbb8bfae3819fc1\output\AndroidManifest.xml:23:9-25:38
+MERGED from [com.android.support:support-vector-drawable:26.1.0] C:\Users\KEME\.android\build-cache\5c5af58dbbb2b3b9f0f05f77b8b00e4bcccfeb32\output\AndroidManifest.xml:23:9-25:38
+MERGED from [com.android.support:support-core-ui:26.1.0] C:\Users\KEME\.android\build-cache\69a69734059191ca916f6b3ee4a9f7c1e25cbbd5\output\AndroidManifest.xml:26:9-28:38
+MERGED from [com.android.support:support-compat:26.1.0] C:\Users\KEME\.android\build-cache\5d632f7d20f9093abfcdffb4d332639e75a81a48\output\AndroidManifest.xml:26:9-28:38
+	android:value
+		ADDED from [com.android.support:appcompat-v7:26.1.0] C:\Users\KEME\.android\build-cache\fe62240fd266798a6e2e9e8114cc9d02d57e974e\output\AndroidManifest.xml:28:13-35
+	android:name
+		ADDED from [com.android.support:appcompat-v7:26.1.0] C:\Users\KEME\.android\build-cache\fe62240fd266798a6e2e9e8114cc9d02d57e974e\output\AndroidManifest.xml:27:13-51
+meta-data#android.arch.lifecycle.VERSION
+ADDED from [android.arch.lifecycle:runtime:1.0.0] C:\Users\KEME\.android\build-cache\bf492310c422903f9517e9159a4163c7a7c2da23\output\AndroidManifest.xml:25:9-27:47
+	android:value
+		ADDED from [android.arch.lifecycle:runtime:1.0.0] C:\Users\KEME\.android\build-cache\bf492310c422903f9517e9159a4163c7a7c2da23\output\AndroidManifest.xml:27:13-44
+	android:name
+		ADDED from [android.arch.lifecycle:runtime:1.0.0] C:\Users\KEME\.android\build-cache\bf492310c422903f9517e9159a4163c7a7c2da23\output\AndroidManifest.xml:26:13-58
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+IMPLIED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml:1:1-26:12 reason: org.webkit.android_jsc has a targetSdkVersion < 4
+uses-permission#android.permission.READ_PHONE_STATE
+IMPLIED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml:1:1-26:12 reason: org.webkit.android_jsc has a targetSdkVersion < 4
+uses-permission#android.permission.READ_EXTERNAL_STORAGE
+IMPLIED from C:\Users\KEME\AlphaRides\android\app\src\main\AndroidManifest.xml:1:1-26:12 reason: org.webkit.android_jsc requested WRITE_EXTERNAL_STORAGE

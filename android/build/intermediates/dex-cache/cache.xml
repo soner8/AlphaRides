@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="C:\Users\KEME\.android\build-cache\c75a4b5a1128285fb14fdabf46f6dfc9d305eba9\output\jars\libs\infer-annotations-4.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.3"
+        sha1="9809e90be788acdb479b2b44e2112f3295a03068">
+        <dex dex="C:\Users\KEME\AlphaRides\android\app\build\intermediates\pre-dexed\debug\infer-annotations-4.0_b5ad2160b1bcf751f0efc1d8587a40382780dbff.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\KEME\.android\build-cache\c75a4b5a1128285fb14fdabf46f6dfc9d305eba9\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.3"
+        sha1="e31331bdf6b5952badadbfc171f04b95c55d3b16">
+        <dex dex="C:\Users\KEME\AlphaRides\android\app\build\intermediates\pre-dexed\debug\classes_bf332fd8908e0013a8a22a2be9ccb4b31cfed02c.jar" />
+    </item>
+
+</items>
