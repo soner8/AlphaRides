@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View } from "react-native";
 import { Card, Button, Input } from "react-native-elements";
-import { onSignIn } from "../auth";
+import { onSignIn, firstUser } from "../auth";
 
 export default class SignUp extends Component {
 
@@ -35,7 +35,7 @@ export default class SignUp extends Component {
             backgroundColor="#03A9F4"
             title="SIGN UP"
             onPress={() => {
-              onSignIn().then(() => this.props.navigation.navigate("HomeStack"));
+              firstUser().then(() => this.props.navigation.navigate("HomeStack"));
             }}
           />
           <Button

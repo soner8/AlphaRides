@@ -4,17 +4,17 @@ import SignIn from "../app/screens/SignIn";
 import SignUp from "../app/screens/SignUp";
 import Profile from "../app/screens/Profile";
 
-
-
-export const SignedOut = StackNavigator({
-
+export const NewUser = StackNavigator({
     SignUp: {
         screen: SignUp,
         navigationOptions: {
             title: "Sign Up",
 
         }
-    },
+    }
+});
+
+export const SignedOut = StackNavigator({
     SignIn: {
         screen: SignIn,
         navigationOptions: {
@@ -65,3 +65,15 @@ export const createRootNavigator = (signedIn = false) => {
     );
 };
 
+export const NewUserRootNavigator = StackNavigator({
+    NewUser: {
+        screen: NewUser
+    },
+    HomeStack: {
+        screen: HomeStack
+    },
+    SignedOut: {
+        screen: SignedOut
+    }
+
+});
