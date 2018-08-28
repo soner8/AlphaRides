@@ -19,7 +19,7 @@ export const isFirstUser = () => {
   return new Promise((resolve, reject) => {
     AsyncStorage.getItem(FIRST_USER_KEY)
       .then(res => {
-        if (res !== null) {
+        if (res == null) {
           resolve(true);
         }
         else {
