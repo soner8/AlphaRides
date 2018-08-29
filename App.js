@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { createRootNavigator, NewUserRootNavigator } from "./config/router";
+import { createRootNavigator, NewUserRootNavigator, HomeStack } from "./config/router";
 import { isSignedIn, isFirstUser } from "./app/auth";
 
 export default class App extends Component {
@@ -38,8 +38,8 @@ export default class App extends Component {
       // return <ActivityIndicator />
     }
     if (firstTimeUser) {
-      const NewUserLayout = NewUserRootNavigator();
-      return <NewUserLayout />;
+      const Layout = createRootNavigator(signedIn);
+      return <Layout />;
     }
     // Sends signedIn state as parameter to Navigator in router.js file
     const Layout = createRootNavigator(signedIn);
