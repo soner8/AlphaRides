@@ -2,7 +2,7 @@ import { AsyncStorage } from "react-native";
 
 export const USER_KEY = "auth-demo-key";
 
-const FIRST_USER_KEY = "first-user"
+export const FIRST_USER_KEY = "first-user"
 
 
 export const onSignIn = () => AsyncStorage.setItem(USER_KEY, "true");

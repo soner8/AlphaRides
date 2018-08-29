@@ -65,15 +65,18 @@ export const createRootNavigator = (signedIn = false) => {
     );
 };
 
-export const NewUserRootNavigator = StackNavigator({
-    NewUser: {
-        screen: NewUser
-    },
-    HomeStack: {
-        screen: HomeStack
-    },
-    SignedOut: {
-        screen: SignedOut
-    }
+export const NewUserRootNavigator = () => {
+    return StackNavigator({
+        NewUser: {
+            screen: NewUser
+        },
+        HomeStack: {
+            screen: HomeStack
+        },
+        SignedOut: {
+            screen: SignedOut
+        }
 
-});
+    }
+    );
+};
