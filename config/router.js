@@ -9,6 +9,7 @@ export const NewUser = StackNavigator({
         screen: SignUp,
         navigationOptions: {
             title: "Sign Up",
+            gesturesEnabled: false,
 
         }
     }
@@ -65,8 +66,8 @@ export const createRootNavigator = (signedIn = false) => {
     );
 };
 
-export const NewUserRootNavigator = () => {
-    return SwitNavigator({
+export const NewUserRootNavigator = (val = true) => {
+    return SwitchNavigator({
         NewUser: {
             screen: NewUser
         },
@@ -80,7 +81,8 @@ export const NewUserRootNavigator = () => {
 
     },
         {
-            headerMode: none
+
+            initialRouteName: val ? "NewUser" : "HomeStack"
         }
     );
 };

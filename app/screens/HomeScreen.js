@@ -19,7 +19,9 @@ export default class HomeScreen extends Component {
             <View>
                 <Card>
                     <Text>Hello AlphaRides CEO</Text>
-
+                    {
+                        console.log(this.props.navigation.state)
+                    }
                     <Button
                         buttonStyle={{ marginTop: 20 }}
                         backgroundColor="#03A9F4"

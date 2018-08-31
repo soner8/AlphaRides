@@ -27,7 +27,7 @@ export default class SignIn extends Component {
             backgroundColor="#03A9F4"
             title="SIGN IN"
             onPress={() => {
-              onSignIn().then(() => this.props.navigation.navigate("HomeStack"));
+              onSignIn().then(() => this.props.navigation.navigate("HomeScreen"));
             }}
           />
         </Card>
