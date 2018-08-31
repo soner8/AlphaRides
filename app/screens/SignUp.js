@@ -35,7 +35,9 @@ export default class SignUp extends Component {
             backgroundColor="#03A9F4"
             title="SIGN UP"
             onPress={() => {
-              firstUser().then(() => this.props.navigation.navigate("HomeStack"));
+              firstUser()
+                .then(() => onSignIn())
+                .then(() => this.props.navigation.navigate("HomeStack"));
             }}
           />
           <Button

@@ -10,10 +10,9 @@ export const onSignIn = () => AsyncStorage.setItem(USER_KEY, "true");
 
 export const onSignOut = () => AsyncStorage.removeItem(USER_KEY);
 
-export const firstUser = () => {
-  AsyncStorage.setItem(FIRST_USER_KEY, "true")
-    .then(() => onSignIn())
-};
+export const firstUser = () => AsyncStorage.setItem(FIRST_USER_KEY, "true")
+
+
 
 export const isFirstUser = () => {
   return new Promise((resolve, reject) => {
