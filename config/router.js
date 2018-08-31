@@ -66,7 +66,7 @@ export const createRootNavigator = (signedIn = false) => {
 };
 
 export const NewUserRootNavigator = () => {
-    return StackNavigator({
+    return SwitNavigator({
         NewUser: {
             screen: NewUser
         },
@@ -75,8 +75,12 @@ export const NewUserRootNavigator = () => {
         },
         SignedOut: {
             screen: SignedOut
-        }
+        },
 
-    }
+
+    },
+        {
+            headerMode: none
+        }
     );
 };
