@@ -4,6 +4,12 @@ import { Card, Button, Input } from "react-native-elements";
 import { onSignIn } from "../auth";
 
 export default class SignIn extends Component {
+  constructor(props) {
+    this.state = {
+      email: "",
+      password: "",
+    }
+  }
   render() {
     return (
       <View style={{ paddingVertical: 20 }}>
