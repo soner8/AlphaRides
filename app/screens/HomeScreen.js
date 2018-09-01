@@ -18,7 +18,7 @@ export default class HomeScreen extends Component {
         return (
             <View>
                 <Card>
-                    <Text>Hello AlphaRides CEO</Text>
+                    <Text>Hello AlphaRides CEO Develop</Text>
                     {
                         console.log(this.props.navigation.state)
                     }
