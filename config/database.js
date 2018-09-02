@@ -2,7 +2,7 @@
  * @class Database
  */
 
-import {db}  from "firebase";
+import { db } from "firebase";
 
 class Database {
 
