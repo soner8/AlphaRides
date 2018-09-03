@@ -20,9 +20,10 @@ export default class SignUp extends Component {
   }
 
   AsyncStoreFirstUser = (userid) => {
+
     firstUser()
       .then(() => onSignIn())
-      .then(() => this.props.navigation.navigate("HomeStack", { userid }))
+      .then(() => this.props.navigation.navigate("HomeScreen", { idd: userid }))
   }
 
   SaveDbDetails = () => {
@@ -31,6 +32,7 @@ export default class SignUp extends Component {
     db.database().ref(userName).set({
       Name: this.state.Name
     })
+
     return (user.uid)
 
 

@@ -16,16 +16,17 @@ export default class HomeScreen extends Component {
         super(props);
         this.state = {
 
-            userId: this.props.navigation.state.params.userid,
-            Name: ""
+            userId: this.props.navigation.state.params.idd,
+            Name: "",
         }
+        console.log(this.state.userId);
     }
 
     componentDidMount() {
         try {
+            console.log("Now Trying");
 
-
-
+            let user = db.auth().currentUser;
 
             // Listen for Name Changes with a callback
             Database.listenUserName(user.uid, (Name) => {
@@ -49,7 +50,6 @@ export default class HomeScreen extends Component {
             <View>
                 <Card title={this.state.Name}>
                     <Text>Hello AlphaRides CEO Develop</Text>
-
                     <Button
                         buttonStyle={{ marginTop: 20 }}
                         backgroundColor="#03A9F4"
