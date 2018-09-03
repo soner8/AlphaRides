@@ -9,7 +9,7 @@ import {
     TouchableOpacity
 } from 'react-native';
 import { Card, Button, } from "react-native-elements";
-import Database from "../../config/firebase";
+import { listenUserName } from "../../config/database";
 
 export default class HomeScreen extends Component {
     constructor(props) {
@@ -26,10 +26,10 @@ export default class HomeScreen extends Component {
         try {
             console.log("Now Trying");
 
-            let user = db.auth().currentUser;
+            let id = this.state.userId;
 
             // Listen for Name Changes with a callback
-            Database.listenUserName(user.uid, (Name) => {
+            listenUserName(id, (Name) => {
                 this.setState({
                     Name: Name
 
@@ -46,9 +46,10 @@ export default class HomeScreen extends Component {
         this.props.navigation.navigate("Profile");
     }
     render() {
+        const { Name } = this.state;
         return (
             <View>
-                <Card title={this.state.Name}>
+                <Card>
                     <Text>Hello AlphaRides CEO Develop</Text>
                     <Button
                         buttonStyle={{ marginTop: 20 }}

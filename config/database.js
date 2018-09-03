@@ -1,48 +1,31 @@
+import { db } from "./MyFirebase";
 /**
- * @class Database
- */
+ 
+static setUserName(userId, Name) {
 
-import { db } from "firebase";
+    let userName = "/user/" + userId + "/details";
 
-class Database {
-
-    /**
-     * Sets a users mobile number
-     * @param userId
-     * @param Name
-     * @returns {firebase.Promise<any>|!firebase.Promise.<void>}
-     */
-    static setUserName(userId, Name) {
-
-        let userName = "/user/" + userId + "/details";
-
-        return db.database().ref(userName).set({
-            Name: Name
-        })
-
-    }
-
-    /**
-     * Listen for changes to a users mobile number
-     * @param userId
-     * @param callback Users mobile number
-     */
-    static listenUserName(userId, callback) {
-
-        let userName = "/user/" + userId + "/details";
-
-        db.database().ref(userName).on('value', (snapshot) => {
-
-            var Name = "";
-
-            if (snapshot.val()) {
-                Name = snapshot.val().Name
-            }
-
-            callback(Name)
-        });
-    }
+    return db.database().ref(userName).set({
+        Name: Name
+    })
 
 }
+ */
+export const listenUserName = (userId, callback) => {
 
-module.exports = Database;
+    let userName = "/user/" + userId + "/details";
+
+    db.database().ref(userName).on('value', (snapshot) => {
+
+        var Name = "";
+
+        if (snapshot.val()) {
+            Name = snapshot.val().Name
+        }
+
+        callback(Name)
+    });
+}
+
+
+

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Alert, ScrollView } from "react-native";
 import { Card, Button, Input } from "react-native-elements";
 import { onSignIn, firstUser } from "../auth";
-import { db } from "../../config/firebase";
+import { db } from "../../config/MyFirebase";
 import Database from "../../config/database";
 
 export default class SignUp extends Component {
