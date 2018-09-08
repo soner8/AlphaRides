@@ -50,7 +50,7 @@ export default class HomeScreen extends Component {
         return (
             <View>
                 <Card>
-                    <Text>Hello AlphaRides CEO Develop</Text>
+                    <Text>New Develop</Text>
                     <Button
                         buttonStyle={{ marginTop: 20 }}
                         backgroundColor="#03A9F4"
