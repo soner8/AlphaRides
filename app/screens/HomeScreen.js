@@ -16,7 +16,9 @@ export default class HomeScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            Name: ""
+            Name: "",
+            ero: "Showing"
+
         }
 
     }
@@ -29,10 +31,13 @@ export default class HomeScreen extends Component {
 
             // Listen for Name Changes with a callback
             listenUserName(id, (Name) => {
+                console.log(Name);
                 this.setState({
-                    Name: Name
+                    Name: Name, ero: "Manny"
 
                 });
+                console.log(this.state.ero);
+                console.log("Done my man");
             });
 
 
@@ -50,6 +55,7 @@ export default class HomeScreen extends Component {
             <View>
                 <Card>
                     <Text>New Develop</Text>
+                    <Text>{this.state.Name}</Text>
                     <Button
                         buttonStyle={{ marginTop: 20 }}
                         backgroundColor="#03A9F4"

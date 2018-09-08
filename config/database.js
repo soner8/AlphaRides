@@ -19,8 +19,12 @@ export const listenUserName = (userId, callback) => {
 
         var Name = "";
 
+
+
         if (snapshot.val()) {
+            console.log("here we go");
             Name = snapshot.val().Name
+
         }
 
         callback(Name)
