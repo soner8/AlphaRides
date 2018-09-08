@@ -3,6 +3,7 @@ import HomeScreen from "../app/screens/HomeScreen";
 import SignIn from "../app/screens/SignIn";
 import SignUp from "../app/screens/SignUp";
 import Profile from "../app/screens/Profile";
+import ForgotPassword from "../app/screens/ForgotPassword";
 
 export const NewUser = StackNavigator({
     SignUp: {
@@ -22,7 +23,14 @@ export const SignedOut = StackNavigator({
             title: "Sign In",
 
         }
-    }
+    },
+    ForgotPassword: {
+        screen: ForgotPassword,
+        navigationOptions: {
+            title: "Forgot Password",
+
+        }
+    },
 
 });
 

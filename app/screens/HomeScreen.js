@@ -10,23 +10,22 @@ import {
 } from 'react-native';
 import { Card, Button, } from "react-native-elements";
 import { listenUserName } from "../../config/database";
+import { db } from "../../config/MyFirebase";
 
 export default class HomeScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
-            userId: this.props.navigation.state.params.idd,
-            Name: "",
+            Name: ""
         }
-        console.log(this.state.userId);
+
     }
 
     componentDidMount() {
         try {
             console.log("Now Trying");
-
-            let id = this.state.userId;
+            let user = db.auth().currentUser;
+            let id = user.uid;
 
             // Listen for Name Changes with a callback
             listenUserName(id, (Name) => {
