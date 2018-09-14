@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-
 import { createRootNavigator, NewUserRootNavigator, HomeStack } from "./config/router";
 import { isSignedIn, isFirstUser } from "./app/auth";
 
@@ -23,6 +22,7 @@ export default class App extends Component {
   // checks for status of user in our auth.js file
   // Sets signedIn to 'true' if user is in local storage else sets to 'false'
   componentDidMount() {
+
     isSignedIn()
       .then(res => this.setState({ signedIn: res, checkedSignIn: true }))
       .catch(err => console.log(err));

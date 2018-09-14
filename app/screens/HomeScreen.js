@@ -17,10 +17,16 @@ export default class HomeScreen extends Component {
         super(props);
         this.state = {
             Name: "",
-            ero: "Showing"
+            isAuthenticatedReady: false
 
         }
-
+        db.auth().onAuthStateChanged((user) => {
+            if (user) {
+                this.setState({
+                    isAuthenticatedReady: true
+                });
+            }
+        });
     }
 
     componentDidMount() {
