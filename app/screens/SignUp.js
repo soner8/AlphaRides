@@ -41,13 +41,13 @@ export default class SignUp extends Component {
 
       Database.setUserName(user.uid, this.state.Name)
         .then((data) => { console.log(data) })
-      console.log("Juliet is Here");
+      
       return (user.uid);
     }*/
   }
 
   onSignupPress = () => {
-    console.log(this.state.email);
+
     if (this.state.password != this.state.passwordConfirm) {
       Alert.alert("Password Did Not Match");
       return;

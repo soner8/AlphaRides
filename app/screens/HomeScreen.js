@@ -34,7 +34,7 @@ export default class HomeScreen extends Component {
 
                     });
 
-                    console.log("Done my man");
+
                 });
 
             }
@@ -53,11 +53,11 @@ export default class HomeScreen extends Component {
             listenUserName(id, (Name) => {
                 console.log(Name);
                 this.setState({
-                    Name: Name, ero: "Manny"
+                    Name: Name
 
                 });
 
-                console.log("Done my man");
+                
             });
 
 
