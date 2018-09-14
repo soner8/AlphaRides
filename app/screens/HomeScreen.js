@@ -17,19 +17,33 @@ export default class HomeScreen extends Component {
         super(props);
         this.state = {
             Name: "",
-            isAuthenticatedReady: false
+            isAuthenticated: false
 
         }
         db.auth().onAuthStateChanged((user) => {
+
             if (user) {
                 this.setState({
-                    isAuthenticatedReady: true
+                    isAuthenticated: true
                 });
+                let id = user.uid
+                listenUserName(id, (Name) => {
+
+                    this.setState({
+                        Name: Name
+
+                    });
+
+                    console.log("Done my man");
+                });
+
             }
         });
     }
 
     componentDidMount() {
+        /*
+        console.log(this.state.isAuthenticatedReady);
         try {
             console.log("Now Trying");
             let user = db.auth().currentUser;
@@ -42,7 +56,7 @@ export default class HomeScreen extends Component {
                     Name: Name, ero: "Manny"
 
                 });
-                console.log(this.state.ero);
+
                 console.log("Done my man");
             });
 
@@ -51,7 +65,7 @@ export default class HomeScreen extends Component {
             console.log(error);
         }
 
-    }
+    */}
     onProfile = () => {
         this.props.navigation.navigate("Profile");
     }
