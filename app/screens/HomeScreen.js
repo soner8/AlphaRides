@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import {
 
     StyleSheet,
+    AsyncStorage,
     Text,
     View,
     ScrollView,
@@ -15,11 +16,31 @@ import { db } from "../../config/MyFirebase";
 export default class HomeScreen extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
             Name: "",
             isAuthenticated: false
 
         }
+        /*The below AsyncStorage will get the Name of the user that signed up
+        with the App. It would not provide the Name of a user who already has
+        an account with the app but used your device to sign in. So the best
+        approach will be to remove the Name of the user from AsyncStore when
+        the user signs out of the app. And then set the name of the present user 
+        when the user signs in to the app
+        */
+        AsyncStorage.getItem(USER)
+            .then(res => {
+                if (res == null) {
+                    this.setState({ Name: "" });
+                }
+                else {
+                    this.setState({ Name: res });
+                }
+
+            })
+            .catch(err => reject(err));
+
         db.auth().onAuthStateChanged((user) => {
 
             if (user) {
@@ -28,13 +49,13 @@ export default class HomeScreen extends Component {
                 });
                 let id = user.uid
                 listenUserName(id, (Name) => {
-
+                    let USER = "User"
                     this.setState({
                         Name: Name
 
                     });
-
-
+                    //Below Stores Name of User for future Reference
+                    AsyncStorage.setItem(USER, Name)
                 });
 
             }

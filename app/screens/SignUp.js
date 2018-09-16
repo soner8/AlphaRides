@@ -19,9 +19,9 @@ export default class SignUp extends Component {
     }
   }
 
-  AsyncStoreFirstUser = () => {
+  AsyncStoreFirstUser = (Name) => {
 
-    firstUser()
+    firstUser(Name)
       .then(() => onSignIn())
       .then(() => this.props.navigation.navigate("HomeScreen"))
   }
@@ -54,7 +54,7 @@ export default class SignUp extends Component {
     }
     db.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then(() => this.SaveDbDetails())
-      .then((id) => this.AsyncStoreFirstUser())
+      .then((id) => this.AsyncStoreFirstUser(this.state.Name))
       //.catch((error) => this.setState({ error: "Authentication Failed" }))
       .catch((error) => console.log("Not Creating User"))
 

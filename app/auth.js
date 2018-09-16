@@ -4,13 +4,14 @@ export const USER_KEY = "auth-demo-key";
 
 export const FIRST_USER_KEY = "first-user"
 
+export const USER = "User"
 
 export const onSignIn = () => AsyncStorage.setItem(USER_KEY, "true");
 
 
-export const onSignOut = () => AsyncStorage.removeItem(USER_KEY);
+export const onSignOut = () => AsyncStorage.multiRemove(USER_KEY, USER);
 
-export const firstUser = () => AsyncStorage.setItem(FIRST_USER_KEY, "true")
+export const firstUser = (Name) => AsyncStorage.multiSet([FIRST_USER_KEY, "true"], [User, Name])
 
 
 
