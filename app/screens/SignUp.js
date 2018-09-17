@@ -56,7 +56,7 @@ export default class SignUp extends Component {
       .then(() => this.SaveDbDetails())
       .then((id) => this.AsyncStoreFirstUser(this.state.Name))
       //.catch((error) => this.setState({ error: "Authentication Failed" }))
-      .catch((error) => console.log("Not Creating User"))
+      .catch((error) => console.log(error))
 
 
 

@@ -9,9 +9,9 @@ export const USER = "User"
 export const onSignIn = () => AsyncStorage.setItem(USER_KEY, "true");
 
 
-export const onSignOut = () => AsyncStorage.multiRemove(USER_KEY, USER);
+export const onSignOut = () => AsyncStorage.multiRemove([USER_KEY, USER]);
 
-export const firstUser = (Name) => AsyncStorage.multiSet([FIRST_USER_KEY, "true"], [User, Name])
+export const firstUser = (Name) => AsyncStorage.multiSet([[FIRST_USER_KEY, "true"], [USER, Name]])
 
 
 

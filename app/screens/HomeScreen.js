@@ -12,6 +12,7 @@ import {
 import { Card, Button, } from "react-native-elements";
 import { listenUserName } from "../../config/database";
 import { db } from "../../config/MyFirebase";
+import { USER } from "../auth"
 
 export default class HomeScreen extends Component {
     constructor(props) {
@@ -31,6 +32,7 @@ export default class HomeScreen extends Component {
         */
         AsyncStorage.getItem(USER)
             .then(res => {
+
                 if (res == null) {
                     this.setState({ Name: "" });
                 }
@@ -49,7 +51,7 @@ export default class HomeScreen extends Component {
                 });
                 let id = user.uid
                 listenUserName(id, (Name) => {
-                    let USER = "User"
+
                     this.setState({
                         Name: Name
 
@@ -63,6 +65,8 @@ export default class HomeScreen extends Component {
     }
 
     componentDidMount() {
+
+
         /*
         console.log(this.state.isAuthenticatedReady);
         try {
