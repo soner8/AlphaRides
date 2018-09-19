@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { Card, Button, Text } from "react-native-elements";
 import { onSignOut } from "../auth";
 import { db } from "../../config/MyFirebase";
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
 export default class Profile extends Component {
   SignOut = () => {
@@ -12,6 +13,21 @@ export default class Profile extends Component {
   }
 
   render() {
+    return (
+      <View style={styles.container}>
+        <MapView
+          provider={PROVIDER_GOOGLE}
+          style={styles.map}
+          region={{
+            latitude: 37.78825,
+            longitude: -122.4324,
+            latitudeDelta: 0.015,
+            longitudeDelta: 0.0121,
+          }}
+        ></MapView>
+      </View>
+    )
+    /*
     return (
       <View style={{ paddingVertical: 20 }}>
         <Card title="John Doe">
@@ -36,6 +52,10 @@ export default class Profile extends Component {
           />
         </Card>
       </View>
-    );
+    );*/
   }
 }
+const styles = StyleSheet.create({
+  container: { ...StyleSheet.absoluteFillObject },
+  map: { ...StyleSheet.absoluteFillObject }
+})
