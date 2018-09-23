@@ -4,6 +4,7 @@ import { Card, Button, Text } from "react-native-elements";
 import { onSignOut } from "../auth";
 import { db } from "../../config/MyFirebase";
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import RNGooglePlaces from 'react-native-google-places';
 
 export default class Profile extends Component {
   SignOut = () => {
