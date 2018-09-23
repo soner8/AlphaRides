@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Card, Button, Text } from "react-native-elements";
 import { onSignOut } from "../auth";
 import { db } from "../../config/MyFirebase";
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import RNGooglePlaces from 'react-native-google-places';
+import MapViewDirections from 'react-native-maps-directions';
 
 export default class Profile extends Component {
   SignOut = () => {
@@ -13,9 +14,28 @@ export default class Profile extends Component {
       .then(() => this.props.navigation.navigate("SignedOut"))
   }
 
+  openSearchModal() {
+    RNGooglePlaces.openAutocompleteModal()
+      .then((place) => {
+        console.log(place);
+        // place represents user's selection from the
+        // suggestions and it is a simplified Google Place object.
+      })
+      .catch(error => console.log(error.message));  // error is a Javascript Error object
+  }
+
   render() {
+    const origin = { latitude: 37.3318456, longitude: -122.0296002 };
+    const destination = { latitude: 37.771707, longitude: -122.4053769 };
+    const GOOGLE_MAPS_APIKEY = 'AIzaSyBIXZvDmynO3bT7i_Yck7knF5wgOVyj5Fk';
     return (
       <View style={styles.container}>
+        {/*<TouchableOpacity
+          style={styles.button}
+          onPress={() => this.openSearchModal()}
+        >
+          <Text>Pick a Place</Text>
+        </TouchableOpacity>*/}
         <MapView
           provider={PROVIDER_GOOGLE}
           style={styles.map}
@@ -25,7 +45,17 @@ export default class Profile extends Component {
             latitudeDelta: 0.015,
             longitudeDelta: 0.0121,
           }}
-        ></MapView>
+        >
+          <MapView.Marker coordinate={origin} />
+          <MapView.Marker coordinate={destination} />
+          <MapViewDirections
+            origin={origin}
+            destination={destination}
+            apikey={GOOGLE_MAPS_APIKEY}
+            strokeWidth={3}
+            strokeColor="hotpink"
+          />
+        </MapView>
       </View>
     )
     /*
@@ -59,4 +89,5 @@ export default class Profile extends Component {
 const styles = StyleSheet.create({
   container: { ...StyleSheet.absoluteFillObject },
   map: { ...StyleSheet.absoluteFillObject }
+
 })
