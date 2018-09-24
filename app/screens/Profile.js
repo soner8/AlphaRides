@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity, AsyncStorage } from "react-native";
 import { Card, Button, Text } from "react-native-elements";
 import { onSignOut } from "../auth";
 import { db } from "../../config/MyFirebase";
@@ -8,6 +8,23 @@ import RNGooglePlaces from 'react-native-google-places';
 import MapViewDirections from 'react-native-maps-directions';
 
 export default class Profile extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      MyLocationLat: null,
+      MyLocationLong: null,
+    }
+    console.log('Cons')
+    AsyncStorage.multiGet(['MyLocationLat', 'MyLocationLong'])
+      .then(response => {
+        this.setState({
+          MyLocationLat: response[0][1],
+          MyLocationLong: response[1][1]
+        });
+        console.log(this.state.MyLocationLat)
+      })
+
+  }
   SignOut = () => {
     db.auth().signOut()
       .then(() => onSignOut())
@@ -25,8 +42,8 @@ export default class Profile extends Component {
   }
 
   render() {
-    const origin = { latitude: 37.3318456, longitude: -122.0296002 };
-    const destination = { latitude: 37.771707, longitude: -122.4053769 };
+    const origin = { latitude: this.state.MyLocationLat, longitude: this.state.MyLocationLong };
+    const destination = { latitude: 6.465422, longitude: 3.406448 };
     const GOOGLE_MAPS_APIKEY = 'AIzaSyBIXZvDmynO3bT7i_Yck7knF5wgOVyj5Fk';
     return (
       <View style={styles.container}>
@@ -40,10 +57,10 @@ export default class Profile extends Component {
           provider={PROVIDER_GOOGLE}
           style={styles.map}
           region={{
-            latitude: 37.78825,
-            longitude: -122.4324,
-            latitudeDelta: 0.015,
-            longitudeDelta: 0.0121,
+            latitude: this.state.MyLocationLat,
+            longitude: this.state.MyLocationLong,
+            latitudeDelta: 1,
+            longitudeDelta: 1,
           }}
         >
           <MapView.Marker coordinate={origin} />
@@ -56,6 +73,11 @@ export default class Profile extends Component {
             strokeColor="hotpink"
           />
         </MapView>
+        <Button
+          buttonStyle={{ marginTop: 20 }}
+          backgroundColor="#03A9F4"
+          title="Where To"
+        />
       </View>
     )
     /*

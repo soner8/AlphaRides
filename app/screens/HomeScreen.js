@@ -12,7 +12,8 @@ import {
 import { Card, Button, } from "react-native-elements";
 import { listenUserName } from "../../config/database";
 import { db } from "../../config/MyFirebase";
-import { USER } from "../auth"
+import { USER } from "../auth";
+import RNGooglePlaces from 'react-native-google-places';
 
 export default class HomeScreen extends Component {
     constructor(props) {
@@ -21,6 +22,7 @@ export default class HomeScreen extends Component {
         this.state = {
             Name: "",
             isAuthenticated: false
+
 
         }
         /*The below AsyncStorage will get the Name of the user that signed up
@@ -65,7 +67,13 @@ export default class HomeScreen extends Component {
     }
 
     componentDidMount() {
+        RNGooglePlaces.getCurrentPlace()
+            .then((result) => {
+                AsyncStorage.multiSet([['MyLocationLat', result[4].latitude], ['MyLocationLong', result[4].longitude]])
+                console.log('done');
 
+            })
+            .catch((error) => console.log(error));
 
         /*
         console.log(this.state.isAuthenticatedReady);
