@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity, AsyncStorage } from "react-native";
+import { View, StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native";
 import { Card, Button, Text } from "react-native-elements";
 import { onSignOut } from "../auth";
 import { db } from "../../config/MyFirebase";
@@ -11,8 +11,9 @@ export default class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      MyLocationLat: 9.0680151,
-      MyLocationLong: 7.388884,
+      MyLocationLat: null,
+      MyLocationLong: null,
+      isLoading: true
     }
     RNGooglePlaces.getCurrentPlace()
       .then((result) => {
@@ -31,7 +32,8 @@ export default class Profile extends Component {
       .then((result) => {
         this.setState({
           MyLocationLat: result[4].latitude,
-          MyLocationLong: result[4].longitude
+          MyLocationLong: result[4].longitude,
+          isLoading: false
         });
       })
       .catch((error) => console.log(error));
@@ -54,6 +56,13 @@ export default class Profile extends Component {
   }
 
   render() {
+    if (this.state.isLoading) {
+      return (
+        <View style={styles.container}>
+          <ActivityIndicator size="small" color="#00ff00" />
+        </View>
+      )
+    }
     const origin = { latitude: this.state.MyLocationLat, longitude: this.state.MyLocationLong };
     const destination = { latitude: 6.465422, longitude: 3.406448 };
     const GOOGLE_MAPS_APIKEY = 'AIzaSyBIXZvDmynO3bT7i_Yck7knF5wgOVyj5Fk';
@@ -71,12 +80,12 @@ export default class Profile extends Component {
           region={{
             latitude: this.state.MyLocationLat,
             longitude: this.state.MyLocationLong,
-            latitudeDelta: 1,
-            longitudeDelta: 1,
+            latitudeDelta: 0.02,
+            longitudeDelta: 0.02,
           }}
           showsUserLocation={true}
         >
-          <MapView.Marker coordinate={origin} />
+          {/*<MapView.Marker coordinate={origin} />
           <MapView.Marker coordinate={destination} />
           <MapViewDirections
             origin={origin}
@@ -84,7 +93,7 @@ export default class Profile extends Component {
             apikey={GOOGLE_MAPS_APIKEY}
             strokeWidth={3}
             strokeColor="hotpink"
-          />
+        />*/}
         </MapView>
         <Button
           buttonStyle={{ marginTop: 20 }}
@@ -123,6 +132,11 @@ export default class Profile extends Component {
 }
 const styles = StyleSheet.create({
   container: { ...StyleSheet.absoluteFillObject },
-  map: { ...StyleSheet.absoluteFillObject }
+  map: { ...StyleSheet.absoluteFillObject },
+  horizontal: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10
+  }
 
 })
