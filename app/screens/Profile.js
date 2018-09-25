@@ -11,18 +11,30 @@ export default class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      MyLocationLat: null,
-      MyLocationLong: null,
+      MyLocationLat: 9.0680151,
+      MyLocationLong: 7.388884,
     }
-    console.log('Cons')
-    AsyncStorage.multiGet(['MyLocationLat', 'MyLocationLong'])
-      .then(response => {
+    RNGooglePlaces.getCurrentPlace()
+      .then((result) => {
         this.setState({
-          MyLocationLat: response[0][1],
-          MyLocationLong: response[1][1]
+          MyLocationLat: result[4].latitude,
+          MyLocationLong: result[4].longitude
         });
-        console.log(this.state.MyLocationLat)
       })
+      .catch((error) => console.log(error));
+
+
+  }
+
+  componentDidMount() {
+    RNGooglePlaces.getCurrentPlace()
+      .then((result) => {
+        this.setState({
+          MyLocationLat: result[4].latitude,
+          MyLocationLong: result[4].longitude
+        });
+      })
+      .catch((error) => console.log(error));
 
   }
   SignOut = () => {
@@ -62,6 +74,7 @@ export default class Profile extends Component {
             latitudeDelta: 1,
             longitudeDelta: 1,
           }}
+          showsUserLocation={true}
         >
           <MapView.Marker coordinate={origin} />
           <MapView.Marker coordinate={destination} />

@@ -67,13 +67,7 @@ export default class HomeScreen extends Component {
     }
 
     componentDidMount() {
-        RNGooglePlaces.getCurrentPlace()
-            .then((result) => {
-                AsyncStorage.multiSet([['MyLocationLat', result[4].latitude], ['MyLocationLong', result[4].longitude]])
-                console.log('done');
 
-            })
-            .catch((error) => console.log(error));
 
         /*
         console.log(this.state.isAuthenticatedReady);
