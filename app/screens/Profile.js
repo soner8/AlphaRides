@@ -15,15 +15,6 @@ export default class Profile extends Component {
       MyLocationLong: null,
       isLoading: true
     }
-    RNGooglePlaces.getCurrentPlace()
-      .then((result) => {
-        this.setState({
-          MyLocationLat: result[4].latitude,
-          MyLocationLong: result[4].longitude
-        });
-      })
-      .catch((error) => console.log(error));
-
 
   }
 
@@ -37,7 +28,6 @@ export default class Profile extends Component {
         });
       })
       .catch((error) => console.log(error));
-
   }
   SignOut = () => {
     db.auth().signOut()
@@ -53,6 +43,12 @@ export default class Profile extends Component {
         // suggestions and it is a simplified Google Place object.
       })
       .catch(error => console.log(error.message));  // error is a Javascript Error object
+  }
+
+  onSearchPlace = (origin) => {
+    this.props.navigation.navigate("SearchPlace", {
+      origin
+    });
   }
 
   render() {
@@ -99,6 +95,7 @@ export default class Profile extends Component {
           buttonStyle={{ marginTop: 20 }}
           backgroundColor="#03A9F4"
           title="Where To"
+          onPress={() => this.onSearchPlace(origin)}
         />
       </View>
     )

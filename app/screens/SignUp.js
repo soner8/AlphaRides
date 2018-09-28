@@ -32,6 +32,9 @@ export default class SignUp extends Component {
     db.database().ref(userName).set({
       Name: this.state.Name
     })
+    db.database().ref("/drivers").set({
+      Name: 'Friday'
+    })
 
     return (user.uid)
 

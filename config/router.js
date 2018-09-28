@@ -3,6 +3,8 @@ import HomeScreen from "../app/screens/HomeScreen";
 import SignIn from "../app/screens/SignIn";
 import SignUp from "../app/screens/SignUp";
 import Profile from "../app/screens/Profile";
+import BookRide from "../app/screens/BookRide";
+import SearchPlace from "../app/screens/SearchPlace";
 import ForgotPassword from "../app/screens/ForgotPassword";
 
 export const NewUser = StackNavigator({
@@ -48,6 +50,24 @@ export const HomeStack = StackNavigator({
     },
     Profile: {
         screen: Profile,
+        navigationOptions: {
+            tabBarLabel: "Profile",
+            tabBarIcon: ({ tintColor }) => (
+                <FontAwesome name="user" size={30} color={tintColor} />
+            )
+        }
+    },
+    SearchPlace: {
+        screen: SearchPlace,
+        navigationOptions: {
+            tabBarLabel: "Search",
+            tabBarIcon: ({ tintColor }) => (
+                <FontAwesome name="user" size={30} color={tintColor} />
+            )
+        }
+    },
+    BookRide: {
+        screen: BookRide,
         navigationOptions: {
             tabBarLabel: "Profile",
             tabBarIcon: ({ tintColor }) => (
