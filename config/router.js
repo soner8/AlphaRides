@@ -1,11 +1,15 @@
-import { StackNavigator, SwitchNavigator } from "react-navigation";
+import React from 'react';
+import { StackNavigator, SwitchNavigator, createDrawerNavigator } from "react-navigation";
 import HomeScreen from "../app/screens/HomeScreen";
 import SignIn from "../app/screens/SignIn";
 import SignUp from "../app/screens/SignUp";
 import Profile from "../app/screens/Profile";
 import BookRide from "../app/screens/BookRide";
 import SearchPlace from "../app/screens/SearchPlace";
+import MyProfile from "../app/screens/MyProfile";
+import MyNotificationsScreen from "../app/screens/MyNotificationsScreen";
 import ForgotPassword from "../app/screens/ForgotPassword";
+import MaterialIcons from "react-native-vector-icons";
 
 export const NewUser = StackNavigator({
     SignUp: {
@@ -36,18 +40,7 @@ export const SignedOut = StackNavigator({
 
 });
 
-
-export const HomeStack = StackNavigator({
-    HomeScreen: {
-        screen: HomeScreen,
-        navigationOPtions: {
-            title: "AlphaRides",
-            headerStyle: {
-                backgroundColor: "purple"
-            },
-            headerTintColor: "#fff"
-        }
-    },
+export const MyApp = StackNavigator({
     Profile: {
         screen: Profile,
         navigationOptions: {
@@ -77,11 +70,49 @@ export const HomeStack = StackNavigator({
     }
 });
 
+export const HomeStack = createDrawerNavigator({
+    HomeScreen: {
+        screen: HomeScreen,
+        navigationOPtions: {
+            title: "AlphaRides",
+            headerStyle: {
+                backgroundColor: "purple"
+            },
+            headerTintColor: "#fff"
+        }
+    },
+
+    MyProfile: {
+        screen: MyProfile,
+        navigationOPtions: {
+            drawerLabel: 'My Profile',
+            drawerIcon: ({ tintColor }) => {
+                return (
+                    <MaterialIcons
+                        name="card-membership"
+                        size={24}
+                        style={{ color: tintColor }}>
+                    </MaterialIcons>
+
+                );
+            }
+        }
+
+    },
+    MyNotificationsScreen: {
+        screen: MyNotificationsScreen
+    }
+
+});
+
 export const createRootNavigator = (signedIn = false) => {
     return SwitchNavigator(
         {
             HomeStack: {
                 screen: HomeStack
+            },
+            MyApp: {
+                screen: MyApp
             },
             SignedOut: {
                 screen: SignedOut
@@ -102,9 +133,12 @@ export const NewUserRootNavigator = (val = true) => {
         HomeStack: {
             screen: HomeStack
         },
+        MyApp: {
+            screen: MyApp
+        },
         SignedOut: {
             screen: SignedOut
-        },
+        }
 
 
     },

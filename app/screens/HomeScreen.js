@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { DrawerActions } from 'react-navigation';
 
 import {
 
@@ -94,7 +95,7 @@ export default class HomeScreen extends Component {
 
     */}
     onProfile = () => {
-        this.props.navigation.navigate("Profile");
+        this.props.navigation.navigate("MyApp");
     }
     render() {
         const { Name } = this.state;
@@ -106,8 +107,14 @@ export default class HomeScreen extends Component {
                     <Button
                         buttonStyle={{ marginTop: 20 }}
                         backgroundColor="#03A9F4"
-                        title="Profile"
+                        title="Map"
                         onPress={() => this.onProfile()}
+                    />
+                    <Button
+                        buttonStyle={{ marginTop: 20 }}
+                        backgroundColor="#03A9F4"
+                        title="Profile"
+                        onPress={() => this.props.navigation.openDrawer()}
                     />
                 </Card>
             </View>
