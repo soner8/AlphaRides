@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, Colors, TouchableOpacity, View, Image, StyleSheet } from "react-native";
-import { StackNavigator, SwitchNavigator, createDrawerNavigator, HeaderBackButton } from "react-navigation";
+import { StackNavigator, SwitchNavigator, DrawerItems, createDrawerNavigator, HeaderBackButton } from "react-navigation";
 import HomeScreen from "../app/screens/HomeScreen";
 import SignIn from "../app/screens/SignIn";
 import SignUp from "../app/screens/SignUp";
@@ -11,7 +11,7 @@ import MyProfile from "../app/screens/MyProfile";
 import MyNotificationsScreen from "../app/screens/MyNotificationsScreen";
 import ForgotPassword from "../app/screens/ForgotPassword";
 import MaterialIcons from "react-native-vector-icons";
-import { Container, Icon, Left, Header, Body, Right } from 'native-base';
+import { Container, Icon, Left, Content, Header, Body, Right } from 'native-base';
 
 export const NewUser = StackNavigator({
     SignUp: {
@@ -77,6 +77,9 @@ const DrawerContent = (props) => (
                     source={require('../app/images/user.png')} />
             </Body>
         </Header>
+        <Content>
+            <DrawerItems {...props} />
+        </Content>
     </Container>
 );
 
@@ -103,7 +106,15 @@ export const HomeStack = createDrawerNavigator({
         screen: MyNotificationsScreen
     }
 
-});
+}, {
+        initialRouteName: 'Home',
+        drawerPosition: 'left',
+        contentComponent: DrawerContent,
+        drawerOpenRoute: 'DrawerOpen',
+        drawerCloseRoute: 'DrawerClose',
+        drawerToggleRoute: 'DrawerToggle'
+
+    });
 
 export const createRootNavigator = (signedIn = false) => {
     return SwitchNavigator(

@@ -13,7 +13,6 @@ import {
 import RNGooglePlaces from 'react-native-google-places';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
-import RNGooglePlaces from 'react-native-google-places';
 import { Container, Icon, Left, Header, Body, Right } from 'native-base';
 
 export default class BookRide extends Component {
