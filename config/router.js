@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Colors, Icon, TouchableOpacity, View } from "react-native";
+import { Text, Colors, TouchableOpacity, View, Image, StyleSheet } from "react-native";
 import { StackNavigator, SwitchNavigator, createDrawerNavigator, HeaderBackButton } from "react-navigation";
 import HomeScreen from "../app/screens/HomeScreen";
 import SignIn from "../app/screens/SignIn";
@@ -11,6 +11,7 @@ import MyProfile from "../app/screens/MyProfile";
 import MyNotificationsScreen from "../app/screens/MyNotificationsScreen";
 import ForgotPassword from "../app/screens/ForgotPassword";
 import MaterialIcons from "react-native-vector-icons";
+import { Container, Icon, Left, Header, Body, Right } from 'native-base';
 
 export const NewUser = StackNavigator({
     SignUp: {
@@ -43,21 +44,19 @@ export const SignedOut = StackNavigator({
 
 export const MyApp = StackNavigator({
     Profile: {
-        screen: Profile,
-        navigationOptions: {
-            tabBarLabel: "Profile",
-            tabBarIcon: ({ tintColor }) => (
-                <FontAwesome name="user" size={30} color={tintColor} />
-            )
-        }
+        screen: Profile
     },
+
     SearchPlace: {
         screen: SearchPlace,
+
         navigationOptions: {
             tabBarLabel: "Search",
             tabBarIcon: ({ tintColor }) => (
                 <FontAwesome name="user" size={30} color={tintColor} />
             )
+
+
         }
     },
     BookRide: {
@@ -70,24 +69,30 @@ export const MyApp = StackNavigator({
         }
     }
 });
-const DrawerIcon = () => {
-    return (
-        <View>
-            <TouchableOpacity onPress={() => { this.props.navigation.navigate('DrawerOpen'); }}>
-                <Icon name="bars" style={{ padding: 10, marginLeft: 10 }} size={20} color="black" type={"font-awesome"} />
-            </TouchableOpacity>
-        </View>
-    );
-};
+const DrawerContent = (props) => (
+    <Container>
+        <Header style={{ height: 200 }}>
+            <Body>
+                <Image style={styles.drawerImage}
+                    source={require('../app/images/user.png')} />
+            </Body>
+        </Header>
+    </Container>
+);
+
+
 
 
 export const HomeStack = createDrawerNavigator({
-    HomeScreen: {
-        screen: HomeScreen,
-        navigationOptions: {
-            title: "Home",
-
-        }
+    /*HomeScreen: {
+         screen: HomeScreen,
+         navigationOptions: {
+             title: "Home",
+ 
+         }
+     },*/
+    Home: {
+        screen: MyApp
     },
 
     MyProfile: {
@@ -143,3 +148,11 @@ export const NewUserRootNavigator = (val = true) => {
         }
     );
 };
+
+const styles = StyleSheet.create({
+    drawerImage: {
+        width: 150,
+        height: 150,
+        borderRadius: 75
+    },
+});

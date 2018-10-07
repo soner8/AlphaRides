@@ -6,8 +6,10 @@ import { db } from "../../config/MyFirebase";
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import RNGooglePlaces from 'react-native-google-places';
 import MapViewDirections from 'react-native-maps-directions';
+import { Container, Icon, Left, Header, Body, Right } from 'native-base';
 
 export default class Profile extends Component {
+  static navigationOptions = { header: null }
   constructor(props) {
     super(props);
     this.state = {
@@ -45,31 +47,30 @@ export default class Profile extends Component {
       .catch(error => console.log(error.message));  // error is a Javascript Error object
   }
 
-  onSearchPlace = (origin) => {
-    this.props.navigation.navigate("SearchPlace", {
-      origin
-    });
+  onSearchPlace = () => {
+    this.props.navigation.navigate("SearchPlace");
   }
 
   render() {
     if (this.state.isLoading) {
       return (
         <View style={styles.container}>
-          <ActivityIndicator size="small" color="#00ff00" />
+          <ActivityIndicator size="large" color="#00ff00" />
         </View>
       )
     }
-    const origin = { latitude: this.state.MyLocationLat, longitude: this.state.MyLocationLong };
+
     const destination = { latitude: 6.465422, longitude: 3.406448 };
     const GOOGLE_MAPS_APIKEY = 'AIzaSyBIXZvDmynO3bT7i_Yck7knF5wgOVyj5Fk';
     return (
-      <View style={styles.container}>
+      <Container>
         {/*<TouchableOpacity
           style={styles.button}
           onPress={() => this.openSearchModal()}
         >
           <Text>Pick a Place</Text>
         </TouchableOpacity>*/}
+
         <MapView
           provider={PROVIDER_GOOGLE}
           style={styles.map}
@@ -91,13 +92,23 @@ export default class Profile extends Component {
             strokeColor="hotpink"
         />*/}
         </MapView>
+        <Header transparent>
+          <Left>
+
+            <Icon name="ios-menu" onPress={() =>
+              this.props.navigation.openDrawer()} />
+
+          </Left>
+          <Body />
+          <Right />
+        </Header>
         <Button
           buttonStyle={{ marginTop: 20 }}
           backgroundColor="#03A9F4"
           title="Where To"
-          onPress={() => this.onSearchPlace(origin)}
+          onPress={() => this.onSearchPlace()}
         />
-      </View>
+      </Container>
     )
     /*
     return (
@@ -128,7 +139,7 @@ export default class Profile extends Component {
   }
 }
 const styles = StyleSheet.create({
-  container: { ...StyleSheet.absoluteFillObject },
+
   map: { ...StyleSheet.absoluteFillObject },
   horizontal: {
     flexDirection: 'row',

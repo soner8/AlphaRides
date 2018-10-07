@@ -9,24 +9,34 @@ export default class SignIn extends Component {
     super(props);
     this.state = {
       email: "",
-      password: ""
+      password: "",
+      authenticating: false
 
     }
   }
 
   UserSignIn = () => {
+    this.setState({ authenticating: true });
     db.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
       .then(() => onSignIn())
       .then(() => {
         let user = db.auth().currentUser;
         console.log(user.uid);
-        this.props.navigation.navigate("HomeScreen", { idd: user.uid })
+        this.props.navigation.navigate("Profile")
+        /*this.props.navigation.navigate("HomeScreen", { idd: user.uid })*/
       })
 
       .catch((error) => console.log("No Authentication"))
   }
 
   render() {
+    if (this.state.authenticating) {
+      return (
+        <View>
+          <ActivityIndicator size='large' />
+        </View>
+      )
+    }
     return (
       <View style={{ paddingVertical: 20 }}>
         <Card title="SIGN IN">

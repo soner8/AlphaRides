@@ -4,13 +4,14 @@ import { View, Image, Text, StyleSheet, TouchableOpacity, FlatList } from 'react
 import RNGooglePlaces from 'react-native-google-places';
 
 export default class SearchPlace extends Component {
+    static navigationOptions = { header: null }
     constructor(props) {
         super(props);
 
         this.state = {
             place: "",
             concatDestinationLot: "",
-            currentPlace: this.props.navigation.state.params.origin,
+            currentPlace: "",
             results: []
         }
     }
@@ -28,12 +29,12 @@ export default class SearchPlace extends Component {
         return (this.state.concatDestinationLot);
     };
 
-    onLocation(location, myLocation) {
+    onLocation(location) {
         //We will have to send location to the map that needs to render
         //the route directions. So we navigate to that map
 
         let placeID = location.placeID
-        this.props.navigation.navigate("BookRide", { placeID, myLocation });
+        this.props.navigation.navigate("BookRide", { placeID });
 
     }
 
@@ -52,7 +53,7 @@ export default class SearchPlace extends Component {
             .catch(error => console.log(error.message));  // error is a Javascript Error object
     }
     render() {
-        const { place, currentPlace } = this.state;
+        const { place } = this.state;
         return (
             <View style={styles.container}>
                 {/*<TouchableOpacity
@@ -75,7 +76,7 @@ export default class SearchPlace extends Component {
                         <FlatList
                             data={this.state.results}
                             renderItem={({ item }) =>
-                                <TouchableOpacity onPress={() => this.onLocation(item, currentPlace)}>
+                                <TouchableOpacity onPress={() => this.onLocation(item)}>
                                     <Text style={styles.item}>{item.fullText}</Text>
                                 </TouchableOpacity>
                             }

@@ -13,14 +13,19 @@ import {
 import RNGooglePlaces from 'react-native-google-places';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
+import RNGooglePlaces from 'react-native-google-places';
+import { Container, Icon, Left, Header, Body, Right } from 'native-base';
 
 export default class BookRide extends Component {
+    static navigationOptions = { header: null }
     constructor(props) {
         super(props);
         this.state = {
-            origin: this.props.navigation.state.params.myLocation,
+            MyLocationLat: null,
+            MyLocationLong: null,
             destination: this.props.navigation.state.params.placeID,
-            isPlaceID: true
+            isPlaceID: true,
+            gettingMyLocation: true
 
         }
         RNGooglePlaces.lookUpPlaceByID(this.state.destination)
@@ -31,19 +36,31 @@ export default class BookRide extends Component {
                 })
             })
     }
+    componentDidMount() {
+        RNGooglePlaces.getCurrentPlace()
+            .then((result) => {
+                this.setState({
+                    MyLocationLat: result[4].latitude,
+                    MyLocationLong: result[4].longitude,
+                    gettingMyLocation: false
+                });
+            })
+            .catch((error) => console.log(error));
+    }
     render() {
-        if (this.state.isPlaceID) {
+        if (this.state.isPlaceID && this.state.gettingMyLocation) {
             return (
                 <View style={styles.container}>
                     <ActivityIndicator size="small" color="#00ff00" />
                 </View>
             )
         }
-        const { origin, destination } = this.state;
+        const origin = { latitude: this.state.MyLocationLat, longitude: this.state.MyLocationLong };
+        const { destination } = this.state;
         const GOOGLE_MAPS_APIKEY = 'AIzaSyBIXZvDmynO3bT7i_Yck7knF5wgOVyj5Fk';
 
         return (
-            <View style={styles.container}>
+            <Container>
                 <MapView
                     provider={PROVIDER_GOOGLE}
                     style={styles.map}
@@ -55,6 +72,7 @@ export default class BookRide extends Component {
                     }}
                     showsUserLocation={true}
                 >
+
                     <MapView.Marker coordinate={origin} />
                     <MapView.Marker coordinate={destination} />
                     <MapViewDirections
@@ -65,13 +83,13 @@ export default class BookRide extends Component {
                         strokeColor="hotpink"
                     />
                 </MapView>
-            </View>
+            </Container>
         );
     }
 }
 
 const styles = StyleSheet.create({
-    container: { ...StyleSheet.absoluteFillObject },
+
     map: { ...StyleSheet.absoluteFillObject },
     horizontal: {
         flexDirection: 'row',

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Alert, ScrollView } from "react-native";
+import { View, Alert, ScrollView, ActivityIndicator } from "react-native";
 import { Card, Button, Input } from "react-native-elements";
 import { onSignIn, firstUser } from "../auth";
 import { db } from "../../config/MyFirebase";
@@ -14,7 +14,8 @@ export default class SignUp extends Component {
       email: "",
       password: "",
       passwordConfirm: "",
-      error: ""
+      error: "",
+      authenticating: false
 
     }
   }
@@ -23,7 +24,10 @@ export default class SignUp extends Component {
 
     firstUser(Name)
       .then(() => onSignIn())
-      .then(() => this.props.navigation.navigate("HomeScreen"))
+      .then(() => {
+        console.log('About to Navigate');
+        this.props.navigation.navigate("Profile")
+      })
   }
 
   SaveDbDetails = () => {
@@ -55,6 +59,7 @@ export default class SignUp extends Component {
       Alert.alert("Password Did Not Match");
       return;
     }
+    this.setState({ authenticating: true })
     db.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then(() => this.SaveDbDetails())
       .then((id) => this.AsyncStoreFirstUser(this.state.Name))
@@ -68,6 +73,13 @@ export default class SignUp extends Component {
 
   render() {
     const { Name, email, password, passwordConfirm } = this.state;
+    if (this.state.authenticating) {
+      return (
+        <View>
+          <ActivityIndicator size='large' color="#00ff00" />
+        </View>
+      )
+    }
     return (
       <View style={{ paddingVertical: 20 }}>
         <ScrollView>
@@ -122,4 +134,5 @@ export default class SignUp extends Component {
       </View>
     );
   }
+
 }
