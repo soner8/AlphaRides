@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Button } from "react-native";
+import { View, Text, Button, Image, StyleSheet } from "react-native";
 import MaterialIcons from "react-native-vector-icons";
 
 export default class MyNotificationsScreen extends Component {
@@ -22,3 +22,9 @@ export default class MyNotificationsScreen extends Component {
         );
     }
 }
+const styles = StyleSheet.create({
+    icon: {
+        width: 24,
+        height: 24,
+    },
+});

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { DrawerActions } from 'react-navigation';
+
 
 import {
 
@@ -10,13 +10,15 @@ import {
     ScrollView,
     TouchableOpacity
 } from 'react-native';
-import { Card, Button, } from "react-native-elements";
+import { Card, Button } from "react-native-elements";
 import { listenUserName } from "../../config/database";
 import { db } from "../../config/MyFirebase";
 import { USER } from "../auth";
 import RNGooglePlaces from 'react-native-google-places';
+import { Container, Icon, Left, Header, Body, Right } from 'native-base';
 
 export default class HomeScreen extends Component {
+
     constructor(props) {
         super(props);
 
@@ -100,7 +102,18 @@ export default class HomeScreen extends Component {
     render() {
         const { Name } = this.state;
         return (
-            <View>
+
+            <Container>
+                <Header transparent>
+                    <Left>
+
+                        <Icon name="ios-menu" onPress={() =>
+                            this.props.navigation.openDrawer()} />
+
+                    </Left>
+                    <Body />
+                    <Right />
+                </Header>
                 <Card>
                     <Text>New Develop</Text>
                     <Text>{this.state.Name}</Text>
@@ -117,7 +130,7 @@ export default class HomeScreen extends Component {
                         onPress={() => this.props.navigation.openDrawer()}
                     />
                 </Card>
-            </View>
+            </Container>
         );
     }
 }

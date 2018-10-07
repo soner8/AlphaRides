@@ -1,5 +1,6 @@
 import React from 'react';
-import { StackNavigator, SwitchNavigator, createDrawerNavigator } from "react-navigation";
+import { Text, Colors, Icon, TouchableOpacity, View } from "react-native";
+import { StackNavigator, SwitchNavigator, createDrawerNavigator, HeaderBackButton } from "react-navigation";
 import HomeScreen from "../app/screens/HomeScreen";
 import SignIn from "../app/screens/SignIn";
 import SignUp from "../app/screens/SignUp";
@@ -69,34 +70,28 @@ export const MyApp = StackNavigator({
         }
     }
 });
+const DrawerIcon = () => {
+    return (
+        <View>
+            <TouchableOpacity onPress={() => { this.props.navigation.navigate('DrawerOpen'); }}>
+                <Icon name="bars" style={{ padding: 10, marginLeft: 10 }} size={20} color="black" type={"font-awesome"} />
+            </TouchableOpacity>
+        </View>
+    );
+};
+
 
 export const HomeStack = createDrawerNavigator({
     HomeScreen: {
         screen: HomeScreen,
-        navigationOPtions: {
-            title: "AlphaRides",
-            headerStyle: {
-                backgroundColor: "purple"
-            },
-            headerTintColor: "#fff"
+        navigationOptions: {
+            title: "Home",
+
         }
     },
 
     MyProfile: {
-        screen: MyProfile,
-        navigationOPtions: {
-            drawerLabel: 'My Profile',
-            drawerIcon: ({ tintColor }) => {
-                return (
-                    <MaterialIcons
-                        name="card-membership"
-                        size={24}
-                        style={{ color: tintColor }}>
-                    </MaterialIcons>
-
-                );
-            }
-        }
+        screen: MyProfile
 
     },
     MyNotificationsScreen: {
