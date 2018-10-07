@@ -21,15 +21,20 @@ export default class Profile extends Component {
   }
 
   componentDidMount() {
-    RNGooglePlaces.getCurrentPlace()
-      .then((result) => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
         this.setState({
-          MyLocationLat: result[4].latitude,
-          MyLocationLong: result[4].longitude,
+          MyLocationLat: position.coords.latitude,
+          MyLocationLong: position.coords.longitude,
+          error: null,
           isLoading: false
         });
-      })
-      .catch((error) => console.log(error));
+      },
+      (error) => this.setState({ error: error.message }),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+    );
+
+
   }
   SignOut = () => {
     db.auth().signOut()
@@ -59,7 +64,7 @@ export default class Profile extends Component {
         </View>
       )
     }
-
+    const PresentLocation = { latitude: this.state.MyLocationLat, longitude: this.state.MyLocationLong }
     const destination = { latitude: 6.465422, longitude: 3.406448 };
     const GOOGLE_MAPS_APIKEY = 'AIzaSyBIXZvDmynO3bT7i_Yck7knF5wgOVyj5Fk';
     return (
@@ -82,6 +87,7 @@ export default class Profile extends Component {
           }}
           showsUserLocation={true}
         >
+          <MapView.Marker coordinate={PresentLocation} />
           {/*<MapView.Marker coordinate={origin} />
           <MapView.Marker coordinate={destination} />
           <MapViewDirections

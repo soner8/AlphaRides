@@ -36,15 +36,19 @@ export default class BookRide extends Component {
             })
     }
     componentDidMount() {
-        RNGooglePlaces.getCurrentPlace()
-            .then((result) => {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
                 this.setState({
-                    MyLocationLat: result[4].latitude,
-                    MyLocationLong: result[4].longitude,
+                    MyLocationLat: position.coords.latitude,
+                    MyLocationLong: position.coords.longitude,
+                    error: null,
                     gettingMyLocation: false
                 });
-            })
-            .catch((error) => console.log(error));
+            },
+            (error) => this.setState({ error: error.message }),
+            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+        );
+
     }
     render() {
         if (this.state.isPlaceID && this.state.gettingMyLocation) {
