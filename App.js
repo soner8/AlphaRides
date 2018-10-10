@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import { createRootNavigator, NewUserRootNavigator, HomeStack } from "./config/router";
 import { isSignedIn, isFirstUser } from "./app/auth";
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import UserReducer from './UserReducer';
+
+const store = createStore(UserReducer);
 
 export default class App extends Component {
   constructor(props) {
@@ -39,10 +44,19 @@ export default class App extends Component {
     }
     if (firstTimeUser) {
       const NewUserLayout = NewUserRootNavigator();
-      return <NewUserLayout />;
+      return (
+        <Provider store={store}>
+          <NewUserLayout />
+        </Provider>
+      )
     }
     // Sends signedIn state as parameter to Navigator in router.js file
     const Layout = createRootNavigator(signedIn);
-    return <Layout />;
+    return (
+      <Provider store={store}>
+        <Layout />
+      </Provider>
+    )
+
   }
 }

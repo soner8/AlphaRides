@@ -1,22 +1,57 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity, ActivityIndicator } from "react-native";
+import { View, StyleSheet, TouchableOpacity, ActivityIndicator, AsyncStorage } from "react-native";
 import { Card, Button, Text } from "react-native-elements";
-import { onSignOut } from "../auth";
+import { onSignOut, USER } from "../auth";
 import { db } from "../../config/MyFirebase";
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import { listenUserName } from "../../config/database";
 import RNGooglePlaces from 'react-native-google-places';
 import MapViewDirections from 'react-native-maps-directions';
 import { Container, Icon, Left, Header, Body, Right } from 'native-base';
+import { connect } from 'react-redux';
 
-export default class Profile extends Component {
+
+class Profile extends Component {
   static navigationOptions = { header: null }
   constructor(props) {
     super(props);
     this.state = {
       MyLocationLat: null,
       MyLocationLong: null,
-      isLoading: true
+      isLoading: true,
+      isAuthenticated: false,
+      Name: ""
     }
+
+    AsyncStorage.getItem(USER)
+      .then(res => {
+
+        if (res == null) {
+          this.setState({ Name: "" });
+        }
+        else {
+          this.setState({ Name: res });
+        }
+
+      })
+      .catch(err => reject(err));
+
+    db.auth().onAuthStateChanged((user) => {
+
+      if (user) {
+        this.setState({
+          isAuthenticated: true
+        });
+        let id = user.uid
+        listenUserName(id, (Name) => {
+
+
+          //Below Stores Name of User for future Reference
+          AsyncStorage.setItem(USER, Name)
+        });
+
+      }
+    });
 
   }
 
@@ -108,6 +143,7 @@ export default class Profile extends Component {
           <Body />
           <Right />
         </Header>
+        <Text>{this.props.User.currentUserName}</Text>
         <Button
           buttonStyle={{ marginTop: 20 }}
           backgroundColor="#03A9F4"
@@ -154,3 +190,10 @@ const styles = StyleSheet.create({
   }
 
 })
+
+const mapStateToProps = (state) => {
+  const { User } = state
+  return { User }
+};
+
+export default connect(mapStateToProps)(Profile);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Colors, TouchableOpacity, View, Image, StyleSheet } from "react-native";
+import { Text, Colors, TouchableOpacity, View, Image, StyleSheet, AsyncStorage } from "react-native";
 import { StackNavigator, SwitchNavigator, DrawerItems, createDrawerNavigator, HeaderBackButton } from "react-navigation";
 import HomeScreen from "../app/screens/HomeScreen";
 import SignIn from "../app/screens/SignIn";
@@ -10,6 +10,7 @@ import SearchPlace from "../app/screens/SearchPlace";
 import MyProfile from "../app/screens/MyProfile";
 import MyNotificationsScreen from "../app/screens/MyNotificationsScreen";
 import ForgotPassword from "../app/screens/ForgotPassword";
+import { USER } from "../app/auth";
 import MaterialIcons from "react-native-vector-icons";
 import { Container, Icon, Left, Content, Header, Body, Right } from 'native-base';
 
@@ -69,6 +70,8 @@ export const MyApp = StackNavigator({
         }
     }
 });
+export const GetUserName = () => AsyncStorage.getItem(USER)
+
 const DrawerContent = (props) => (
     <Container>
         <Header style={{ height: 200 }}>
@@ -78,6 +81,7 @@ const DrawerContent = (props) => (
             </Body>
         </Header>
         <Content>
+
             <DrawerItems {...props} />
         </Content>
     </Container>
