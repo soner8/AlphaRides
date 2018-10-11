@@ -9,7 +9,8 @@ import RNGooglePlaces from 'react-native-google-places';
 import MapViewDirections from 'react-native-maps-directions';
 import { Container, Icon, Left, Header, Body, Right } from 'native-base';
 import { connect } from 'react-redux';
-import { setUserName } from "../../UserReducer"
+import { setUserName } from "../../UserReducer";
+import { listen4Drivers } from "../../config/database";
 
 
 class Profile extends Component {
@@ -17,13 +18,32 @@ class Profile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      MyLocationLat: null,
-      MyLocationLong: null,
+      MyLocationLat: 0.02,
+      MyLocationLong: 0.02,
       isLoading: true,
+      driverLoading: true,
       isAuthenticated: false,
       Name: "",
+      drivers: { latitude: 0.02, longitude: 0.02 }
 
     }
+    db.database().ref('drivers').once('value', (snap) => {
+      var drivers = [];
+      snap.forEach((child) => {
+
+        drivers.push({
+          latitude: child.val().latitude,
+          longitude: child.val().longitude,
+
+
+        });
+      });
+      this.setState({ drivers: { latitude: drivers[0].latitude, longitude: drivers[0].longitude }, driverLoading: false })
+      //console.log(this.state.drivers)
+      //console.log(drivers[0].latitude)
+
+
+    });
 
     AsyncStorage.getItem(USER)
       .then(res => {
@@ -60,16 +80,22 @@ class Profile extends Component {
   }
 
   componentDidMount() {
+
     navigator.geolocation.getCurrentPosition(
       (position) => {
+
+
         this.setState({
           MyLocationLat: position.coords.latitude,
           MyLocationLong: position.coords.longitude,
           error: null,
           isLoading: false,
-          Name: ""
+          Name: "",
+
 
         });
+
+
 
       },
       (error) => this.setState({ error: error.message }),
@@ -93,7 +119,7 @@ class Profile extends Component {
   }
 
   render() {
-    if (this.state.isLoading) {
+    if (this.state.isLoading && this.state.driverLoading) {
       return (
         <View style={styles.container}>
           <ActivityIndicator size="large" color="#00ff00" />
@@ -124,6 +150,8 @@ class Profile extends Component {
           showsUserLocation={true}
         >
           <MapView.Marker coordinate={PresentLocation} />
+          <MapView.Marker coordinate={this.state.drivers} />
+
           {/*<MapView.Marker coordinate={origin} />
           <MapView.Marker coordinate={destination} />
           <MapViewDirections

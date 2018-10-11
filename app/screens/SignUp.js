@@ -32,12 +32,15 @@ export default class SignUp extends Component {
 
   SaveDbDetails = () => {
     let user = db.auth().currentUser;
+    let driverRef = db.database().ref('/drivers').push();
     let userName = "/user/" + user.uid + "/details";
     db.database().ref(userName).set({
       Name: this.state.Name
     })
-    db.database().ref("/drivers").set({
-      Name: 'Friday'
+    driverRef.update({
+      Name: 'Kaleb',
+      latitude: 6.52432793,
+      longitude: 3.3792057
     })
 
     return (user.uid)

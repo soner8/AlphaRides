@@ -59,7 +59,7 @@ export default class BookRide extends Component {
                 fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?origins=${this.state.concatOrigin}&destinations=${this.state.concatDest}&key=${API_KEY}`)
                     .then(response => response.json())
                     .then(responseJson => {
-                        console.log(responseJson)
+                        console.log(responseJson.rows.elements.distance)
                         this.setState({
                             isPlaceID: false
                         })

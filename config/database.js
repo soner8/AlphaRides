@@ -11,6 +11,26 @@ static setUserName(userId, Name) {
 
 }
  */
+
+export const listen4Drivers = () => {
+
+    db.database().ref('drivers').once('value', (snap) => {
+        var drivers = [];
+        snap.forEach((child) => {
+
+            drivers.push({
+                latitude: child.val().latitude,
+                longitude: child.val().longitude,
+
+
+            });
+        });
+        console.log(drivers)
+        return (drivers);
+
+    });
+}
+
 export const listenUserName = (userId, callback) => {
 
     let userName = "/user/" + userId + "/details";
