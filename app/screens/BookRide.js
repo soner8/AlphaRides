@@ -21,29 +21,21 @@ export default class BookRide extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            MyLocationLat: 0.02,
-            MyLocationLong: 0.02,
+
             destination: this.props.navigation.state.params.placeID,
             isPlaceID: true,
             error: '',
-            gettingMyLocation: true
+            gettingMyLocation: true,
+            origin: { latitude: 0.02, longitude: 0.02 },
+            concatOrigin: "",
+            concatDest: ""
 
         }
 
-        RNGooglePlaces.lookUpPlaceByID(this.state.destination)
-            .then((result) => {
-                this.setState({
-                    destination: { latitude: result.latitude, longitude: result.longitude },
-                    isPlaceID: false
-                })
-            })
-    }
-    componentDidMount() {
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 this.setState({
-                    MyLocationLat: position.coords.latitude,
-                    MyLocationLong: position.coords.longitude,
+                    origin: { latitude: position.coords.latitude, longitude: position.coords.longitude },
                     error: null,
                     gettingMyLocation: false
                 });
@@ -51,6 +43,46 @@ export default class BookRide extends Component {
             (error) => this.setState({ error: error.message }),
             { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
         );
+
+        RNGooglePlaces.lookUpPlaceByID(this.state.destination)
+            .then((result) => {
+                this.setState({
+                    destination: { latitude: result.latitude, longitude: result.longitude },
+
+                })
+            })
+            .then(() => {
+                let origin = this.state.origin
+                let destination = this.state.destination
+                let API_KEY = 'AIzaSyBIXZvDmynO3bT7i_Yck7knF5wgOVyj5Fk'
+                this.mergeLot(origin, destination);
+                fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?origins=${this.state.concatOrigin}&destinations=${this.state.concatDest}&key=${API_KEY}`)
+                    .then(response => response.json())
+                    .then(responseJson => {
+                        console.log(responseJson)
+                        this.setState({
+                            isPlaceID: false
+                        })
+                    })
+                    .catch(error => console.log(error))
+            })
+
+
+
+    }
+
+    mergeLot = (origin, destination) => {
+
+        let concatOrigin = origin.latitude + "," + origin.longitude
+        let concatDest = destination.latitude + "," + destination.longitude
+        this.setState({
+            concatOrigin: concatOrigin,
+            concatDest: concatDest
+        });
+    }
+
+    componentDidMount() {
+
 
     }
     render() {
@@ -63,8 +95,8 @@ export default class BookRide extends Component {
                 </View>
             )
         }
-        const origin = { latitude: this.state.MyLocationLat, longitude: this.state.MyLocationLong };
-        const { destination } = this.state;
+
+        const { origin, destination } = this.state;
         const GOOGLE_MAPS_APIKEY = 'AIzaSyBIXZvDmynO3bT7i_Yck7knF5wgOVyj5Fk';
 
         return (

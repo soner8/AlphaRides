@@ -22,7 +22,7 @@ export const listenUserName = (userId, callback) => {
 
 
         if (snapshot.val()) {
-            console.log("here we go");
+
             Name = snapshot.val().Name
 
         }

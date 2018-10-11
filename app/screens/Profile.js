@@ -9,6 +9,7 @@ import RNGooglePlaces from 'react-native-google-places';
 import MapViewDirections from 'react-native-maps-directions';
 import { Container, Icon, Left, Header, Body, Right } from 'native-base';
 import { connect } from 'react-redux';
+import { setUserName } from "../../UserReducer"
 
 
 class Profile extends Component {
@@ -20,7 +21,8 @@ class Profile extends Component {
       MyLocationLong: null,
       isLoading: true,
       isAuthenticated: false,
-      Name: ""
+      Name: "",
+
     }
 
     AsyncStorage.getItem(USER)
@@ -45,6 +47,8 @@ class Profile extends Component {
         let id = user.uid
         listenUserName(id, (Name) => {
 
+          //This sends action to redux to store for us
+          this.props.setUserName(Name)
 
           //Below Stores Name of User for future Reference
           AsyncStorage.setItem(USER, Name)
@@ -62,8 +66,11 @@ class Profile extends Component {
           MyLocationLat: position.coords.latitude,
           MyLocationLong: position.coords.longitude,
           error: null,
-          isLoading: false
+          isLoading: false,
+          Name: ""
+
         });
+
       },
       (error) => this.setState({ error: error.message }),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
@@ -77,15 +84,9 @@ class Profile extends Component {
       .then(() => this.props.navigation.navigate("SignedOut"))
   }
 
-  openSearchModal() {
-    RNGooglePlaces.openAutocompleteModal()
-      .then((place) => {
-        console.log(place);
-        // place represents user's selection from the
-        // suggestions and it is a simplified Google Place object.
-      })
-      .catch(error => console.log(error.message));  // error is a Javascript Error object
-  }
+
+
+
 
   onSearchPlace = () => {
     this.props.navigation.navigate("SearchPlace");
@@ -143,7 +144,9 @@ class Profile extends Component {
           <Body />
           <Right />
         </Header>
+
         <Text>{this.props.User.currentUserName}</Text>
+
         <Button
           buttonStyle={{ marginTop: 20 }}
           backgroundColor="#03A9F4"
@@ -190,10 +193,14 @@ const styles = StyleSheet.create({
   }
 
 })
-
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setUserName: (text) => { dispatch(setUserName(text)) }
+  };
+}
 const mapStateToProps = (state) => {
   const { User } = state
   return { User }
 };
 
-export default connect(mapStateToProps)(Profile);
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

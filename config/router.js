@@ -113,6 +113,7 @@ export const HomeStack = createDrawerNavigator({
 }, {
         initialRouteName: 'Home',
         drawerPosition: 'left',
+        drawerBackgroundColor: 'blue',
         contentComponent: DrawerContent,
         drawerOpenRoute: 'DrawerOpen',
         drawerCloseRoute: 'DrawerClose',
