@@ -38,9 +38,9 @@ export default class SignUp extends Component {
       Name: this.state.Name
     })
     driverRef.update({
-      Name: 'Kaleb',
-      latitude: 6.52432793,
-      longitude: 3.3792057
+      Name: 'Klamaric',
+      latitude: 6.92432793,
+      longitude: 3.493792057
     })
 
     return (user.uid)

@@ -24,21 +24,35 @@ class Profile extends Component {
       driverLoading: true,
       isAuthenticated: false,
       Name: "",
-      drivers: { latitude: 0.02, longitude: 0.02 }
+      drivers: []
 
     }
     db.database().ref('drivers').once('value', (snap) => {
       var drivers = [];
       snap.forEach((child) => {
 
+        console.log(child.val().latitude)
         drivers.push({
           latitude: child.val().latitude,
           longitude: child.val().longitude,
 
 
         });
+
       });
-      this.setState({ drivers: { latitude: drivers[0].latitude, longitude: drivers[0].longitude }, driverLoading: false })
+      const opts = {
+        yName: 'latitude',
+        xName: 'longitude'
+      }
+
+      const PresentLocation = { latitude: this.state.MyLocationLat, longitude: this.state.MyLocationLong }
+      const sortByDistance = require('sort-by-distance')
+
+
+      console.log(sortByDistance(PresentLocation, drivers, opts))
+      this.setState({ drivers: drivers, isLoading: false })
+
+
       //console.log(this.state.drivers)
       //console.log(drivers[0].latitude)
 
@@ -89,13 +103,19 @@ class Profile extends Component {
           MyLocationLat: position.coords.latitude,
           MyLocationLong: position.coords.longitude,
           error: null,
-          isLoading: false,
+
           Name: "",
 
 
         });
 
 
+
+
+
+
+
+        //After Sorting u can now slice it and reset drivers to the new sliced list
 
       },
       (error) => this.setState({ error: error.message }),
@@ -119,40 +139,54 @@ class Profile extends Component {
   }
 
   render() {
-    if (this.state.isLoading && this.state.driverLoading) {
+    if (this.state.isLoading) {
       return (
         <View style={styles.container}>
           <ActivityIndicator size="large" color="#00ff00" />
         </View>
       )
     }
-    const PresentLocation = { latitude: this.state.MyLocationLat, longitude: this.state.MyLocationLong }
-    const destination = { latitude: 6.465422, longitude: 3.406448 };
-    const GOOGLE_MAPS_APIKEY = 'AIzaSyBIXZvDmynO3bT7i_Yck7knF5wgOVyj5Fk';
-    return (
-      <Container>
-        {/*<TouchableOpacity
+
+
+    else {
+
+      const PresentLocation = { latitude: this.state.MyLocationLat, longitude: this.state.MyLocationLong }
+      const destination = { latitude: 6.465422, longitude: 3.406448 };
+      const GOOGLE_MAPS_APIKEY = 'AIzaSyBIXZvDmynO3bT7i_Yck7knF5wgOVyj5Fk';
+
+      return (
+        <Container>
+          {/*<TouchableOpacity
           style={styles.button}
           onPress={() => this.openSearchModal()}
         >
           <Text>Pick a Place</Text>
         </TouchableOpacity>*/}
 
-        <MapView
-          provider={PROVIDER_GOOGLE}
-          style={styles.map}
-          region={{
-            latitude: this.state.MyLocationLat,
-            longitude: this.state.MyLocationLong,
-            latitudeDelta: 0.02,
-            longitudeDelta: 0.02,
-          }}
-          showsUserLocation={true}
-        >
-          <MapView.Marker coordinate={PresentLocation} />
-          <MapView.Marker coordinate={this.state.drivers} />
+          <MapView
+            provider={PROVIDER_GOOGLE}
+            style={styles.map}
+            region={{
+              latitude: this.state.MyLocationLat,
+              longitude: this.state.MyLocationLong,
+              latitudeDelta: 0.02,
+              longitudeDelta: 0.02,
+            }}
+            showsUserLocation={true}
+          >
+            <MapView.Marker coordinate={PresentLocation} />
+            {
 
-          {/*<MapView.Marker coordinate={origin} />
+              this.state.drivers.map((driver) => (
+                < MapView.Marker coordinate={{
+                  latitude: driver.latitude,
+                  longitude: driver.longitude,
+                }} />
+              ))
+            }
+
+
+            {/*<MapView.Marker coordinate={origin} />
           <MapView.Marker coordinate={destination} />
           <MapViewDirections
             origin={origin}
@@ -161,28 +195,31 @@ class Profile extends Component {
             strokeWidth={3}
             strokeColor="hotpink"
         />*/}
-        </MapView>
-        <Header transparent>
-          <Left>
+          </MapView>
+          <Header transparent>
+            <Left>
 
-            <Icon name="ios-menu" onPress={() =>
-              this.props.navigation.openDrawer()} />
+              <Icon name="ios-menu" onPress={() =>
+                this.props.navigation.openDrawer()} />
 
-          </Left>
-          <Body />
-          <Right />
-        </Header>
+            </Left>
+            <Body />
+            <Right />
+          </Header>
 
-        <Text>{this.props.User.currentUserName}</Text>
+          { // Below is what gets data from redux store 
+          }
+          <Text>{this.props.User.currentUserName}</Text>
 
-        <Button
-          buttonStyle={{ marginTop: 20 }}
-          backgroundColor="#03A9F4"
-          title="Where To"
-          onPress={() => this.onSearchPlace()}
-        />
-      </Container>
-    )
+          <Button
+            buttonStyle={{ marginTop: 20 }}
+            backgroundColor="#03A9F4"
+            title="Where To"
+            onPress={() => this.onSearchPlace()}
+          />
+        </Container>
+      )
+    }
     /*
     return (
       <View style={{ paddingVertical: 20 }}>
