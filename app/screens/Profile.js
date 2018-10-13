@@ -102,6 +102,7 @@ class Profile extends Component {
         this.setState({
           MyLocationLat: position.coords.latitude,
           MyLocationLong: position.coords.longitude,
+
           error: null,
 
           Name: "",
@@ -181,7 +182,9 @@ class Profile extends Component {
                 < MapView.Marker coordinate={{
                   latitude: driver.latitude,
                   longitude: driver.longitude,
-                }} />
+                }}
+                  style={{ width: 10, height: 10 }}
+                  image={require('../images/car-marker3.png')} />
               ))
             }
 
@@ -209,7 +212,7 @@ class Profile extends Component {
 
           { // Below is what gets data from redux store 
           }
-          <Text>{this.props.User.currentUserName}</Text>
+          <Text style={{ color: 'blue' }}>{this.props.User.currentUserName}</Text>
 
           <Button
             buttonStyle={{ marginTop: 20 }}
