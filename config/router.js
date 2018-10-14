@@ -7,6 +7,7 @@ import SignUp from "../app/screens/SignUp";
 import Profile from "../app/screens/Profile";
 import BookRide from "../app/screens/BookRide";
 import SearchPlace from "../app/screens/SearchPlace";
+import ConnectingDriver from "../app/screens/ConnectingDriver";
 import MyProfile from "../app/screens/MyProfile";
 import MyNotificationsScreen from "../app/screens/MyNotificationsScreen";
 import ForgotPassword from "../app/screens/ForgotPassword";
@@ -63,13 +64,23 @@ export const MyApp = StackNavigator({
     BookRide: {
         screen: BookRide,
         navigationOptions: {
-            tabBarLabel: "Profile",
+            tabBarLabel: "Booking",
+            tabBarIcon: ({ tintColor }) => (
+                <FontAwesome name="user" size={30} color={tintColor} />
+            )
+        }
+    },
+    ConnectingDriver: {
+        screen: ConnectingDriver,
+        navigationOptions: {
+            tabBarLabel: "Driver",
             tabBarIcon: ({ tintColor }) => (
                 <FontAwesome name="user" size={30} color={tintColor} />
             )
         }
     }
 });
+
 export const GetUserName = () => AsyncStorage.getItem(USER)
 
 const DrawerContent = (props) => (

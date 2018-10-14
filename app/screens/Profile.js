@@ -44,13 +44,16 @@ class Profile extends Component {
         yName: 'latitude',
         xName: 'longitude'
       }
-
+      console.log('This is drivers')
+      console.log(drivers)
       const PresentLocation = { latitude: this.state.MyLocationLat, longitude: this.state.MyLocationLong }
       const sortByDistance = require('sort-by-distance')
 
 
-      console.log(sortByDistance(PresentLocation, drivers, opts))
-      this.setState({ drivers: drivers, isLoading: false })
+      const Newdrivers = sortByDistance(PresentLocation, drivers, opts)
+      console.log('This is sliced drivers')
+      console.log(Newdrivers.slice(0, 2))
+      this.setState({ drivers: Newdrivers.slice(0, 2), isLoading: false })
 
 
       //console.log(this.state.drivers)

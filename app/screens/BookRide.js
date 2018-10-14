@@ -6,6 +6,7 @@ import {
     AsyncStorage,
     Text,
     View,
+    Image,
     ScrollView,
     TouchableOpacity,
     ActivityIndicator
@@ -15,6 +16,7 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import { Container, Icon, Left, Header, Body, Right } from 'native-base';
 import Swiper from 'react-native-swiper';
+import { Button } from 'react-native-elements';
 
 export default class BookRide extends Component {
     static navigationOptions = { header: null }
@@ -28,7 +30,11 @@ export default class BookRide extends Component {
             gettingMyLocation: true,
             origin: { latitude: 0.02, longitude: 0.02 },
             concatOrigin: "",
-            concatDest: ""
+            concatDest: "",
+            carPrice: 0.00,
+            autoPrice: 0.00,
+            duration: '',
+            distance: 0.0
 
         }
 
@@ -56,12 +62,19 @@ export default class BookRide extends Component {
                 let destination = this.state.destination
                 let API_KEY = 'AIzaSyBIXZvDmynO3bT7i_Yck7knF5wgOVyj5Fk'
                 this.mergeLot(origin, destination);
+
                 fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?origins=${this.state.concatOrigin}&destinations=${this.state.concatDest}&key=${API_KEY}`)
                     .then(response => response.json())
                     .then(responseJson => {
-                        console.log(responseJson.rows.elements)
+                        console.log(responseJson)
+
+                        // After getting the distanceMatrix, we will now use it
+                        // to calculate the fare and then set price for auto and
+                        // car and then set duration and distance too
                         this.setState({
-                            isPlaceID: false
+                            isPlaceID: false,
+                            carPrice: 500,
+                            autoPrice: 300
                         })
                     })
                     .catch(error => console.log(error))
@@ -81,13 +94,37 @@ export default class BookRide extends Component {
         });
     }
 
+    onBookRide = (type, price) => {
+        this.setState({ BookedRide: true })
+
+        let user = db.auth().currentUser;
+        let requestDriver = db.database().ref('/ride-request').push();
+
+        requestDriver.update({
+            currentUser: user.uid,
+            origin: this.state.origin,
+            destination: this.state.destination,
+            type: type,
+            Fare: price,
+            duration: this.state.duration,
+            distance: this.state.distance
+        })
+
+        this.props.navigation.navigate("ConnectingDriver");
+
+
+    }
+
+
+
+
     componentDidMount() {
 
 
     }
     render() {
         if (this.state.isPlaceID && this.state.gettingMyLocation) {
-            console.log("Waiting")
+
             return (
 
                 <View style={styles.container}>
@@ -101,7 +138,7 @@ export default class BookRide extends Component {
 
         return (
             <View style={{ flex: 1, flexDirection: 'column' }}>
-                <View style={{ height: 450 }}>
+                <View style={{ height: 400 }}>
                     <MapView
                         provider={PROVIDER_GOOGLE}
                         style={styles.map}
@@ -125,13 +162,33 @@ export default class BookRide extends Component {
                         />
                     </MapView>
                 </View>
-                <View style={{ height: 250, backgroundColor: 'white' }}>
+                <View style={{ height: 300, backgroundColor: 'white' }}>
                     <Swiper style={styles.wrapper} showsButtons={true}>
                         <View style={styles.slide1}>
-                            <Text style={styles.text}>Car</Text>
+                            <Image style={styles.TransportImage}
+                                source={require('../images/car.jpg')} />
+                            <Text style={styles.text}>Naira:</Text>
+                            <Text style={styles.text}>{this.state.carPrice}</Text>
+                            <Button
+                                buttonStyle={{ marginTop: 20 }}
+                                backgroundColor="#03A9F4"
+                                title="Book Ride"
+                                onPress={() => this.onBookRide('car', this.state.carPrice)}
+                            />
+
+
                         </View>
                         <View style={styles.slide2}>
-                            <Text style={styles.text}>Auto</Text>
+                            <Image style={styles.TransportImage}
+                                source={require('../images/auto.jpg')} />
+                            <Text style={styles.text}>Naira:</Text>
+                            <Text style={styles.text}>{this.state.autoPrice}</Text>
+                            <Button
+                                buttonStyle={{ marginTop: 20 }}
+                                backgroundColor="#03A9F4"
+                                title="Book Ride"
+                                onPress={() => this.onBookRide('auto', this.state.autoPrice)}
+                            />
                         </View>
                         <View style={styles.slide3}>
                             <Text style={styles.text}>Bike</Text>
@@ -170,6 +227,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#92BBD9',
-    }
+    },
+    TransportImage: {
+        width: 100,
+        height: 100,
+        borderRadius: 75
+    },
 
 })
