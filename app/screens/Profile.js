@@ -11,6 +11,7 @@ import { Container, Icon, Left, Header, Body, Right } from 'native-base';
 import { connect } from 'react-redux';
 import { setUserName } from "../../UserReducer";
 import { listen4Drivers } from "../../config/database";
+import Spinner from 'react-native-spinkit';
 
 
 class Profile extends Component {
@@ -97,7 +98,7 @@ class Profile extends Component {
   }
 
   componentDidMount() {
-
+    // For some reasons, this function finishes before database listener in the constructor
     navigator.geolocation.getCurrentPosition(
       (position) => {
 
@@ -145,10 +146,18 @@ class Profile extends Component {
   render() {
     if (this.state.isLoading) {
       return (
-        <View style={styles.container}>
-          <ActivityIndicator size="large" color="#00ff00" />
-        </View>
-      )
+        <Spinner
+          isVisible={true}
+          size={50}
+          type={'Bounce'}
+          color={'#ffffff'}
+        />
+      );
+      /* return (
+         <View style={styles.container}>
+           <ActivityIndicator size="large" color="#00ff00" />
+         </View>
+       )*/
     }
 
 

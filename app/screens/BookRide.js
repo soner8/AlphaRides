@@ -11,12 +11,17 @@ import {
     TouchableOpacity,
     ActivityIndicator
 } from 'react-native';
+
+import geofire from 'geofire';
+
 import RNGooglePlaces from 'react-native-google-places';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import { Container, Icon, Left, Header, Body, Right } from 'native-base';
 import Swiper from 'react-native-swiper';
+import { db } from "../../config/MyFirebase";
 import { Button } from 'react-native-elements';
+import Spinner from 'react-native-spinkit';
 
 export default class BookRide extends Component {
     static navigationOptions = { header: null }
@@ -34,7 +39,8 @@ export default class BookRide extends Component {
             carPrice: 0.00,
             autoPrice: 0.00,
             duration: '',
-            distance: 0.0
+            distance: 0.0,
+            BookedRide: false
 
         }
 
@@ -95,22 +101,33 @@ export default class BookRide extends Component {
     }
 
     onBookRide = (type, price) => {
+        const { origin } = this.state
         this.setState({ BookedRide: true })
 
+        //Submit passenger PayLoad to Ride-Requests.
         let user = db.auth().currentUser;
-        let requestDriver = db.database().ref('/ride-request').push();
+        let requestDriver = db.database().ref('/ride-request')
+        const geofireRef = new geofire(requestDriver)
+        geofireRef.set(user.uid, [this.state.origin.latitude, this.state.origin.longitude])
+            .then(() => {
 
-        requestDriver.update({
-            currentUser: user.uid,
-            origin: this.state.origin,
-            destination: this.state.destination,
-            type: type,
-            Fare: price,
-            duration: this.state.duration,
-            distance: this.state.distance
-        })
+                requestDriver.child(user.uid).update({
+                    currentUser: user.uid,
+                    destination: this.state.destination,
+                    type: type,
+                    Fare: price,
+                    duration: this.state.duration,
+                    distance: this.state.distance,
+                    status: 'pending',
+                    accepted_by: null
 
-        this.props.navigation.navigate("ConnectingDriver");
+                })
+
+                this.props.navigation.navigate("ConnectingDriver", { origin });
+
+
+            })
+
 
 
     }
@@ -123,6 +140,24 @@ export default class BookRide extends Component {
 
     }
     render() {
+        // This below happens only when the user clicks book ride
+        if (this.state.BookedRide) {
+            return (
+                <Spinner
+                    isVisible={true}
+                    size={50}
+                    type={'Bounce'}
+                    color={'#ffffff'}
+                />
+            );
+
+            /*return (
+                <View>
+                    <ActivityIndicator size='small' color="#00ff00" />
+                </View>
+            );*/
+        }
+
         if (this.state.isPlaceID && this.state.gettingMyLocation) {
 
             return (

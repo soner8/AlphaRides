@@ -4,6 +4,7 @@ import { Card, Button, Input } from "react-native-elements";
 import { onSignIn, firstUser } from "../auth";
 import { db } from "../../config/MyFirebase";
 import Database from "../../config/database";
+import geofire from 'geofire';
 
 export default class SignUp extends Component {
 
@@ -32,16 +33,18 @@ export default class SignUp extends Component {
 
   SaveDbDetails = () => {
     let user = db.auth().currentUser;
-    let driverRef = db.database().ref('/drivers').push();
+    //let DriverId = '-LOgt93XjWGZx15IxJJA'
+
+    /*db.database.ref('user')
+      .child(user.uid)
+      .set({ Name: this.state.Name })*/
     let userName = "/user/" + user.uid + "/details";
     db.database().ref(userName).set({
       Name: this.state.Name
     })
-    driverRef.update({
-      Name: 'Panchem',
-      latitude: 6.92432793,
-      longitude: 3.493792057
-    })
+    //let Driver = db.database().ref("/DriversAvaliable")
+    //const geofireRef = new geofire(Driver)
+    //geofireRef.set(DriverId, [9.062032349610963, 7.391128392096082])
 
     return (user.uid)
 
