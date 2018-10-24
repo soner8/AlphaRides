@@ -6,6 +6,7 @@ import {
     AsyncStorage,
     Text,
     View,
+    Dimensions,
     Image,
     ScrollView,
     TouchableOpacity,
@@ -20,6 +21,9 @@ import Swiper from 'react-native-swiper';
 import { Button } from 'react-native-elements';
 import { db } from "../../config/MyFirebase";
 import Spinner from 'react-native-spinkit';
+import SlidingPanel from 'react-native-sliding-up-down-panels';
+
+const { width, height } = Dimensions.get('window');
 
 export default class ConnectingDriver extends Component {
     static navigationOptions = { header: null }
@@ -29,7 +33,8 @@ export default class ConnectingDriver extends Component {
 
             origin: this.props.navigation.state.params.origin,
             driverFound: false,
-            driverId: null
+            driverId: null,
+            driverName: ""
 
         }
         navigator.geolocation.getCurrentPosition(
@@ -76,6 +81,7 @@ export default class ConnectingDriver extends Component {
 
     componentDidMount() {
         let radius = 1
+        let user = db.auth().currentUser;
         const { driverFound } = this.state;
         getClosestDriver = () => {
 
@@ -94,6 +100,19 @@ export default class ConnectingDriver extends Component {
                         driverID: key,
                         location: location
                     })
+                    //Get the Name of the Driver
+                    driverAvailableRef = db.database().ref('DriversAvaliable').child(key)
+                    driverAvailableRef.once('value', (snap) => {
+                        this.setState({ driverName: snap.val().Name })
+                    })
+
+                    // Sending Notification to Driver using Driver ID key
+                    driverRef = db.database().ref('drivers').child(key)
+                    driverRef.child(user.uid).update({
+                        location: location,
+                        Name: 'Blaizet' //We will have to use user.Name later
+                    })
+
                 }
                 Geoquery.cancel()
             })
@@ -129,15 +148,57 @@ export default class ConnectingDriver extends Component {
             );*/
         }
         return (
-            <View>
-                <Text style={{ color: 'blue' }}>Base UNi</Text>
-                <Text style={{ color: 'blue' }}>{this.state.location}</Text>
-                <Text style={{ color: 'blue' }}>Perzzzzi</Text>
-                <Text style={{ color: 'blue' }}>Doye</Text>
-                <Text style={{ color: 'blue' }}>Klamaric</Text>
-                <Text style={{ color: 'blue' }}>{this.state.driverID}</Text>
+            <View style={styles.container}>
+                <View>
+                    <Text style={{ color: 'blue' }}>Base UNi</Text>
+                    <Text style={{ color: 'blue' }}>Got A Driver</Text>
+
+                </View>
+                <SlidingPanel
+                    headerLayoutHeight={100}
+                    headerLayout={() =>
+                        <View style={styles.headerLayoutStyle}>
+                            <Text style={styles.commonTextStyle}>{this.state.driverName}</Text>
+                        </View>
+                    }
+                    slidingPanelLayout={() =>
+                        <View style={styles.slidingPanelLayoutStyle}>
+                            <Text style={styles.commonTextStyle}>Drivers Location{this.state.location}</Text>
+                            <Text style={styles.commonTextStyle}>Drivers ID {this.state.driverID}</Text>
+                        </View>
+                    }
+                />
             </View>
         )
 
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    bodyViewStyle: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    headerLayoutStyle: {
+        width,
+        height: 100,
+        backgroundColor: 'orange',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    slidingPanelLayoutStyle: {
+        width,
+        height,
+        backgroundColor: '#7E52A0',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    commonTextStyle: {
+        color: 'white',
+        fontSize: 18,
+    },
+});
