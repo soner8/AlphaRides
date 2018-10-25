@@ -5,6 +5,7 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import UserReducer from './UserReducer';
 
+// Redux Store for User
 const store = createStore(UserReducer);
 
 
@@ -18,6 +19,8 @@ export default class App extends Component {
       signedIn: false,
       checkedSignIn: false
     };
+
+    // This function from our auth.js checks if this user if a FIRST TIME USER
     isFirstUser()
       .then(res => this.setState({
         signedIn: false,

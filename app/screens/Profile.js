@@ -28,8 +28,11 @@ class Profile extends Component {
       drivers: []
 
     }
+    // The function below gets all drivers from firebase
+
     db.database().ref('drivers').once('value', (snap) => {
       var drivers = [];
+
       snap.forEach((child) => {
 
         console.log(child.val().latitude)
@@ -45,8 +48,8 @@ class Profile extends Component {
         yName: 'latitude',
         xName: 'longitude'
       }
-      console.log('This is drivers')
-      console.log(drivers)
+
+
       const PresentLocation = { latitude: this.state.MyLocationLat, longitude: this.state.MyLocationLong }
       const sortByDistance = require('sort-by-distance')
 
@@ -57,8 +60,7 @@ class Profile extends Component {
       this.setState({ drivers: Newdrivers.slice(0, 2), isLoading: false })
 
 
-      //console.log(this.state.drivers)
-      //console.log(drivers[0].latitude)
+
 
 
     });
@@ -113,14 +115,6 @@ class Profile extends Component {
 
 
         });
-
-
-
-
-
-
-
-        //After Sorting u can now slice it and reset drivers to the new sliced list
 
       },
       (error) => this.setState({ error: error.message }),
@@ -186,6 +180,7 @@ class Profile extends Component {
               longitudeDelta: 0.02,
             }}
             showsUserLocation={true}
+
           >
             <MapView.Marker coordinate={PresentLocation} />
             {

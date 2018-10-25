@@ -72,7 +72,12 @@ export default class BookRide extends Component {
                 fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?origins=${this.state.concatOrigin}&destinations=${this.state.concatDest}&key=${API_KEY}`)
                     .then(response => response.json())
                     .then(responseJson => {
-                        console.log(responseJson)
+                        console.log(responseJson.rows)
+                        console.log(responseJson.rows[0])
+                        console.log(responseJson.rows[0].elements) // This is an array
+                        console.log(responseJson.rows[0].elements[0]) // Object
+                        console.log(responseJson.rows[0].elements[0].distance)
+                        console.log(responseJson.rows[0].elements[0].distance.text)
 
                         // After getting the distanceMatrix, we will now use it
                         // to calculate the fare and then set price for auto and
@@ -140,6 +145,9 @@ export default class BookRide extends Component {
 
     }
     render() {
+        const { origin, destination } = this.state;
+        const GOOGLE_MAPS_APIKEY = 'AIzaSyBIXZvDmynO3bT7i_Yck7knF5wgOVyj5Fk';
+
         // This below happens only when the user clicks book ride
         if (this.state.BookedRide) {
             return (
@@ -168,8 +176,7 @@ export default class BookRide extends Component {
             )
         }
 
-        const { origin, destination } = this.state;
-        const GOOGLE_MAPS_APIKEY = 'AIzaSyBIXZvDmynO3bT7i_Yck7knF5wgOVyj5Fk';
+
 
         return (
             <View style={{ flex: 1, flexDirection: 'column' }}>

@@ -15,6 +15,7 @@ export const firstUser = (Name) => AsyncStorage.multiSet([[FIRST_USER_KEY, "true
 
 
 
+// resolve to true if User is a First Time User of the App, else resolve to false
 export const isFirstUser = () => {
   return new Promise((resolve, reject) => {
     AsyncStorage.getItem(FIRST_USER_KEY)

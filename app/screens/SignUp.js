@@ -21,6 +21,7 @@ export default class SignUp extends Component {
     }
   }
 
+  // This function from our auth.js uses AsyncStorage to store FirstTime User
   AsyncStoreFirstUser = (Name) => {
 
     firstUser(Name)
@@ -58,6 +59,10 @@ export default class SignUp extends Component {
       return (user.uid);
     }*/
   }
+
+  // This function below uses firebase to create user with email and password
+  // And also it Saves User Info to Database including using AsyncStorage to
+  // to store Name
 
   onSignupPress = () => {
 

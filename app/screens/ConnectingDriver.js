@@ -34,9 +34,12 @@ export default class ConnectingDriver extends Component {
             origin: this.props.navigation.state.params.origin,
             driverFound: false,
             driverId: null,
-            driverName: ""
+            driverName: "",
+            driversLocation: null,
+            isMapReady: false
 
         }
+
         navigator.geolocation.getCurrentPosition(
             (position) => {
 
@@ -49,6 +52,7 @@ export default class ConnectingDriver extends Component {
             (error) => this.setState({ error: error.message }),
             { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
         );
+
 
         // Recursive function to get ClosestDriver
 
@@ -77,7 +81,15 @@ export default class ConnectingDriver extends Component {
         });*/
     }
 
+    driverLocation = (key) => {
+        driverRef = db.database().ref('DriversWorking').child(key)
 
+    }
+
+    onCancel = (key) => {
+        let user = db.auth().currentUser;
+        driverRef = db.database().ref("ride-requests").child(user.uid).remove()
+    }
 
     componentDidMount() {
         let radius = 1
@@ -98,16 +110,17 @@ export default class ConnectingDriver extends Component {
                     this.setState({
                         driverFound: true,
                         driverID: key,
-                        location: location
+                        driversLocation: location
                     })
+                    console.log(this.state.driversLocation)
                     //Get the Name of the Driver
-                    driverAvailableRef = db.database().ref('DriversAvaliable').child(key)
-                    driverAvailableRef.once('value', (snap) => {
+                    driverRef = db.database().ref('drivers').child(key)
+                    driverRef.once('value', (snap) => {
                         this.setState({ driverName: snap.val().Name })
                     })
 
                     // Sending Notification to Driver using Driver ID key
-                    driverRef = db.database().ref('drivers').child(key)
+
                     driverRef.child(user.uid).update({
                         location: location,
                         Name: 'Blaizet' //We will have to use user.Name later
@@ -129,8 +142,16 @@ export default class ConnectingDriver extends Component {
         getClosestDriver();
 
     }
+    onMapLayout = () => {
+        console.log("Map LayOut Ready")
+        this.setState({ isMapReady: true });
+    }
+
     render() {
-        const { driverFound } = this.state;
+        const { driverFound, origin, driversLocation } = this.state;
+        const GOOGLE_MAPS_APIKEY = 'AIzaSyBIXZvDmynO3bT7i_Yck7knF5wgOVyj5Fk';
+
+
         if (!driverFound) {
             return (
                 <Spinner
@@ -148,12 +169,47 @@ export default class ConnectingDriver extends Component {
             );*/
         }
         return (
-            <View style={styles.container}>
-                <View>
-                    <Text style={{ color: 'blue' }}>Base UNi</Text>
-                    <Text style={{ color: 'blue' }}>Got A Driver</Text>
 
-                </View>
+            <View style={styles.container}>
+                {/*MapView Must always be Wrapped in a Container else it wont show*/}
+                <MapView
+                    provider={PROVIDER_GOOGLE}
+                    style={styles.map}
+                    region={{
+                        latitude: origin.latitude,
+                        longitude: origin.longitude,
+                        latitudeDelta: 0.02,
+                        longitudeDelta: 0.02,
+                    }}
+                    showsUserLocation={true}
+                    onLayout={this.onMapLayout}
+                >
+                    <MapView.Marker coordinate={origin} />
+                    {
+                        this.state.driversLocation ?
+                            (
+                                <MapView.Marker
+                                    title='Driver'
+                                    coordinate={{ latitude: this.state.driversLocation[0], longitude: this.state.driversLocation[1] }} />
+
+                            )
+                            :
+                            (
+                                null
+                            )
+
+                    }
+                    <MapViewDirections
+                        origin={origin}
+                        destination={{ latitude: this.state.driversLocation[0], longitude: this.state.driversLocation[1] }}
+                        apikey={GOOGLE_MAPS_APIKEY}
+                        strokeWidth={3}
+                        strokeColor="hotpink"
+                    />
+
+                </MapView>
+
+
                 <SlidingPanel
                     headerLayoutHeight={100}
                     headerLayout={() =>
@@ -163,7 +219,7 @@ export default class ConnectingDriver extends Component {
                     }
                     slidingPanelLayout={() =>
                         <View style={styles.slidingPanelLayoutStyle}>
-                            <Text style={styles.commonTextStyle}>Drivers Location{this.state.location}</Text>
+                            <Text style={styles.commonTextStyle}>Drivers Location{this.state.driversLocation}</Text>
                             <Text style={styles.commonTextStyle}>Drivers ID {this.state.driverID}</Text>
                         </View>
                     }
@@ -175,6 +231,7 @@ export default class ConnectingDriver extends Component {
 }
 
 const styles = StyleSheet.create({
+    map: { ...StyleSheet.absoluteFillObject },
     container: {
         flex: 1,
     },
