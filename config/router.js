@@ -4,7 +4,7 @@ import { StackNavigator, SwitchNavigator, DrawerItems, createDrawerNavigator, He
 import HomeScreen from "../app/screens/HomeScreen";
 import SignIn from "../app/screens/SignIn";
 import SignUp from "../app/screens/SignUp";
-import Profile from "../app/screens/Profile";
+import Home from "../app/screens/Home";
 import BookRide from "../app/screens/BookRide";
 import SearchPlace from "../app/screens/SearchPlace";
 import ConnectingDriver from "../app/screens/ConnectingDriver";
@@ -45,8 +45,8 @@ export const SignedOut = StackNavigator({
 });
 
 export const MyApp = StackNavigator({
-    Profile: {
-        screen: Profile
+    Home: {
+        screen: Home
     },
 
     SearchPlace: {

@@ -28,7 +28,7 @@ export default class SignUp extends Component {
       .then(() => onSignIn())
       .then(() => {
         console.log('About to Navigate');
-        this.props.navigation.navigate("Profile")
+        this.props.navigation.navigate("Home")
       })
   }
 

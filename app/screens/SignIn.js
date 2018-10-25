@@ -22,7 +22,7 @@ export default class SignIn extends Component {
       .then(() => {
         let user = db.auth().currentUser;
         console.log(user.uid);
-        this.props.navigation.navigate("Profile")
+        this.props.navigation.navigate("Home")
         /*this.props.navigation.navigate("HomeScreen", { idd: user.uid })*/
       })
 

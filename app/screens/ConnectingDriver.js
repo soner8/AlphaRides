@@ -25,6 +25,10 @@ import SlidingPanel from 'react-native-sliding-up-down-panels';
 
 const { width, height } = Dimensions.get('window');
 
+
+
+
+
 export default class ConnectingDriver extends Component {
     static navigationOptions = { header: null }
     constructor(props) {
@@ -88,13 +92,20 @@ export default class ConnectingDriver extends Component {
 
     onCancel = (key) => {
         let user = db.auth().currentUser;
-        driverRef = db.database().ref("ride-requests").child(user.uid).remove()
+        db.database().ref("ride-requests").child(user.uid).remove()
+        driverRef = db.database().ref("driver").child(key)
+        driverRef.child(user.uid).remove()
+        // store cancelled rides for this user in database
+        //...
+        // Navigate to Home Screen After Cancelling Ride
+        this.props.navigation.navigate("Home")
     }
 
-    componentDidMount() {
+    GettingDriver() {
         let radius = 1
-        let user = db.auth().currentUser;
         const { driverFound } = this.state;
+        let user = db.auth().currentUser;
+
         getClosestDriver = () => {
 
             driverRef = db.database().ref('DriversAvaliable')
@@ -104,6 +115,8 @@ export default class ConnectingDriver extends Component {
                 radius: radius
             })
 
+
+
             Geoquery.on("key_entered", (key, location) => {
                 console.log(location);
                 if (!driverFound) {
@@ -112,6 +125,7 @@ export default class ConnectingDriver extends Component {
                         driverID: key,
                         driversLocation: location
                     })
+                    console.log("Got This Driver")
                     console.log(this.state.driversLocation)
                     //Get the Name of the Driver
                     driverRef = db.database().ref('drivers').child(key)
@@ -127,25 +141,47 @@ export default class ConnectingDriver extends Component {
                     })
 
                 }
-                Geoquery.cancel()
+
+                Geoquery.cancel();
+
             })
             Geoquery.on("ready", function () {
-                console.log("Done with Search")
+                console.log(radius)
                 if (!driverFound) {
                     radius++;
-                    getClosestDriver()
+                    getClosestDriver();
                 }
+
             })
+        }
+        getClosestDriver();
+    }
+
+    // Listen if Driver Cancels
+    listenDriver(myRef) {
+        myRef.on('value', (snap) => {
+
+        })
+    }
+
+    componentDidMount() {
+        this.GettingDriver();
+
+        if (this.state.driverId) {
+            console.log('Available')
+            console.log(this.state.driverId)
+            //this.listenDriver()
         }
 
 
-        getClosestDriver();
-
     }
+
     onMapLayout = () => {
         console.log("Map LayOut Ready")
         this.setState({ isMapReady: true });
     }
+
+
 
     render() {
         const { driverFound, origin, driversLocation } = this.state;
