@@ -40,7 +40,8 @@ export default class BookRide extends Component {
             autoPrice: 0.00,
             duration: '',
             distance: 0.0,
-            BookedRide: false
+            BookedRide: false,
+            NewDestination: null
 
         }
 
@@ -59,26 +60,26 @@ export default class BookRide extends Component {
         RNGooglePlaces.lookUpPlaceByID(this.state.destination)
             .then((result) => {
                 this.setState({
-                    destination: { latitude: result.latitude, longitude: result.longitude },
+                    NewDestination: { latitude: result.latitude, longitude: result.longitude },
 
                 })
             })
             .then(() => {
                 let origin = this.state.origin
-                let destination = this.state.destination
+                let destination = this.state.NewDestination
                 let API_KEY = 'AIzaSyBIXZvDmynO3bT7i_Yck7knF5wgOVyj5Fk'
                 this.mergeLot(origin, destination);
 
                 fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?origins=${this.state.concatOrigin}&destinations=${this.state.concatDest}&key=${API_KEY}`)
                     .then(response => response.json())
                     .then(responseJson => {
-                        console.log(responseJson.rows)
-                        console.log(responseJson.rows[0])
-                        console.log(responseJson.rows[0].elements) // This is an array
-                        console.log(responseJson.rows[0].elements[0]) // Object
+                        console.log(responseJson.rows[0].elements[0].status) // This gives us the status "OK"
                         console.log(responseJson.rows[0].elements[0].distance)
-                        console.log(responseJson.rows[0].elements[0].distance.text)
-
+                        console.log(responseJson.rows[0].elements[0].duration)
+                        console.log(responseJson.rows[0].elements[0].distance.text) // This gives us the distance in KM e.g "4.1 km"
+                        console.log(responseJson.rows[0].elements[0].duration.text) // This gives us the the duration time e.g "15 mins"
+                        console.log(responseJson.rows[0].elements[0].distance.value) // This gives us the distance in  int e.g "4.1 km" will now be 4144
+                        console.log(responseJson.rows[0].elements[0].duration.value) // This gives us the the duration seconds int e.g "15 mins" will now 926
                         // After getting the distanceMatrix, we will now use it
                         // to calculate the fare and then set price for auto and
                         // car and then set duration and distance too
@@ -112,13 +113,14 @@ export default class BookRide extends Component {
         //Submit passenger PayLoad to Ride-Requests.
         let user = db.auth().currentUser;
         let requestDriver = db.database().ref('/ride-request')
+        let RideHistoryRef = db.database().ref('/ride-history')
         const geofireRef = new geofire(requestDriver)
         geofireRef.set(user.uid, [this.state.origin.latitude, this.state.origin.longitude])
             .then(() => {
 
                 requestDriver.child(user.uid).update({
                     currentUser: user.uid,
-                    destination: this.state.destination,
+                    destination: this.state.NewDestination,
                     type: type,
                     Fare: price,
                     duration: this.state.duration,
@@ -128,9 +130,29 @@ export default class BookRide extends Component {
 
                 })
 
+
+
+
+            })
+            .then(() => {
+                let driversWorkingRef = db.database().ref('/DriversWorking')
+                const geofireWorking = new geofire(driversWorkingRef)
+                geofireWorking.set('-LO_9z6jI1NQBh9e9oVi', [9.062032349610963, 7.391128392096082])
+            })
+            .then(() => {
+                console.log('Hello')
+                RideHistoryRef.child(user.uid).push().update({
+                    currentUser: user.uid,
+                    destination: this.state.NewDestination,
+                    type: type,
+                    Fare: price,
+                    duration: this.state.duration,
+                    distance: this.state.distance,
+                    status: 'pending',
+                    accepted_by: null
+
+                })
                 this.props.navigation.navigate("ConnectingDriver", { origin });
-
-
             })
 
 
@@ -194,10 +216,23 @@ export default class BookRide extends Component {
                     >
 
                         <MapView.Marker coordinate={origin} />
-                        <MapView.Marker coordinate={destination} />
+                        {
+                            this.state.NewDestination ?
+                                (
+                                    <MapView.Marker
+                                        title='Driver'
+                                        coordinate={this.state.NewDestination} />
+
+                                )
+                                :
+                                (
+                                    null
+                                )
+
+                        }
                         <MapViewDirections
                             origin={origin}
-                            destination={destination}
+                            destination={this.state.NewDestination}
                             apikey={GOOGLE_MAPS_APIKEY}
                             strokeWidth={3}
                             strokeColor="hotpink"

@@ -91,9 +91,17 @@ export default class ConnectingDriver extends Component {
     }
 
     onCancel = (key) => {
+        console.log(key)
         let user = db.auth().currentUser;
-        db.database().ref("ride-requests").child(user.uid).remove()
-        driverRef = db.database().ref("driver").child(key)
+        // Update status of Ride-History to cancelled
+        let ride = db.database().ref("ride-request").child(user.uid)
+
+        //We need to stop the listener before removing the child else it will result in an error
+        ride.off()
+
+        ride.remove()
+
+        driverRef = db.database().ref("drivers").child(key)
         driverRef.child(user.uid).remove()
         // store cancelled rides for this user in database
         //...
@@ -101,10 +109,47 @@ export default class ConnectingDriver extends Component {
         this.props.navigation.navigate("Home")
     }
 
+    // Listen Drivers Location or If Driver Cancels
+    listenDriver(key, userID) {
+        let myRef = db.database().ref('ride-request').child(userID)
+        // We should Know that if 'DriverWorking has not been created by driver, this listener will throw an error
+        let driverRef = db.database().ref('DriversWorking')
+        const geofireRef = new geofire(driverRef)
+        myRef.on('value', (snap) => {
+            //When driver cancels, set state which forces re-ender
+            // Call this.GettingDriver()
+            if (snap.val().status == 'cancelled') {
+                console.log("cancelled by driver")
+                this.setState({ driverFound: false })
+                myRef.off('value');
+                this.GettingDriver()
+            }
+
+            if (snap.val().status == 'accepted') {
+                console.log("Got accepted")
+
+                //Use Geofire to Track Location of Driver and Update driversLocation State
+                geofireRef.get(key)
+                    .then((location) => {
+                        this.setState({ driversLocation: location })
+                    })
+
+            }
+
+        })
+    }
+
+
     GettingDriver() {
         let radius = 1
         const { driverFound } = this.state;
         let user = db.auth().currentUser;
+        // We have to ensure status of ride-request of passenger is pending if
+        // driver cancels ride and this function is called again.
+        // Normally if ride-request of passenger remains cancelled, the listener
+        // will keep calling this function
+        let myRef = db.database().ref('ride-request').child(user.uid)
+        myRef.update({ status: 'pending' })
 
         getClosestDriver = () => {
 
@@ -120,11 +165,7 @@ export default class ConnectingDriver extends Component {
             Geoquery.on("key_entered", (key, location) => {
                 console.log(location);
                 if (!driverFound) {
-                    this.setState({
-                        driverFound: true,
-                        driverID: key,
-                        driversLocation: location
-                    })
+
                     console.log("Got This Driver")
                     console.log(this.state.driversLocation)
                     //Get the Name of the Driver
@@ -137,16 +178,25 @@ export default class ConnectingDriver extends Component {
 
                     driverRef.child(user.uid).update({
                         location: location,
-                        Name: 'Blaizet' //We will have to use user.Name later
+                        Name: 'Blaizet', //We will have to use user.Name later
+                        status: 'pending'
                     })
+
+                    this.setState({
+                        driverFound: true,
+                        driverId: key,
+                        driversLocation: location
+                    })
+                    //Now call function to listen if driver cancels
 
                 }
 
                 Geoquery.cancel();
+                this.listenDriver(key, user.uid)
 
             })
+
             Geoquery.on("ready", function () {
-                console.log(radius)
                 if (!driverFound) {
                     radius++;
                     getClosestDriver();
@@ -157,12 +207,6 @@ export default class ConnectingDriver extends Component {
         getClosestDriver();
     }
 
-    // Listen if Driver Cancels
-    listenDriver(myRef) {
-        myRef.on('value', (snap) => {
-
-        })
-    }
 
     componentDidMount() {
         this.GettingDriver();
@@ -256,7 +300,13 @@ export default class ConnectingDriver extends Component {
                     slidingPanelLayout={() =>
                         <View style={styles.slidingPanelLayoutStyle}>
                             <Text style={styles.commonTextStyle}>Drivers Location{this.state.driversLocation}</Text>
-                            <Text style={styles.commonTextStyle}>Drivers ID {this.state.driverID}</Text>
+                            <Text style={styles.commonTextStyle}>Drivers ID {this.state.driverId}</Text>
+                            <Button
+                                buttonStyle={{ marginTop: 20 }}
+                                backgroundColor="#03A9F4"
+                                title="Cancel Ride"
+                                onPress={() => this.onCancel(this.state.driverId)}
+                            />
                         </View>
                     }
                 />
