@@ -106,7 +106,7 @@ export default class ConnectingDriver extends Component {
         // store cancelled rides for this user in database
         //...
         // Navigate to Home Screen After Cancelling Ride
-        this.props.navigation.navigate("Home")
+        this.props.navigation.navigate("Main")
     }
 
     // Listen Drivers Location or If Driver Cancels

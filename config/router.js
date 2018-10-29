@@ -45,7 +45,7 @@ export const SignedOut = StackNavigator({
 });
 
 export const MyApp = StackNavigator({
-    Home: {
+    Main: {
         screen: Home
     },
 
@@ -84,11 +84,14 @@ export const MyApp = StackNavigator({
 export const GetUserName = () => AsyncStorage.getItem(USER)
 
 const DrawerContent = (props) => (
+
     <Container>
         <Header style={{ height: 200 }}>
             <Body>
                 <Image style={styles.drawerImage}
                     source={require('../app/images/user.png')} />
+                
+
             </Body>
         </Header>
         <Content>
@@ -132,22 +135,23 @@ export const HomeStack = createDrawerNavigator({
 
     });
 
+
+// Below function will route to Drawer if signedIn is true else SignedOut
+// So how will we pass params to drawer??
 export const createRootNavigator = (signedIn = false) => {
     return SwitchNavigator(
         {
-            HomeStack: {
+            Drawer: {
                 screen: HomeStack
             },
-            MyApp: {
-                screen: MyApp
-            },
+
             SignedOut: {
                 screen: SignedOut
             }
 
         },
         {
-            initialRouteName: signedIn ? "HomeStack" : "SignedOut"
+            initialRouteName: signedIn ? "Drawer" : "SignedOut"
         }
     );
 };
@@ -157,12 +161,10 @@ export const NewUserRootNavigator = (val = true) => {
         NewUser: {
             screen: NewUser
         },
-        HomeStack: {
+        Drawer: {
             screen: HomeStack
         },
-        MyApp: {
-            screen: MyApp
-        },
+
         SignedOut: {
             screen: SignedOut
         }
@@ -171,7 +173,7 @@ export const NewUserRootNavigator = (val = true) => {
     },
         {
 
-            initialRouteName: val ? "NewUser" : "HomeStack"
+            initialRouteName: val ? "NewUser" : "Drawer"
         }
     );
 };

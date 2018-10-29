@@ -71,22 +71,35 @@ export default class BookRide extends Component {
                 this.mergeLot(origin, destination);
 
                 fetch(`https://maps.googleapis.com/maps/api/distancematrix/json?origins=${this.state.concatOrigin}&destinations=${this.state.concatDest}&key=${API_KEY}`)
-                    .then(response => response.json())
+                    .then(response =>
+                        response.json())
                     .then(responseJson => {
-                        console.log(responseJson.rows[0].elements[0].status) // This gives us the status "OK"
-                        console.log(responseJson.rows[0].elements[0].distance)
-                        console.log(responseJson.rows[0].elements[0].duration)
-                        console.log(responseJson.rows[0].elements[0].distance.text) // This gives us the distance in KM e.g "4.1 km"
-                        console.log(responseJson.rows[0].elements[0].duration.text) // This gives us the the duration time e.g "15 mins"
-                        console.log(responseJson.rows[0].elements[0].distance.value) // This gives us the distance in  int e.g "4.1 km" will now be 4144
-                        console.log(responseJson.rows[0].elements[0].duration.value) // This gives us the the duration seconds int e.g "15 mins" will now 926
                         // After getting the distanceMatrix, we will now use it
                         // to calculate the fare and then set price for auto and
                         // car and then set duration and distance too
+                        console.log(responseJson)
+                        console.log(responseJson.rows)
+                        console.log(responseJson.rows[0])
+                        console.log(responseJson.rows[0].elements)
+                        console.log(responseJson.rows[0].elements[0].distance)
+                        console.log(responseJson.rows[0].elements[0].distance.text)
+
+                        let dsKm = responseJson.rows[0].elements[0].distance.text
+                        let dsM = responseJson.rows[0].elements[0].distance.value
+                        let duration = responseJson.rows[0].elements[0].duration.text
+                        let CarPricePerMetre = 0.12065637
+                        let AutoPricePerMetre = 0.07239382
+                        let CarPrice = CarPricePerMetre * dsM
+                        let AutoPrice = AutoPricePerMetre * dsM
+                        console.log(CarPrice)
+                        console.log(AutoPrice)
+                        console.log('Let see what happens')
                         this.setState({
+                            duration: duration,
+                            distance: dsKm,
                             isPlaceID: false,
-                            carPrice: 500,
-                            autoPrice: 300
+                            carPrice: CarPrice,
+                            autoPrice: AutoPrice
                         })
                     })
                     .catch(error => console.log(error))
@@ -134,11 +147,7 @@ export default class BookRide extends Component {
 
 
             })
-            .then(() => {
-                let driversWorkingRef = db.database().ref('/DriversWorking')
-                const geofireWorking = new geofire(driversWorkingRef)
-                geofireWorking.set('-LO_9z6jI1NQBh9e9oVi', [9.062032349610963, 7.391128392096082])
-            })
+
             .then(() => {
                 console.log('Hello')
                 RideHistoryRef.child(user.uid).push().update({
