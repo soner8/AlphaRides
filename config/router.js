@@ -14,6 +14,7 @@ import ForgotPassword from "../app/screens/ForgotPassword";
 import { USER } from "../app/auth";
 import MaterialIcons from "react-native-vector-icons";
 import { Container, Icon, Left, Content, Header, Body, Right } from 'native-base';
+import DrawerComponent from './DrawerContent'
 
 export const NewUser = StackNavigator({
     SignUp: {
@@ -83,6 +84,7 @@ export const MyApp = StackNavigator({
 
 export const GetUserName = () => AsyncStorage.getItem(USER)
 
+{/*
 const DrawerContent = (props) => (
 
     <Container>
@@ -90,7 +92,7 @@ const DrawerContent = (props) => (
             <Body>
                 <Image style={styles.drawerImage}
                     source={require('../app/images/user.png')} />
-                
+
 
             </Body>
         </Header>
@@ -100,6 +102,7 @@ const DrawerContent = (props) => (
         </Content>
     </Container>
 );
+*/}
 
 
 
@@ -128,7 +131,7 @@ export const HomeStack = createDrawerNavigator({
         initialRouteName: 'Home',
         drawerPosition: 'left',
         drawerBackgroundColor: 'blue',
-        contentComponent: DrawerContent,
+        contentComponent: DrawerComponent,
         drawerOpenRoute: 'DrawerOpen',
         drawerCloseRoute: 'DrawerClose',
         drawerToggleRoute: 'DrawerToggle'
