@@ -77,23 +77,17 @@ export default class BookRide extends Component {
                         // After getting the distanceMatrix, we will now use it
                         // to calculate the fare and then set price for auto and
                         // car and then set duration and distance too
-                        console.log(responseJson)
-                        console.log(responseJson.rows)
-                        console.log(responseJson.rows[0])
-                        console.log(responseJson.rows[0].elements)
-                        console.log(responseJson.rows[0].elements[0].distance)
-                        console.log(responseJson.rows[0].elements[0].distance.text)
 
+                        console.log(responseJson)
                         let dsKm = responseJson.rows[0].elements[0].distance.text
                         let dsM = responseJson.rows[0].elements[0].distance.value
                         let duration = responseJson.rows[0].elements[0].duration.text
                         let CarPricePerMetre = 0.12065637
                         let AutoPricePerMetre = 0.07239382
-                        let CarPrice = CarPricePerMetre * dsM
-                        let AutoPrice = AutoPricePerMetre * dsM
-                        console.log(CarPrice)
-                        console.log(AutoPrice)
-                        console.log('Let see what happens')
+
+                        let CarPrice = Math.round(CarPricePerMetre * dsM)
+                        let AutoPrice = Math.round(AutoPricePerMetre * dsM)
+
                         this.setState({
                             duration: duration,
                             distance: dsKm,
