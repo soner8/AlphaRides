@@ -84,29 +84,6 @@ export const MyApp = StackNavigator({
 
 export const GetUserName = () => AsyncStorage.getItem(USER)
 
-{/*
-const DrawerContent = (props) => (
-
-    <Container>
-        <Header style={{ height: 200 }}>
-            <Body>
-                <Image style={styles.drawerImage}
-                    source={require('../app/images/user.png')} />
-
-
-            </Body>
-        </Header>
-        <Content>
-
-            <DrawerItems {...props} />
-        </Content>
-    </Container>
-);
-*/}
-
-
-
-
 export const HomeStack = createDrawerNavigator({
     /*HomeScreen: {
          screen: HomeScreen,

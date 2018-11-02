@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from "react-native";
+import { View, ActivityIndicator } from "react-native";
 import { Card, Button, Input } from "react-native-elements";
 import { onSignIn } from "../auth";
 import { db } from "../../config/MyFirebase";
@@ -22,11 +22,14 @@ export default class SignIn extends Component {
       .then(() => {
         let user = db.auth().currentUser;
         console.log(user.uid);
-        this.props.navigation.navigate("Home")
+        this.props.navigation.navigate("Drawer")
         /*this.props.navigation.navigate("HomeScreen", { idd: user.uid })*/
       })
 
-      .catch((error) => console.log("No Authentication"))
+      .catch((error) =>
+        /// We should Provide a way to tell user if this failed to authenticate
+        /// instead of constantly loading the activity indicator
+        console.log("No Authentication"))
   }
 
   render() {

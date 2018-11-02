@@ -26,6 +26,7 @@
     "react-navigation": "^2.5.3",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
+    "redux-persist": "^5.10.0",
     "rn-fetch-blob": "^0.10.12",
     "sort-by-distance": "^1.0.1"
   },
