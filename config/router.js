@@ -104,7 +104,8 @@ export const HomeStack = createDrawerNavigator({
         screen: MyNotificationsScreen
     }
 
-}, {
+},
+    {
         initialRouteName: 'Home',
         drawerPosition: 'left',
         drawerBackgroundColor: 'blue',
@@ -116,11 +117,25 @@ export const HomeStack = createDrawerNavigator({
     });
 
 
+const Route = (firstUser, signedIn) => {
+    if (firstUser) {
+        return ('NewUser')
+    }
+    if (signedIn) {
+        return ('Drawer')
+    }
+    return ('SignedOut')
+
+}
+
 // Below function will route to Drawer if signedIn is true else SignedOut
-// So how will we pass params to drawer??
-export const createRootNavigator = (signedIn = false) => {
+// It will also route to NewUser if its a first time user
+export const createRootNavigator = (firstTimeUser, signedIn) => {
     return SwitchNavigator(
         {
+            NewUser: {
+                screen: NewUser
+            },
             Drawer: {
                 screen: HomeStack
             },
@@ -131,34 +146,7 @@ export const createRootNavigator = (signedIn = false) => {
 
         },
         {
-            initialRouteName: signedIn ? "Drawer" : "SignedOut"
-        }
-    );
-};
-
-// Lets see if we can create a function to give us the initial RouteName 
-// based on what we get from async storage in our App.js
-// So initialRouteName will be set to a function() which will return a RouteName
-// It is only then we can connect our Navigator State to redux persist.
-
-export const NewUserRootNavigator = (val = true) => {
-    return SwitchNavigator({
-        NewUser: {
-            screen: NewUser
-        },
-        Drawer: {
-            screen: HomeStack
-        },
-
-        SignedOut: {
-            screen: SignedOut
-        }
-
-
-    },
-        {
-
-            initialRouteName: val ? "NewUser" : "Drawer"
+            initialRouteName: Route(firstTimeUser, signedIn)
         }
     );
 };

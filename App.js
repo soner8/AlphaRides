@@ -47,16 +47,10 @@ export default class App extends Component {
       //OR
       // return <ActivityIndicator />
     }
-    if (firstTimeUser) {
-      const NewUserLayout = NewUserRootNavigator();
-      return (
-        <Provider store={store}>
-          <NewUserLayout />
-        </Provider>
-      )
-    }
+
+
     // Sends signedIn state as parameter to Navigator in router.js file
-    const Layout = createRootNavigator(signedIn);
+    const Layout = createRootNavigator(firstTimeUser, signedIn);
     return (
       <Provider store={store}>
         <Layout />
