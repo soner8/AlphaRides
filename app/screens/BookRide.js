@@ -22,6 +22,7 @@ import Swiper from 'react-native-swiper';
 import { db } from "../../config/MyFirebase";
 import { Button } from 'react-native-elements';
 import Spinner from 'react-native-spinkit';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 export default class BookRide extends Component {
     static navigationOptions = { header: null }
@@ -33,7 +34,7 @@ export default class BookRide extends Component {
             isPlaceID: true,
             error: '',
             gettingMyLocation: true,
-            origin: { latitude: 0.02, longitude: 0.02 },
+            origin: { latitude: 5.5544, longitude: 5.7932 },
             concatOrigin: "",
             concatDest: "",
             carPrice: 0.00,
@@ -41,7 +42,8 @@ export default class BookRide extends Component {
             duration: '',
             distance: 0.0,
             BookedRide: false,
-            NewDestination: null
+            NewDestination: null,
+            done: false
 
         }
 
@@ -54,7 +56,7 @@ export default class BookRide extends Component {
                 });
             },
             (error) => this.setState({ error: error.message }),
-            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+            { enableHighAccuracy: true, timeout: 20000 },
         );
 
         RNGooglePlaces.lookUpPlaceByID(this.state.destination)
@@ -79,6 +81,10 @@ export default class BookRide extends Component {
                         // car and then set duration and distance too
 
                         console.log(responseJson)
+
+
+                        // Temporarily set state so map will show because unpaid distance matrix api will give an error
+                        this.setState({ done: true })
                         let dsKm = responseJson.rows[0].elements[0].distance.text
                         let dsM = responseJson.rows[0].elements[0].distance.value
                         let duration = responseJson.rows[0].elements[0].duration.text
@@ -88,13 +94,20 @@ export default class BookRide extends Component {
                         let CarPrice = Math.round(CarPricePerMetre * dsM)
                         let AutoPrice = Math.round(AutoPricePerMetre * dsM)
 
+                        console.log(dsKm);
+
+                        // Setting state will only work here if the above doesnt give an error
                         this.setState({
                             duration: duration,
                             distance: dsKm,
+                            done: true,
                             isPlaceID: false,
+                            gettingMyLocation: false,
                             carPrice: CarPrice,
                             autoPrice: AutoPrice
                         })
+
+
                     })
                     .catch(error => console.log(error))
             })
@@ -177,8 +190,9 @@ export default class BookRide extends Component {
         if (this.state.BookedRide) {
             return (
                 <Spinner
+                    style={{ marginBottom: 50 }}
                     isVisible={true}
-                    size={50}
+                    size={100}
                     type={'Bounce'}
                     color={'#ffffff'}
                 />
@@ -191,13 +205,19 @@ export default class BookRide extends Component {
             );*/
         }
 
-        if (this.state.isPlaceID && this.state.gettingMyLocation) {
+        if (!this.state.done) {
+            console.log(this.state.done);
+            console.log("Itel on BookRide");
 
             return (
 
-                <View style={styles.container}>
-                    <ActivityIndicator size="small" color="#00ff00" />
-                </View>
+                <Spinner
+                    style={{ marginBottom: 50 }}
+                    isVisible={true}
+                    size={100}
+                    type={'Bounce'}
+                    color={'#ffffff'}
+                />
             )
         }
 
@@ -205,7 +225,7 @@ export default class BookRide extends Component {
 
         return (
             <View style={{ flex: 1, flexDirection: 'column' }}>
-                <View style={{ height: 400 }}>
+                <View style={{ height: hp('60%') }}>
                     <MapView
                         provider={PROVIDER_GOOGLE}
                         style={styles.map}
@@ -242,16 +262,16 @@ export default class BookRide extends Component {
                         />
                     </MapView>
                 </View>
-                <View style={{ height: 300, backgroundColor: 'white' }}>
-                    <Swiper style={styles.wrapper} showsButtons={true}>
+                <View style={{ height: hp('40%') }}>
+                    <Swiper style={styles.wrapper} showsButtons={false}>
                         <View style={styles.slide1}>
                             <Image style={styles.TransportImage}
                                 source={require('../images/car.jpg')} />
-                            <Text style={styles.text}>Naira:</Text>
+                            <Text style={styles.text}>&#8358;</Text>
                             <Text style={styles.text}>{this.state.carPrice}</Text>
                             <Button
-                                buttonStyle={{ marginTop: 20 }}
-                                backgroundColor="#03A9F4"
+                                buttonStyle={{ marginTop: 10 }}
+                                backgroundColor="black"
                                 title="Book Ride"
                                 onPress={() => this.onBookRide('car', this.state.carPrice)}
                             />
@@ -261,17 +281,14 @@ export default class BookRide extends Component {
                         <View style={styles.slide2}>
                             <Image style={styles.TransportImage}
                                 source={require('../images/auto.jpg')} />
-                            <Text style={styles.text}>Naira:</Text>
+                            <Text style={styles.text}>&#8358;</Text>
                             <Text style={styles.text}>{this.state.autoPrice}</Text>
                             <Button
-                                buttonStyle={{ marginTop: 20 }}
+                                buttonStyle={{ marginTop: 10 }}
                                 backgroundColor="#03A9F4"
                                 title="Book Ride"
                                 onPress={() => this.onBookRide('auto', this.state.autoPrice)}
                             />
-                        </View>
-                        <View style={styles.slide3}>
-                            <Text style={styles.text}>Bike</Text>
                         </View>
                     </Swiper>
                 </View>
@@ -290,27 +307,27 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         padding: 10
     },
+    text: {
+        color: 'white'
+    },
+
     slide1: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#9DD6EB',
+        backgroundColor: 'rgba(0,0,0, 0.9)',
     },
     slide2: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#97CAE5',
+        backgroundColor: 'rgba(0,0,0, 0.9)',
     },
-    slide3: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#92BBD9',
-    },
+
     TransportImage: {
-        width: 100,
+        marginTop: 5,
         height: 100,
+        width: 100,
         borderRadius: 75
     },
 

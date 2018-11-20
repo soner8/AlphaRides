@@ -34,12 +34,14 @@ export default class SearchPlace extends Component {
         //the route directions. So we navigate to that map
 
         let placeID = location.placeID
+
         this.props.navigation.navigate("BookRide", { placeID });
 
     }
 
     openSearchModal(data) {
         // This fucntion gives us autocomplete list when we seacrh for places
+
         RNGooglePlaces.getAutocompletePredictions(data)
             .then((place) => {
                 this.setState({
@@ -62,29 +64,33 @@ export default class SearchPlace extends Component {
             >
               <Text>Pick a Place</Text>
             </TouchableOpacity>*/}
-                <SearchBar
-                    platform="android"
-                    value={place}
-                    onChangeText={(place) => {
-                        this.setState({ place });
-                        this.openSearchModal(place)
-                    }}
+                <View style={styles.body}>
+                    <SearchBar
 
-                    placeholder='Search Place' />
-                {
-                    this.state.results ?
-                        <FlatList
-                            data={this.state.results}
-                            renderItem={({ item }) =>
-                                <TouchableOpacity onPress={() => this.onLocation(item)}>
-                                    <Text style={styles.item}>{item.fullText}</Text>
-                                </TouchableOpacity>
-                            }
-                        />
-                        : (
-                            <Text>Loading....</Text>
-                        )
-                }
+
+                        platform="android"
+                        value={place}
+                        onChangeText={(place) => {
+                            this.setState({ place });
+                            this.openSearchModal(place)
+                        }}
+
+                        placeholder='Search Place' />
+                    {
+                        this.state.results ?
+                            <FlatList
+                                data={this.state.results}
+                                renderItem={({ item }) =>
+                                    <TouchableOpacity onPress={() => this.onLocation(item)}>
+                                        <Text style={styles.item}>{item.fullText}</Text>
+                                    </TouchableOpacity>
+                                }
+                            />
+                            : (
+                                <Text>Loading....</Text>
+                            )
+                    }
+                </View>
             </View>
         );
     }
@@ -92,9 +98,18 @@ export default class SearchPlace extends Component {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
+
+    },
+    /*container: {
         borderRadius: 4,
         borderWidth: 0.5,
         borderColor: '#d6d7da',
+    },*/
+    body: {
+        flex: 1,
+        paddingTop: 20,
+        paddingHorizontal: 10
     },
     button: {
         backgroundColor: '#DDDDDD',

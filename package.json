@@ -19,6 +19,7 @@
     "react-native-image-crop-picker": "^0.20.3",
     "react-native-maps": "^0.21.0",
     "react-native-maps-directions": "^1.6.0",
+    "react-native-responsive-screen": "^1.1.10",
     "react-native-sliding-up-down-panels": "^1.0.0",
     "react-native-spinkit": "^1.1.1",
     "react-native-swiper": "^1.5.13",

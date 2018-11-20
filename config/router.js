@@ -136,6 +136,11 @@ export const createRootNavigator = (signedIn = false) => {
     );
 };
 
+// Lets see if we can create a function to give us the initial RouteName 
+// based on what we get from async storage in our App.js
+// So initialRouteName will be set to a function() which will return a RouteName
+// It is only then we can connect our Navigator State to redux persist.
+
 export const NewUserRootNavigator = (val = true) => {
     return SwitchNavigator({
         NewUser: {
