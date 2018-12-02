@@ -137,21 +137,21 @@ android {
 }
 
 dependencies {
-  compile project(':rn-fetch-blob')
-  compile project(':react-native-image-crop-picker')
+  implementation project(':rn-fetch-blob')
+  implementation project(':react-native-image-crop-picker')
   implementation (project(':react-native-google-places'))
-  compile project(':react-native-spinkit')
+  implementation project(':react-native-spinkit')
   implementation fileTree(dir: "libs", include: ["*.jar"])
   implementation "com.android.support:appcompat-v7:23.0.1"
   implementation "com.facebook.react:react-native:+"
-  compile(project(':react-native-google-places')){
+  implementation(project(':react-native-google-places')){
           exclude group: 'com.google.android.gms', module: 'play-services-base'
           exclude group: 'com.google.android.gms', module: 'play-services-places'
           exclude group: 'com.google.android.gms', module: 'play-services-location'
       }
-      compile 'com.google.android.gms:play-services-base:11.6.2'
-      compile 'com.google.android.gms:play-services-places:11.6.2'
-      compile 'com.google.android.gms:play-services-location:11.6.2'
+      implementation 'com.google.android.gms:play-services-base:11.6.2'
+      implementation 'com.google.android.gms:play-services-places:11.6.2'
+      implementation 'com.google.android.gms:play-services-location:11.6.2'
       
   implementation(project(':react-native-maps')){
     exclude group: 'com.google.android.gms', module: 'play-services-base'

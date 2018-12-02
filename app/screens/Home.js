@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, TouchableOpacity, ActivityIndicator, AsyncStorage } from "react-native";
+import { View, StyleSheet, TouchableOpacity, ActivityIndicator, AsyncStorage, Alert } from "react-native";
 import { Card, Button, Text } from "react-native-elements";
 import { onSignOut, USER } from "../auth";
 import { db } from "../../config/MyFirebase";
@@ -24,9 +24,9 @@ class Home extends Component {
       MyLocationLong: 0.02,
       isLoading: true,
       driverLoading: true,
-      isAuthenticated: false,
       Name: "",
-      drivers: []
+      drivers: [],
+      isMapReady: false
 
     }
     // The function below gets all drivers from firebase
@@ -106,7 +106,10 @@ class Home extends Component {
         });
 
       },
-      (error) => console.log(error.message),
+      (error) => {
+
+        Alert.alert(error.message)
+      },
       { enableHighAccuracy: true, timeout: 20000 },
     );
 
@@ -120,7 +123,9 @@ class Home extends Component {
 
 
 
-
+  onMapLayout = () => {
+    this.setState({ isMapReady: true });
+  }
 
   onSearchPlace = () => {
     this.props.navigation.navigate("SearchPlace");
@@ -171,11 +176,16 @@ class Home extends Component {
               longitudeDelta: 0.02,
             }}
             showsUserLocation={true}
+            onLayout={this.onMapLayout}
 
           >
-            <MapView.Marker coordinate={PresentLocation} />
             {
+              this.state.isMapReady &&
+              <MapView.Marker coordinate={PresentLocation} />
 
+            }
+            {
+              this.state.isMapReady &&
               this.state.drivers.map((driver) => (
                 < MapView.Marker coordinate={{
                   latitude: driver.latitude,
