@@ -5,6 +5,7 @@ import { onSignIn, firstUser } from "../auth";
 import { db } from "../../config/MyFirebase";
 import Database from "../../config/database";
 import geofire from 'geofire';
+import { StackActions, NavigationActions} from "react-navigation"
 
 export default class SignUp extends Component {
 
@@ -63,6 +64,19 @@ export default class SignUp extends Component {
   // This function below uses firebase to create user with email and password
   // And also it Saves User Info to Database including using AsyncStorage to
   // to store Name
+
+  onSignInPress = () => {
+    console.log('Navigate Now')
+    var navActions = StackActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: "SignIn" })
+      ]
+    });
+
+    this.props.navigation.dispatch(navActions);
+    console.log('Whats goin on now')
+  }
 
   onSignupPress = () => {
 
@@ -137,7 +151,7 @@ export default class SignUp extends Component {
               backgroundColor="transparent"
               textStyle={{ color: "#bcbec1" }}
               title="Sign In"
-              onPress={() => this.props.navigation.navigate("SignIn")}
+              onPress={() => this.onSignInPress()}
 
             />
           </Card>

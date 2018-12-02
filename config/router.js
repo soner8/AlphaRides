@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, Colors, TouchableOpacity, View, Image, StyleSheet, AsyncStorage } from "react-native";
-import { StackNavigator, SwitchNavigator, DrawerItems, createDrawerNavigator, HeaderBackButton } from "react-navigation";
+import { createStackNavigator, createDrawerNavigator } from "react-navigation";
 import HomeScreen from "../app/screens/HomeScreen";
 import SignIn from "../app/screens/SignIn";
 import SignUp from "../app/screens/SignUp";
@@ -16,36 +16,7 @@ import MaterialIcons from "react-native-vector-icons";
 import { Container, Icon, Left, Content, Header, Body, Right } from 'native-base';
 import DrawerComponent from './DrawerContent'
 
-export const NewUser = StackNavigator({
-    SignUp: {
-        screen: SignUp,
-        navigationOptions: {
-            title: "Sign Up",
-            gesturesEnabled: false,
-
-        }
-    }
-});
-
-export const SignedOut = StackNavigator({
-    SignIn: {
-        screen: SignIn,
-        navigationOptions: {
-            title: "Sign In",
-
-        }
-    },
-    ForgotPassword: {
-        screen: ForgotPassword,
-        navigationOptions: {
-            title: "Forgot Password",
-
-        }
-    },
-
-});
-
-export const MyApp = StackNavigator({
+export const MyApp = createStackNavigator({
     Main: {
         screen: Home
     },
@@ -82,7 +53,7 @@ export const MyApp = StackNavigator({
     }
 });
 
-export const GetUserName = () => AsyncStorage.getItem(USER)
+
 
 export const HomeStack = createDrawerNavigator({
     /*HomeScreen: {
@@ -117,39 +88,59 @@ export const HomeStack = createDrawerNavigator({
     });
 
 
-const Route = (firstUser, signedIn) => {
-    if (firstUser) {
-        return ('NewUser')
-    }
-    if (signedIn) {
+const Route = (val) => {
+    if (val) {
         return ('Drawer')
     }
-    return ('SignedOut')
+    return ('SignIn')
 
 }
 
 // Below function will route to Drawer if signedIn is true else SignedOut
 // It will also route to NewUser if its a first time user
-export const createRootNavigator = (firstTimeUser, signedIn) => {
-    return SwitchNavigator(
+export const RootNavigator = (val) => {
+
+    return createStackNavigator(
+
         {
-            NewUser: {
-                screen: NewUser
-            },
-            Drawer: {
-                screen: HomeStack
+            SignIn: {
+                screen: SignIn,
+                navigationOptions: {
+                    title: "Sign In",
+
+
+                }
+
             },
 
-            SignedOut: {
-                screen: SignedOut
+            SignUp: {
+                screen: SignUp,
+                navigationOptions: {
+                    title: "Sign Up",
+
+
+                }
+            },
+            ForgotPassword: {
+                screen: ForgotPassword,
+                navigationOptions: {
+                    title: "Forgot Password",
+
+                }
+            },
+
+            Drawer: {
+                screen: HomeStack
             }
 
         },
         {
-            initialRouteName: Route(firstTimeUser, signedIn)
+            initialRouteName: Route(val)
         }
-    );
-};
+
+
+    )
+}
 
 const styles = StyleSheet.create({
     drawerImage: {

@@ -3,6 +3,7 @@ import { View, ActivityIndicator } from "react-native";
 import { Card, Button, Input } from "react-native-elements";
 import { onSignIn } from "../auth";
 import { db } from "../../config/MyFirebase";
+import { StackActions, NavigationActions } from "react-navigation"
 
 export default class SignIn extends Component {
   constructor(props) {
@@ -13,6 +14,19 @@ export default class SignIn extends Component {
       authenticating: false
 
     }
+  }
+
+  onCreateAccount = () => {
+    console.log('Navigate Now')
+    var navActions = StackActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({ routeName: "SignUp" })
+      ]
+    });
+
+    this.props.navigation.dispatch(navActions);
+    console.log('Whats goin on now')
   }
 
   UserSignIn = () => {
@@ -70,6 +84,12 @@ export default class SignIn extends Component {
             backgroundColor="#03A9F4"
             title="Forgot Password"
             onPress={() => this.props.navigation.navigate("ForgotPassword")}
+          />
+          <Button
+            buttonStyle={{ marginTop: 20 }}
+            backgroundColor="#03A9F4"
+            title="Sign Up"
+            onPress={() => this.onCreateAccount()}
           />
         </Card>
       </View>

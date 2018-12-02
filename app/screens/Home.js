@@ -80,25 +80,6 @@ class Home extends Component {
       })
       .catch(err => reject(err));
 
-    db.auth().onAuthStateChanged((user) => {
-
-      if (user) {
-        this.setState({
-          isAuthenticated: true
-        });
-        let id = user.uid
-        listenUserName(id, (Name) => {
-
-          //This sends action to redux to store for us
-          this.props.setUserName(Name)
-
-          //Below Stores Name of User for future Reference
-          AsyncStorage.setItem(USER, Name)
-        });
-
-      }
-    });
-
   }
 
 

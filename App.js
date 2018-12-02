@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { createRootNavigator, NewUserRootNavigator, HomeStack } from "./config/router";
-import { isSignedIn, isFirstUser } from "./app/auth";
+import { RootNavigator } from "./config/router";
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import UserReducer from './UserReducer';
+import { db } from "./config/MyFirebase";
 
 // Redux Store for User
 const store = createStore(UserReducer);
@@ -15,34 +15,26 @@ export default class App extends Component {
     super(props);
 
     this.state = {
-      firstTimeUser: true,
-      signedIn: false,
-      checkedSignIn: false
+      isLoadingComplete: false,
+      isAuthenticationReady: false,
+      isAuthenticated: false
     };
 
-    // This function from our auth.js checks if this user if a FIRST TIME USER
-    isFirstUser()
-      .then(res => this.setState({
-        signedIn: false,
-        firstTimeUser: res,
-        checkedSignIn: false
-      }))
-      .catch(err => console.log(err));
-  }
-  // checks for status of user in our auth.js file
-  // Sets signedIn to 'true' if user is in local storage else sets to 'false'
-  componentDidMount() {
+    db.auth().onAuthStateChanged(this.onAuthStateChanged)
 
-    isSignedIn()
-      .then(res => this.setState({ signedIn: res, checkedSignIn: true }))
-      .catch(err => console.log(err));
+
   }
+
+  onAuthStateChanged = (user) => {
+    this.setState({ isAuthenticationReady: true });
+    this.setState({ isAuthenticated: !!user });
+
+  };
 
   render() {
-    const { checkedSignIn, signedIn, firstTimeUser } = this.state;
 
     // If we haven't checked AsyncStorage yet, don't render anything (better ways to do this)
-    if (!checkedSignIn) {
+    if (!this.state.isLoadingComplete && !this.state.isAuthenticationReady) {
       return null;
       //OR
       // return <ActivityIndicator />
@@ -50,7 +42,7 @@ export default class App extends Component {
 
 
     // Sends signedIn state as parameter to Navigator in router.js file
-    const Layout = createRootNavigator(firstTimeUser, signedIn);
+    const Layout = RootNavigator(this.state.isAuthenticated);
     return (
       <Provider store={store}>
         <Layout />
