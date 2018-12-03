@@ -16,6 +16,10 @@ import MaterialIcons from "react-native-vector-icons";
 import { Container, Icon, Left, Content, Header, Body, Right } from 'native-base';
 import DrawerComponent from './DrawerContent'
 
+
+
+
+
 export const MyApp = createStackNavigator({
     Main: {
         screen: Home

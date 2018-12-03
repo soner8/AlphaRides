@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import { setUserName } from "../../UserReducer";
 import { listen4Drivers } from "../../config/database";
 import Spinner from 'react-native-spinkit';
+import { StackActions, NavigationActions } from "react-navigation";
 
 
 
@@ -29,9 +30,33 @@ class Home extends Component {
       isMapReady: false
 
     }
+
+    // We can get the driverId from async here and then dispatch and reset Navigator
+
+    AsyncStorage.multiGet(['driverID', 'driverName'])
+      .then(value => {
+
+        if (value[0][1] == null && value[1][1] == null) {
+          return null
+        }
+        else {
+          const resetAction = StackActions.reset({
+            index: 0,
+            // U can pass params to the routeName
+            actions: [
+              NavigationActions.navigate({ routeName: 'ConnectingDriver', params: { driverId: value[0][1], driverName: value[1][1] } })
+            ]
+          });
+          this.props.navigation.dispatch(resetAction);
+        }
+      });
     // The function below gets all drivers from firebase
+    // It also gets called even after routing to connectingDriver
 
     db.database().ref('drivers').once('value', (snap) => {
+      if (this.isUnmounted) {
+        return;
+      }
       var drivers = [];
 
       snap.forEach((child) => {
@@ -93,6 +118,10 @@ class Home extends Component {
 
         // For some reason navigator refused to work on this itel phone
         console.log('What is goin on here itel')
+        if (this.isUnmounted) {
+          return;
+        }
+
         this.setState({
           MyLocationLat: position.coords.latitude,
           MyLocationLong: position.coords.longitude,
@@ -115,6 +144,11 @@ class Home extends Component {
 
 
   }
+
+  componentWillUnmount() {
+    this.isUnmounted = true;
+  }
+
   SignOut = () => {
     db.auth().signOut()
       .then(() => onSignOut())

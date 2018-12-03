@@ -7,6 +7,7 @@ import {
     Text,
     View,
     Dimensions,
+    Alert,
     Image,
     ScrollView,
     TouchableOpacity,
@@ -37,12 +38,13 @@ export default class ConnectingDriver extends Component {
 
             origin: this.props.navigation.state.params.origin,
             driverFound: false,
-            driverId: null,
-            driverName: "",
+            driverId: this.props.navigation.state.params.driverId,
+            driverName: this.props.navigation.state.params.driverName,
             driversLocation: null,
             isMapReady: false
 
         }
+
 
         navigator.geolocation.getCurrentPosition(
             (position) => {
@@ -52,8 +54,12 @@ export default class ConnectingDriver extends Component {
 
 
                 });
+                console.log("Have we done the Position")
             },
-            (error) => this.setState({ error: error.message }),
+            (error) => {
+
+                Alert.alert(error.message)
+            },
             { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
         );
 
@@ -92,6 +98,7 @@ export default class ConnectingDriver extends Component {
 
     onCancel = (key) => {
         console.log(key)
+        AsyncStorage.multiRemove(['driverID', 'driverName']);
         let user = db.auth().currentUser;
         // Update status of Ride-History to cancelled
         let ride = db.database().ref("ride-request").child(user.uid)
@@ -111,6 +118,8 @@ export default class ConnectingDriver extends Component {
 
     // Listen Drivers Location or If Driver Cancels
     listenDriver(key, userID) {
+        console.log('Listening')
+        console.log(userID)
         let myRef = db.database().ref('ride-request').child(userID)
         // We should Know that if 'DriverWorking has not been created by driver, this listener will throw an error
         let driverRef = db.database().ref('DriversWorking')
@@ -127,6 +136,7 @@ export default class ConnectingDriver extends Component {
 
             if (snap.val().status == 'accepted') {
                 console.log("Got accepted")
+                this.setState({ driverFound: true })
 
                 //Use Geofire to Track Location of Driver and Update driversLocation State
                 geofireRef.get(key)
@@ -172,6 +182,8 @@ export default class ConnectingDriver extends Component {
                     driverRef = db.database().ref('drivers').child(key)
                     driverRef.once('value', (snap) => {
                         this.setState({ driverName: snap.val().Name })
+                        // Store driverName and driverID
+                        AsyncStorage.multiSet([['driverID', key], ['driverName', this.state.driverName]])
                     })
 
                     // Sending Notification to Driver using Driver ID key
@@ -181,6 +193,8 @@ export default class ConnectingDriver extends Component {
                         Name: 'Blaizet', //We will have to use user.Name later
                         status: 'pending'
                     })
+
+
 
                     this.setState({
                         driverFound: true,
@@ -209,12 +223,18 @@ export default class ConnectingDriver extends Component {
 
 
     componentDidMount() {
-        this.GettingDriver();
+        let user = db.auth().currentUser;
+        if (!this.state.driverId) {
+            this.GettingDriver();
+        }
+
 
         if (this.state.driverId) {
-            console.log('Available')
+
             console.log(this.state.driverId)
-            //this.listenDriver()
+            console.log(this.state.origin)
+
+            this.listenDriver(this.state.driverId, user.uid)
         }
 
 
