@@ -54,6 +54,7 @@ export default class BookRide extends Component {
                     error: null,
                     gettingMyLocation: false
                 });
+
             },
             (error) => this.setState({ error: error.message }),
             { enableHighAccuracy: true, timeout: 20000 },
@@ -168,6 +169,15 @@ export default class BookRide extends Component {
                     accepted_by: null
 
                 })
+                // Store Origin coordinates via AsyncStorage
+                const originObj = JSON.stringify(origin)
+                AsyncStorage.setItem('MyLocation', originObj)
+                    .catch(err => {
+                        console.log("Unable to store Loacation")
+                        console.log(err)
+                    });
+
+
                 this.props.navigation.navigate("ConnectingDriver", { origin });
             })
 
@@ -225,7 +235,7 @@ export default class BookRide extends Component {
 
         return (
             <View style={{ flex: 1, flexDirection: 'column' }}>
-                <View style={{ height: hp('60%') }}>
+                <View style={{ height: hp('50%') }}>
                     <MapView
                         provider={PROVIDER_GOOGLE}
                         style={styles.map}
@@ -262,7 +272,7 @@ export default class BookRide extends Component {
                         />
                     </MapView>
                 </View>
-                <View style={{ height: hp('40%') }}>
+                <View style={{ height: hp('50%') }}>
                     <Swiper style={styles.wrapper} showsButtons={false}>
                         <View style={styles.slide1}>
                             <Image style={styles.TransportImage}

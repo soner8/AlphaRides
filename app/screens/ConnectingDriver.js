@@ -45,6 +45,20 @@ export default class ConnectingDriver extends Component {
 
         }
 
+        // Get Your Location From AsyncStorage
+        AsyncStorage.getItem('MyLocation')
+            .then(value => {
+                if (value == null) {
+                    return;
+                }
+                else {
+                    const item = JSON.parse(value);
+                    console.log(item)
+                    this.setState({ origin: item })
+                }
+
+            })
+
 
         navigator.geolocation.getCurrentPosition(
             (position) => {
@@ -54,13 +68,13 @@ export default class ConnectingDriver extends Component {
 
 
                 });
-                console.log("Have we done the Position")
+
             },
             (error) => {
 
                 Alert.alert(error.message)
             },
-            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+            { enableHighAccuracy: true, timeout: 20000 },
         );
 
 
@@ -98,7 +112,7 @@ export default class ConnectingDriver extends Component {
 
     onCancel = (key) => {
         console.log(key)
-        AsyncStorage.multiRemove(['driverID', 'driverName']);
+        AsyncStorage.multiRemove(['driverID', 'driverName', 'MyLocation']);
         let user = db.auth().currentUser;
         // Update status of Ride-History to cancelled
         let ride = db.database().ref("ride-request").child(user.uid)
@@ -136,12 +150,13 @@ export default class ConnectingDriver extends Component {
 
             if (snap.val().status == 'accepted') {
                 console.log("Got accepted")
-                this.setState({ driverFound: true })
+
 
                 //Use Geofire to Track Location of Driver and Update driversLocation State
                 geofireRef.get(key)
                     .then((location) => {
-                        this.setState({ driversLocation: location })
+                        this.setState({ driversLocation: location, driverFound: true })
+
                     })
 
             }

@@ -220,13 +220,14 @@ class Home extends Component {
             }
             {
               this.state.isMapReady &&
-              this.state.drivers.map((driver) => (
+              this.state.drivers.map((driver, i) => (
                 < MapView.Marker coordinate={{
                   latitude: driver.latitude,
                   longitude: driver.longitude,
                 }}
                   style={{ width: 10, height: 10 }}
-                  image={require('../images/car-marker3.png')} />
+                  image={require('../images/car-marker3.png')}
+                  key={i} />
               ))
             }
 
