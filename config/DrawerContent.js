@@ -15,7 +15,8 @@ export default class DrawerComponent extends React.PureComponent {
         this.state = {
             user: null,
             avatarPic: null,
-            image: null
+            image: null,
+            url: null
         }
     }
 
@@ -36,6 +37,8 @@ export default class DrawerComponent extends React.PureComponent {
             .then(image => {
                 saveImage(user.uid, image.path)
 
+
+
                 this.setState({
                     image: {
                         uri: image.path,
@@ -45,6 +48,9 @@ export default class DrawerComponent extends React.PureComponent {
                         size: image.size
                     }
                 });
+
+
+
 
 
 
@@ -65,19 +71,61 @@ export default class DrawerComponent extends React.PureComponent {
             .then(() => this.props.navigation.navigate("SignedOut"))
     }
 
-    renderImage(image) {
-        return (
-            <Image
-                style={styles.drawerImage}
-                source={image} />
-        )
-    }
 
     renderDefaultImage() {
-        return (
-            <Image style={styles.drawerImage}
-                source={require('../app/images/user.png')} />
+        const { url } = this.state
+
+        const Photo = AsyncStorage.getItem('PhotoUrl')
+        Photo.then(
+            value => {
+                if (value == null) {
+                    return
+                }
+                else {
+                    this.setState({ url: value })
+                }
+            }
         )
+
+        if (url == null) {
+            console.log(Photo)
+            console.log('Yes ohh')
+            return (
+                <Image style={styles.drawerImage}
+                    source={require('../app/images/user.png')} />
+            )
+        }
+
+        else {
+
+            return (
+                <Image style={styles.drawerImage}
+                    source={{ uri: this.state.url }} />
+            )
+
+        }
+
+        {/*AsyncStorage.getItem('PhotoUrl')
+            .then(val => {
+                console.log(val)
+                if (val == null) {
+                    return;
+                }
+                else {
+                    return (
+                        <Image style={styles.drawerImage}
+                            source={{ uri: val }} />
+                    )
+                }
+
+            })*/}
+
+
+
+
+
+
+
     }
 
     render() {
@@ -86,7 +134,7 @@ export default class DrawerComponent extends React.PureComponent {
             <Container>
                 <Header style={{ height: 200, backgroundColor: "white" }}>
                     <Body>
-                        {this.state.image ? this.renderImage(this.state.image) : this.renderDefaultImage()}
+                        {this.renderDefaultImage()}
 
                         <Text>{user}</Text>
 

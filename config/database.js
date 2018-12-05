@@ -1,5 +1,6 @@
 import { db } from "./MyFirebase";
 import RNFetchBlob from 'rn-fetch-blob';
+import { AsyncStorage } from "react-native"
 /**
  
 static setUserName(userId, Name) {
@@ -16,6 +17,7 @@ static setUserName(userId, Name) {
 export const saveImage = (key, uri) => {
 
     let dbStorage = db.storage()
+    const PhotoUrl = ''
 
     const image = uri
 
@@ -48,6 +50,8 @@ export const saveImage = (key, uri) => {
         .then((url) => {
             // URL of the image uploaded on Firebase storage
             console.log(url);
+            AsyncStorage.setItem('PhotoUrl', url)
+                .catch((error) => { console.log(error) })
             return (url);
 
         })
@@ -55,6 +59,7 @@ export const saveImage = (key, uri) => {
             console.log(error);
 
         })
+    return (PhotoUrl)
 }
 
 export const listen4Drivers = () => {
