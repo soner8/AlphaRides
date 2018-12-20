@@ -4520,6 +4520,10 @@ posix-character-classes@^0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/posix-character-classes/-/posix-character-classes-0.1.1.tgz#01eac0fe3b5af71a2a6c02feabb8c1fef7e00eab"
 
+postinstall-build@^5.0.1:
+  version "5.0.3"
+  resolved "https://registry.yarnpkg.com/postinstall-build/-/postinstall-build-5.0.3.tgz#238692f712a481d8f5bc8960e94786036241efc7"
+
 prelude-ls@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.1.2.tgz#21932a549f5e52ffd9a827f570e04be62a97da54"
@@ -4709,6 +4713,14 @@ react-native-elements@^1.0.0-beta5:
     opencollective "^1.0.3"
     prop-types "^15.5.8"
     react-native-touchable-scale "2.0.0"
+
+react-native-firebase@3.3:
+  version "3.3.1"
+  resolved "http://registry.npmjs.org/react-native-firebase/-/react-native-firebase-3.3.1.tgz#b93cbb9b11f4f8a23a0d608567573b43a8c2de70"
+  dependencies:
+    opencollective "^1.0.3"
+    postinstall-build "^5.0.1"
+    prop-types "^15.6.1"
 
 react-native-google-places@^2.5.2:
   version "2.5.2"
