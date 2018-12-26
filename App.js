@@ -32,7 +32,7 @@ export default class App extends Component {
   onAuthStateChanged = (user) => {
     console.log("authenticated Now")
     console.log(user)
-    //this.setState({ isAuthenticationReady: true });
+    this.setState({ isAuthenticationReady: true });
     this.setState({ isAuthenticated: !!user });
     this.unsubscriber();
     console.log('Zaza')

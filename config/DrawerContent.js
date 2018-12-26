@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Platform, Text, Image, StyleSheet, ScrollView, TouchableOpacity, AsyncStorage } from 'react-native'
-import { DrawerItems, NavigationActions } from 'react-navigation'
+import { DrawerItems, StackActions, NavigationActions } from 'react-navigation'
 import { USER } from '../app/auth';
 import { Container, Icon, Left, Content, Header, Body, Right } from 'native-base';
 import { db } from "./MyFirebase";
@@ -68,7 +68,19 @@ export default class DrawerComponent extends React.PureComponent {
     SignOut = () => {
         db.auth().signOut()
             .then(() => onSignOut())
-            .then(() => this.props.navigation.navigate("SignedOut"))
+            .then(() => {
+                //this.props.navigation.navigate("SignIn")
+                var navActions = StackActions.reset({
+                    index: 0,
+                    key: null,
+                    actions: [
+                        NavigationActions.navigate({ routeName: "SignIn" })
+                    ]
+                });
+
+                this.props.navigation.dispatch(navActions);
+
+            })
     }
 
 
