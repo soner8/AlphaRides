@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity, ActivityIndicator, AsyncStorage, Al
 import { Card, Button, Text } from "react-native-elements";
 import { onSignOut, USER } from "../auth";
 import { db } from "../../config/MyFirebase";
+import firebase from 'react-native-firebase'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { listenUserName } from "../../config/database";
 import RNGooglePlaces from 'react-native-google-places';
@@ -53,7 +54,9 @@ class Home extends Component {
     // The function below gets all drivers from firebase
     // It also gets called even after routing to connectingDriver
 
+
     db.database().ref('drivers').once('value', (snap) => {
+      console.log("Not working here")
       if (this.isUnmounted) {
         return;
       }
@@ -90,7 +93,11 @@ class Home extends Component {
 
 
 
-    });
+    })
+      .then(() => {
+        console.log("Checked for drivers")
+      })
+      .catch(error => console.log('This db is not working again'));
 
     AsyncStorage.getItem(USER)
       .then(res => {
