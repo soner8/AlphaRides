@@ -17,7 +17,7 @@ export default class App extends Component {
   constructor(props) {
     super(props);
 
-    this.unsubscriber = null;
+
     this.state = {
       isLoadingComplete: false,
       isAuthenticationReady: false,
@@ -26,6 +26,7 @@ export default class App extends Component {
 
     };
     this.unsubscriber = firebase.auth().onAuthStateChanged(this.onAuthStateChanged)
+    //db.auth().onAuthStateChanged(this.onAuthStateChanged)
 
   }
 

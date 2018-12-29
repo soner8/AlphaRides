@@ -323,7 +323,13 @@ export default class SignUp extends Component {
     const { Name, email, password, passwordConfirm } = this.state;
     if (this.state.authenticating) {
       return (
-        <View>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
           <ActivityIndicator size='large' color="#00ff00" />
         </View>
       )

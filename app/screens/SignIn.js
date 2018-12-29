@@ -3,6 +3,7 @@ import { View, ActivityIndicator, Text, TouchableOpacity } from "react-native";
 import { Card, Button, Input } from "react-native-elements";
 import { onSignIn } from "../auth";
 import { db } from "../../config/MyFirebase";
+import firebase from 'react-native-firebase';
 import { StackActions, NavigationActions } from "react-navigation";
 import { TextField } from 'react-native-material-textfield';
 import { RaisedTextButton } from 'react-native-material-buttons';
@@ -111,13 +112,24 @@ export default class SignIn extends Component {
     if (this.isEmptyError(errors)) {
       console.log('Nothing error')
       this.setState({ authenticating: true });
-      db.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+      console.log(this.state.email)
+      console.log(this.state.password)
+      firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
         .then(() => onSignIn())
         .then(() => {
-          let user = db.auth().currentUser;
+          let user = firebase.auth().currentUser;
           console.log(user.uid);
-          this.props.navigation.navigate("Drawer")
+          //this.props.navigation.navigate("Drawer")
           /*this.props.navigation.navigate("HomeScreen", { idd: user.uid })*/
+          var navActions = StackActions.reset({
+            index: 0,
+            key: null,
+            actions: [
+              NavigationActions.navigate({ routeName: "Drawer" })
+            ]
+          });
+
+          this.props.navigation.dispatch(navActions);
         })
 
         .catch((error) =>
@@ -127,7 +139,7 @@ export default class SignIn extends Component {
     }
     else {
       console.log(errors)
-    }
+    } ``
   }
 
   updateRef(name, ref) {
@@ -187,8 +199,14 @@ export default class SignIn extends Component {
     const { email, password } = this.state;
     if (this.state.authenticating) {
       return (
-        <View>
-          <ActivityIndicator size='large' />
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          <ActivityIndicator size='large' color="#00ff00" />
         </View>
       )
     }

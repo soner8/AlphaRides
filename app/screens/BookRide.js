@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 
 import geofire from 'geofire';
-
+import firebase from 'react-native-firebase';
 import RNGooglePlaces from 'react-native-google-places';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
@@ -132,7 +132,7 @@ export default class BookRide extends Component {
         this.setState({ BookedRide: true })
 
         //Submit passenger PayLoad to Ride-Requests.
-        let user = db.auth().currentUser;
+        let user = firebase.auth().currentUser;
         let requestDriver = db.database().ref('/ride-request')
         let RideHistoryRef = db.database().ref('/ride-history')
         const geofireRef = new geofire(requestDriver)
@@ -199,15 +199,26 @@ export default class BookRide extends Component {
         // This below happens only when the user clicks book ride
         if (this.state.BookedRide) {
             return (
-                <Spinner
-                    style={{ marginBottom: 50 }}
-                    isVisible={true}
-                    size={100}
-                    type={'Bounce'}
-                    color={'#ffffff'}
-                />
-            );
+                <View
+                    style={{
+                        flex: 1,
+                        backgroundColor: 'rgba(0,0,0, 0.9)',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}
+                >
+                    <Spinner
+                        style={{
+                            marginBottom: 50
+                        }}
+                        isVisible={true}
+                        size={150}
+                        type={'Bounce'}
+                        color={'#faebd7'}
 
+                    />
+                </View>
+            );
             /*return (
                 <View>
                     <ActivityIndicator size='small' color="#00ff00" />
@@ -220,15 +231,26 @@ export default class BookRide extends Component {
             console.log("Itel on BookRide");
 
             return (
+                <View
+                    style={{
+                        flex: 1,
+                        backgroundColor: 'rgba(0,0,0, 0.9)',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}
+                >
+                    <Spinner
+                        style={{
+                            marginBottom: 50
+                        }}
+                        isVisible={true}
+                        size={150}
+                        type={'Bounce'}
+                        color={'#faebd7'}
 
-                <Spinner
-                    style={{ marginBottom: 50 }}
-                    isVisible={true}
-                    size={100}
-                    type={'Bounce'}
-                    color={'#ffffff'}
-                />
-            )
+                    />
+                </View>
+            );
         }
 
 

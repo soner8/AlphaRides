@@ -14,6 +14,7 @@ import {
     ActivityIndicator
 } from 'react-native';
 import geofire from 'geofire';
+import firebase from 'react-native-firebase';
 import RNGooglePlaces from 'react-native-google-places';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
@@ -46,6 +47,7 @@ export default class ConnectingDriver extends Component {
         }
 
         // Get Your Location From AsyncStorage
+        console.log('Whaat again')
         AsyncStorage.getItem('MyLocation')
             .then(value => {
                 if (value == null) {
@@ -58,6 +60,7 @@ export default class ConnectingDriver extends Component {
                 }
 
             })
+            .catch(err => console.log(err))
 
 
         navigator.geolocation.getCurrentPosition(
@@ -113,7 +116,7 @@ export default class ConnectingDriver extends Component {
     onCancel = (key) => {
         console.log(key)
         AsyncStorage.multiRemove(['driverID', 'driverName', 'MyLocation']);
-        let user = db.auth().currentUser;
+        let user = firebase.auth().currentUser;
         // Update status of Ride-History to cancelled
         let ride = db.database().ref("ride-request").child(user.uid)
 
@@ -168,7 +171,7 @@ export default class ConnectingDriver extends Component {
     GettingDriver() {
         let radius = 1
         const { driverFound } = this.state;
-        let user = db.auth().currentUser;
+        let user = firebase.auth().currentUser;
         // We have to ensure status of ride-request of passenger is pending if
         // driver cancels ride and this function is called again.
         // Normally if ride-request of passenger remains cancelled, the listener
@@ -238,7 +241,7 @@ export default class ConnectingDriver extends Component {
 
 
     componentDidMount() {
-        let user = db.auth().currentUser;
+        let user = firebase.auth().currentUser;
         if (!this.state.driverId) {
             this.GettingDriver();
         }
@@ -269,12 +272,25 @@ export default class ConnectingDriver extends Component {
 
         if (!driverFound) {
             return (
-                <Spinner
-                    isVisible={true}
-                    size={50}
-                    type={'Bounce'}
-                    color={'#ffffff'}
-                />
+                <View
+                    style={{
+                        flex: 1,
+                        backgroundColor: 'rgba(0,0,0, 0.9)',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}
+                >
+                    <Spinner
+                        style={{
+                            marginBottom: 50
+                        }}
+                        isVisible={true}
+                        size={150}
+                        type={'Bounce'}
+                        color={'#faebd7'}
+
+                    />
+                </View>
             );
 
             /*return (
@@ -364,14 +380,14 @@ const styles = StyleSheet.create({
     headerLayoutStyle: {
         width,
         height: 100,
-        backgroundColor: 'orange',
+        backgroundColor: 'rgba(0,0,0, 0.9)',
         justifyContent: 'center',
         alignItems: 'center',
     },
     slidingPanelLayoutStyle: {
         width,
         height,
-        backgroundColor: '#7E52A0',
+        backgroundColor: '#808080',
         justifyContent: 'center',
         alignItems: 'center',
     },

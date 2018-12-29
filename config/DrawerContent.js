@@ -7,7 +7,8 @@ import { db } from "./MyFirebase";
 import { Button } from "react-native-elements";
 import ImagePicker from 'react-native-image-crop-picker';
 import { saveImage } from "./database";
-import { onSignOut } from "../app/auth"
+import { onSignOut } from "../app/auth";
+import firebase from 'react-native-firebase';
 
 export default class DrawerComponent extends React.PureComponent {
     constructor(props) {
@@ -25,7 +26,7 @@ export default class DrawerComponent extends React.PureComponent {
     }
 
     pickCamera() {
-        let user = db.auth().currentUser;
+        let user = firebase.auth().currentUser;
         ImagePicker.openCamera({
             cropping: true,
             width: 500,
@@ -66,7 +67,7 @@ export default class DrawerComponent extends React.PureComponent {
     }
 
     SignOut = () => {
-        db.auth().signOut()
+        firebase.auth().signOut()
             .then(() => onSignOut())
             .then(() => {
                 //this.props.navigation.navigate("SignIn")

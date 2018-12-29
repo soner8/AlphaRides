@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity, ActivityIndicator, AsyncStorage, Al
 import { Card, Button, Text } from "react-native-elements";
 import { onSignOut, USER } from "../auth";
 import { db } from "../../config/MyFirebase";
-import firebase from 'react-native-firebase'
+import firebase from 'react-native-firebase';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { listenUserName } from "../../config/database";
 import RNGooglePlaces from 'react-native-google-places';
@@ -36,6 +36,7 @@ class Home extends Component {
 
     AsyncStorage.multiGet(['driverID', 'driverName'])
       .then(value => {
+        console.log(value);
 
         if (value[0][1] == null && value[1][1] == null) {
           return null
@@ -157,7 +158,7 @@ class Home extends Component {
   }
 
   SignOut = () => {
-    db.auth().signOut()
+    firebase.auth().signOut()
       .then(() => onSignOut())
       .then(() => this.props.navigation.navigate("SignedOut"))
   }
@@ -175,12 +176,25 @@ class Home extends Component {
   render() {
     if (this.state.isLoading || this.state.driverLoading) {
       return (
-        <Spinner
-          isVisible={true}
-          size={50}
-          type={'Bounce'}
-          color={'#ffffff'}
-        />
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: 'rgba(0,0,0, 0.9)',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          <Spinner
+            style={{
+              marginBottom: 50
+            }}
+            isVisible={true}
+            size={150}
+            type={'Bounce'}
+            color={'#faebd7'}
+
+          />
+        </View>
       );
 
 
