@@ -42,12 +42,14 @@ export default class ConnectingDriver extends Component {
             driverId: this.props.navigation.state.params.driverId,
             driverName: this.props.navigation.state.params.driverName,
             driversLocation: null,
-            isMapReady: false
+            isMapReady: false,
+            DriverPhotoUrl: null,
+            error: null
 
         }
 
         // Get Your Location From AsyncStorage
-        console.log('Whaat again')
+
         AsyncStorage.getItem('MyLocation')
             .then(value => {
                 if (value == null) {
@@ -137,6 +139,13 @@ export default class ConnectingDriver extends Component {
     listenDriver(key, userID) {
         console.log('Listening')
         console.log(userID)
+
+        // Later we can remove this function because GettingDriver will update
+        // DriverPhoto and if customer has already booked driver before, we can
+        // also send as param from Home.js the url just as we sent driverId from
+        // Home.js that was stored in with async
+        this.Photo(key)
+
         let myRef = db.database().ref('ride-request').child(userID)
         // We should Know that if 'DriverWorking has not been created by driver, this listener will throw an error
         let driverRef = db.database().ref('DriversWorking')
@@ -146,6 +155,9 @@ export default class ConnectingDriver extends Component {
             // Call this.GettingDriver()
             if (snap.val().status == 'cancelled') {
                 console.log("cancelled by driver")
+                // We should see if we can remove driverID details from Async
+                // Incase Driver has already accepted ride before he cancels
+                // Remember we only set Async when driver accepts ride
                 this.setState({ driverFound: false })
                 myRef.off('value');
                 this.GettingDriver()
@@ -153,6 +165,8 @@ export default class ConnectingDriver extends Component {
 
             if (snap.val().status == 'accepted') {
                 console.log("Got accepted")
+                //Store Driver Details on Async Only if Driver has accepted
+                AsyncStorage.multiSet([['driverID', key], ['driverName', this.state.driverName], ['DriverPhotoUrl', this.state.DriverPhotoUrl]])
 
 
                 //Use Geofire to Track Location of Driver and Update driversLocation State
@@ -201,7 +215,7 @@ export default class ConnectingDriver extends Component {
                     driverRef.once('value', (snap) => {
                         this.setState({ driverName: snap.val().Name })
                         // Store driverName and driverID
-                        AsyncStorage.multiSet([['driverID', key], ['driverName', this.state.driverName]])
+                        //AsyncStorage.multiSet([['driverID', key], ['driverName', this.state.driverName]])
                     })
 
                     // Sending Notification to Driver using Driver ID key
@@ -213,6 +227,7 @@ export default class ConnectingDriver extends Component {
                     })
 
 
+                    this.Photo(key) // Updating DriverPhotoUrl to display Driver Pic
 
                     this.setState({
                         driverFound: true,
@@ -263,10 +278,64 @@ export default class ConnectingDriver extends Component {
         this.setState({ isMapReady: true });
     }
 
+    Photo(key) {
+        let dbStorage = db.storage()
+        const { DriverPhotoUrl } = this.state;
+
+        var firebaseStorageRef = dbStorage.ref('Drivers');
+
+        const imageRef = firebaseStorageRef.child(key).child('IMG_0391.JPG');
+        const mike = imageRef.getDownloadURL()
+        mike.then((url) => {
+            console.log(url)
+            this.setState({ DriverPhotoUrl: url })
+            //this.setState({ error: "Badd" })
+
+        });
+        {/*.then(
+                (url) => {
+                    console.log(url)
+                    if (url == null) {
+                        return
+                    }
+                    else {
+                        this.setState({ DriverPhotoUrl: url })
+                        console.log("Yesssss it is available")
+                        return
+                    }
+                }
+            )*/}
+        return (DriverPhotoUrl)
+    }
+
+
+    renderDefaultImage(key) {
+        const { DriverPhotoUrl } = this.state;
+
+        if (DriverPhotoUrl == null) {
+
+            console.log('No Driver Photo')
+            return (
+                <Image style={styles.driverImage}
+                    source={require('../images/user.png')} />
+            )
+        }
+
+        else {
+
+
+            return (
+                <Image style={styles.driverImage}
+                    source={{ uri: DriverPhotoUrl }} />
+            )
+
+        }
+    }
+
 
 
     render() {
-        const { driverFound, origin, driversLocation } = this.state;
+        const { driverFound, origin, driversLocation, driverId } = this.state;
         const GOOGLE_MAPS_APIKEY = 'AIzaSyBIXZvDmynO3bT7i_Yck7knF5wgOVyj5Fk';
 
 
@@ -345,7 +414,8 @@ export default class ConnectingDriver extends Component {
                     headerLayoutHeight={100}
                     headerLayout={() =>
                         <View style={styles.headerLayoutStyle}>
-                            <Text style={styles.commonTextStyle}>{this.state.driverName}</Text>
+                            {this.renderDefaultImage(driverId)}
+                            <Text style={styles.driverTextStyle}>{this.state.driverName}</Text>
                         </View>
                     }
                     slidingPanelLayout={() =>
@@ -377,12 +447,18 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    driverImage: {
+        width: 95,
+        height: 95,
+        borderRadius: 75
+    },
     headerLayoutStyle: {
         width,
         height: 100,
         backgroundColor: 'rgba(0,0,0, 0.9)',
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: 'space-evenly',
+        //alignItems: 'center',
+        flexDirection: 'row',
     },
     slidingPanelLayoutStyle: {
         width,
@@ -394,5 +470,10 @@ const styles = StyleSheet.create({
     commonTextStyle: {
         color: 'white',
         fontSize: 18,
+    },
+    driverTextStyle: {
+        color: 'white',
+        fontSize: 18,
+        marginTop: 30,
     },
 });
