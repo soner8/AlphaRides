@@ -131,6 +131,8 @@ export default class BookRide extends Component {
         const { origin } = this.state
         this.setState({ BookedRide: true })
 
+        
+
         //Submit passenger PayLoad to Ride-Requests.
         let user = firebase.auth().currentUser;
         let requestDriver = db.database().ref('/ride-request')

@@ -139,7 +139,7 @@ export default class SignIn extends Component {
     }
     else {
       console.log(errors)
-    } ``
+    }
   }
 
   updateRef(name, ref) {

@@ -14,6 +14,7 @@ import { setUserName } from "../../UserReducer";
 import { listen4Drivers } from "../../config/database";
 import Spinner from 'react-native-spinkit';
 import { StackActions, NavigationActions } from "react-navigation";
+import geofire from 'geofire';
 
 
 
@@ -117,6 +118,9 @@ class Home extends Component {
 
 
   componentDidMount() {
+    // Temporarily setting geofire for Drivers Working
+    
+
     console.log('Is this Navigator working at all')
     // For some reasons, this function finishes before database listener in the constructor
     // But in our Slow Itel, this function gets called only after the constructor is finished
