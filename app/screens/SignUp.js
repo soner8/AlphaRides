@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { View, Alert, ScrollView, ActivityIndicator } from "react-native";
 import { Card, Button, Input, Text, TextInput } from "react-native-elements";
 import { onSignIn, firstUser } from "../auth";
-import { db } from "../../config/MyFirebase";
 import firebase from 'react-native-firebase';
 import Database from "../../config/database";
 import geofire from 'geofire';
@@ -230,10 +229,23 @@ export default class SignUp extends Component {
     /*db.database.ref('user')
       .child(user.uid)
       .set({ Name: this.state.Name })*/
-    let userName = "/user/" + user.uid + "/details";
-    db.database().ref(userName).set({
-      Name: this.state.firstname
-    })
+
+    //let userName = "/user/" + user.uid + "/details";
+    //db.database().ref(userName).set({
+    //  Name: this.state.firstname
+    //})
+
+    // We will set User Firestore details here below
+
+    var UserData = {
+            Name: this.state.firstname,
+            Surname: this.state.surname,
+            Email: this.state.email,
+            PhoneNo: this.state.phoneNumber
+          }
+          md = firebase.firestore()
+          md.collection('users').doc(user.uid).set(UserData)
+
     //let Driver = db.database().ref("/DriversAvaliable")
     //const geofireRef = new geofire(Driver)
     //geofireRef.set(DriverId, [9.062032349610963, 7.391128392096082])

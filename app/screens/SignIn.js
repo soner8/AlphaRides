@@ -119,6 +119,11 @@ export default class SignIn extends Component {
         .then(() => {
           let user = firebase.auth().currentUser;
           console.log(user.uid);
+
+          // Should input firestore details here temporarily
+
+          
+
           //this.props.navigation.navigate("Drawer")
           /*this.props.navigation.navigate("HomeScreen", { idd: user.uid })*/
           var navActions = StackActions.reset({
