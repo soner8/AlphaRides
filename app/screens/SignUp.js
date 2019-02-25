@@ -243,8 +243,8 @@ export default class SignUp extends Component {
             Email: this.state.email,
             PhoneNo: this.state.phoneNumber
           }
-          md = firebase.firestore()
-          md.collection('users').doc(user.uid).set(UserData)
+          dataBase = firebase.firestore()
+          dataBase.collection('users').doc(user.uid).set(UserData)
 
     //let Driver = db.database().ref("/DriversAvaliable")
     //const geofireRef = new geofire(Driver)

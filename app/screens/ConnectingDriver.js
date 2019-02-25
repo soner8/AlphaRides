@@ -14,6 +14,7 @@ import {
     ActivityIndicator
 } from 'react-native';
 import geofire from 'geofire';
+import { GeoFirestore } from 'geofirestore';
 import firebase from 'react-native-firebase';
 import RNGooglePlaces from 'react-native-google-places';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
@@ -117,26 +118,115 @@ export default class ConnectingDriver extends Component {
 
     onCancel = (key) => {
         console.log(key)
+        
+        dataBase = firebase.firestore()
+
         AsyncStorage.multiRemove(['driverID', 'driverName', 'MyLocation']);
         let user = firebase.auth().currentUser;
+
+        // Delete passenger collection child from drivers Collection
+        const driverRef = dataBase.collection('drivers').doc(key)
+        driverRef.collection("NewRide").doc(user.uid).delete()
+
         // Update status of Ride-History to cancelled
-        let ride = db.database().ref("ride-request").child(user.uid)
+
+        let ride = dataBase.collection("ride-request").doc(user.uid)
+        ride.delete()
+
+        // U also Need to remove RideStatus Too
+
 
         //We need to stop the listener before removing the child else it will result in an error
-        ride.off()
+        
 
-        ride.remove()
+        
 
-        driverRef = db.database().ref("drivers").child(key)
-        driverRef.child(user.uid).remove()
-        // store cancelled rides for this user in database
+        // Check if ride has already been accepted by driver in this.state
+        // If accepted by driver, store cancelled ride with charges due
+        // else 
+        // store  ordinary cancelled rides for this user in database
         //...
         // Navigate to Home Screen After Cancelling Ride
         this.props.navigation.navigate("Main")
     }
 
-    // Listen Drivers Location or If Driver Cancels
+    //Listen for Drivers Location on Firestore
+
     listenDriver(key, userID) {
+        console.log('Listening')
+        console.log(key)
+        console.log(userID)
+        
+
+        // Later we can remove this function because GettingDriver will update
+        // DriverPhoto and if customer has already booked driver before, we can
+        // also send as param from Home.js the url just as we sent driverId from
+        // Home.js that was stored in with async
+        this.Photo(key)
+
+        dataBase = firebase.firestore()
+        const GeoRef = new GeoFirestore(dataBase)
+
+        let myRef = dataBase.collection('ride-request').doc(userID)
+        // We should Know that if 'DriverWorking has not been created by driver, this listener will throw an error
+        
+        const geofirestoreRef = GeoRef.collection('DriversWorking').doc(key)
+
+        var unsubscribe = myRef.collection('RideStatus').doc(userID).onSnapshot( (snap) => {
+            //When driver cancels, set state which forces re-ender
+            // Call this.GettingDriver()
+            console.log(snap)
+            
+            if (snap.data().status == 'cancelled') {
+                console.log("cancelled by driver")
+                // We should see if we can remove driverID details from Async
+                // Incase Driver has already accepted ride before he cancels
+                // Remember we only set Async when driver accepts ride
+                this.setState({ driverFound: false })
+
+                //Unsubscribe Listener on RideStatus in Firestore
+                unsubscribe();
+                this.GettingDriver()
+            }
+
+            if (snap.data().status == 'accepted') {
+                console.log("Got accepted")
+                this.setState({status: 'accepted'})
+                //Store Driver Details on Async Only if Driver has accepted
+                AsyncStorage.multiSet([['driverID', key], ['driverName', this.state.driverName], ['DriverPhotoUrl', this.state.DriverPhotoUrl]])
+
+
+                //Use Geofire to Track Location of Driver and Update driversLocation State
+                geofirestoreRef.onSnapshot((val) => {
+                    
+                    const location = val.data().coordinates
+                    const lat = location.latitude
+                    const long = location.longitude
+                    
+                    const loc = [lat, long]
+
+                    console.log('Print New Location')
+                    console.log(loc)
+
+                    this.setState({ driversLocation: loc, 
+                        driverFound: true })
+                    
+                })
+
+
+            }
+            console.log('Ride status has not changed')
+
+        })
+
+        // Stop Listening for status of Ride in Firstore
+        
+    {/*Dave ?*/}
+
+    // Listen Drivers Location or If Driver Cancels
+    {/*
+        
+        listenDriver(key, userID) {
         console.log('Listening')
         console.log(userID)
 
@@ -180,8 +270,111 @@ export default class ConnectingDriver extends Component {
 
         })
     }
+    */}
+    }
+
+    GettingDriver() {
+        let radius = 50
+        const { driverFound, driverId } = this.state;
+        let user = firebase.auth().currentUser;
+        // We have to ensure status of ride-request of passenger is pending if
+        // driver cancels ride and this function is called again.
+        // Normally if ride-request of passenger remains cancelled, the listener
+        // will keep calling this function
+
+        dataBase = firebase.firestore()
+        
+        let myRef = dataBase.collection('ride-request').doc(user.uid)
+        
+        myRef.collection('RideStatus').doc(user.uid).update({ status: 'pending' })
+        console.log('In getting Ride')
+        
+        
+
+        getClosestDriver = () => {
+            console.log('Another Geosettings')
+            
+            
+            //const driverRef = dataBase.collection('DriversAvailable')
+            //const geofireRef = new GeoFirestore(driverRef)
+
+            //Try another pattern
+            const geoFirestore = new GeoFirestore(dataBase);
+            const geoCollectionRef = geoFirestore.collection('DriversAvailable');
+            console.log('What is the geofirestore')
+            const Geoquery = geoCollectionRef.near({
+                center: new firebase.firestore.GeoPoint(this.state.origin.latitude, this.state.origin.longitude),
+                radius: radius
+            })
+
+            console.log('Start the geo Now')
+            Geoquery.limit(1).get().then((value) => {
+                console.log(value)      // This is GeoquerySnapshot
+                console.log('Has gotten')
+                console.log(value.docs[0].id); // All docs returned by GeoQuery
+                driverKey = value.docs[0].id
+                console.log(driverKey)
+                const driverRef = dataBase.collection('drivers').doc(driverKey)
+
+                
+                driverRef.get()
+                .then((doc) => {
+                    console.log(doc.data().Name)
+                    this.setState({driverName: doc.data().Name})
+                        // Store driverName and driverID
+                        //AsyncStorage.multiSet([['driverID', key], ['driverName', this.state.driverName]])
+                    })
+                this.Photo(driverKey) // Updating DriverPhotoUrl to display Driver Pic
 
 
+                GeoDocRef = geoFirestore.collection('DriversAvailable').doc(driverKey);
+                console.log(GeoDocRef)
+                GeoDocRef.get()
+                .then((value) => {
+                    const location = value.get('coordinates')
+                    const lat = location.latitude
+                    const long = location.longitude
+                    
+                    const loc = [lat, long]
+                    this.setState({
+                        driverFound: true,
+                        driverId: driverKey,
+                        driversLocation: loc
+                    })
+                })
+
+                // Inform Driver Of New Ride by adding passenger Id as a child
+                console.log('set drive')
+                driverRef.collection("NewRide").doc(user.uid).set({Id: user.uid})
+                console.log('statussss')
+                    
+                    //Now call function to listen if driver cancels
+            this.listenDriver(driverKey, user.uid)
+            });
+
+
+
+            
+                    //Get the Name of the Driver
+            
+                        
+                        
+                    
+
+                    // Sending Notification to Driver using Driver ID key
+
+                   {/* driverRef.child(user.uid).update({
+                        location: location,
+                        Name: 'Blaizet', //We will have to use user.Name later
+                        status: 'pending'
+                    })
+                   */}
+
+            
+        }
+        getClosestDriver();
+                
+{/*
     GettingDriver() {
         let radius = 1
         const { driverFound } = this.state;
@@ -253,6 +446,15 @@ export default class ConnectingDriver extends Component {
         }
         getClosestDriver();
     }
+        */}
+                
+        }
+        
+        
+    
+
+    
+
 
 
     componentDidMount() {
@@ -264,6 +466,7 @@ export default class ConnectingDriver extends Component {
 
         if (this.state.driverId) {
 
+            console.log('There is driver Id available')
             console.log(this.state.driverId)
             console.log(this.state.origin)
 

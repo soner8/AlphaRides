@@ -129,12 +129,52 @@ export default class BookRide extends Component {
 
     onBookRide = (type, price) => {
         const { origin } = this.state
+        let user = firebase.auth().currentUser;
         this.setState({ BookedRide: true })
 
         
+        // Lets try to set Firestore Ref to store User location
+        dataBase = firebase.firestore()
+
+        //Temporarily Set DriversAvailable and DriversWorking GeoPoints
+
+        
+        // U can decide to Use GeofireStore to set the location
+        
+        let requestDriver = dataBase.collection('ride-request').doc(user.uid)
+        requestDriver.set({location: new firebase.firestore.GeoPoint(this.state.origin.latitude, this.state.origin.longitude)})
+        .then(() => {
+            requestDriver.update({
+                currentUser: user.uid,
+                    destination: this.state.NewDestination,
+                    type: type,
+                    Fare: price,
+                    duration: this.state.duration,
+                    distance: this.state.distance,
+                    accepted_by: null
+            })
+            requestDriver.collection('RideStatus').doc(user.uid).set({status: 'pending'})
+
+        })
+        .then(() => {
+            const originObj = JSON.stringify(origin)
+                AsyncStorage.setItem('MyLocation', originObj)
+                    .catch(err => {
+                        console.log("Unable to store Location")
+                        console.log(err)
+                    });
+
+                
+                this.props.navigation.navigate("ConnectingDriver", { origin });
+
+
+        })
+
+
 
         //Submit passenger PayLoad to Ride-Requests.
-        let user = firebase.auth().currentUser;
+        
+        {/*
         let requestDriver = db.database().ref('/ride-request')
         let RideHistoryRef = db.database().ref('/ride-history')
         const geofireRef = new geofire(requestDriver)
@@ -182,7 +222,7 @@ export default class BookRide extends Component {
 
                 this.props.navigation.navigate("ConnectingDriver", { origin });
             })
-
+        */}
 
 
     }

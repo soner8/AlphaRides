@@ -15,6 +15,7 @@ import { listen4Drivers } from "../../config/database";
 import Spinner from 'react-native-spinkit';
 import { StackActions, NavigationActions } from "react-navigation";
 import geofire from 'geofire';
+import {GeoFirestore} from 'geofirestore';
 
 
 
@@ -119,7 +120,6 @@ class Home extends Component {
 
   componentDidMount() {
     // Temporarily setting geofire for Drivers Working
-    
 
     console.log('Is this Navigator working at all')
     // For some reasons, this function finishes before database listener in the constructor
@@ -130,6 +130,7 @@ class Home extends Component {
 
         // For some reason navigator refused to work on this itel phone
         console.log('What is goin on here itel')
+        console.log(position)
         if (this.isUnmounted) {
           return;
         }
@@ -151,7 +152,7 @@ class Home extends Component {
 
         Alert.alert(error.message)
       },
-      { enableHighAccuracy: true, timeout: 20000 },
+      { timeout: 20000, maximumAge: 60000 },
     );
 
 
