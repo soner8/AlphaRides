@@ -20,8 +20,10 @@ exports.sendNewTripNotification = functions.database.ref('drivers/{DriverUID}/{P
 
     console.log('Driver to send notification', uuid);
 
-    var ref = admin.database().ref(`DriversAvaliable/${uuid}`);
+    var ref = admin.database().ref(`drivers/${uuid}/NotificationId`);
     return ref.once("value", function(snapshot){
+        console.log(snapshot)
+        console.log(snapshot.val())
          const payload = {
               notification: {
                   title: 'You have been invited to Pick Up a passenger.',
