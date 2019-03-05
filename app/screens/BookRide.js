@@ -29,7 +29,7 @@ export default class BookRide extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            Name: '',
             destination: this.props.navigation.state.params.placeID,
             isPlaceID: true,
             error: '',
@@ -128,7 +128,7 @@ export default class BookRide extends Component {
     }
 
     onBookRide = (type, price) => {
-        const { origin } = this.state
+        const { origin, Name } = this.state
         let user = firebase.auth().currentUser;
         this.setState({ BookedRide: true })
 
@@ -165,7 +165,7 @@ export default class BookRide extends Component {
                     });
 
                 
-                this.props.navigation.navigate("ConnectingDriver", { origin });
+                this.props.navigation.navigate("ConnectingDriver", { origin, Name });
 
 
         })
@@ -231,7 +231,12 @@ export default class BookRide extends Component {
 
 
     componentDidMount() {
-
+        AsyncStorage.getItem('Name')
+        .then(res => {
+            this.setState({
+                Name: res
+            })
+        })
 
     }
     render() {

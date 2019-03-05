@@ -13,28 +13,54 @@ admin.initializeApp(functions.config().firebase)
 // });
 
 
-exports.sendNewTripNotification = functions.database.ref('drivers/{DriverUID}/{PassengerKey}/status').onUpdate((change, context)=>{
-    console.log('About to send Notification')
-    const uuid = context.params.DriverUID;
-    const passengerKey = context.params.PassengerKey
+exports.sendNewTripNotification = functions.firestore.document('drivers/{DriverUID}/NewRide/{passengerID}')
+	.onWrite((snap, context) => {
+		const uuid = context.params.DriverUID;
+    	const passengerKey = context.params.passengerID
 
-    console.log('Driver to send notification', uuid);
+		
 
-    var ref = admin.database().ref(`drivers/${uuid}/NotificationId`);
-    return ref.once("value", function(snapshot){
-        console.log(snapshot)
-        console.log(snapshot.val())
-         const payload = {
-              notification: {
-                  title: 'You have been invited to Pick Up a passenger.',
-                  body: 'Tap here to check it out!'
-		  
-              }
-         };
+		var ref = admin.firestore().collection('drivers').doc(`${uuid}`).collection('NewRide').doc(`${passengerKey}`);
+		return ref.get().then( function(value) {
+			
+			const location = value.data().location
+			const id = value.data().Id
+			const name = value.data().Name
 
-         admin.messaging().sendToDevice(snapshot.val(), payload)
+			
+			admin.firestore().collection('drivers').doc(`${uuid}`).get()
+				.then((value) => {
+				token = value.data().NotificationId
+				const lat = location.latitude
+				const long = location.longitude
 
-    }, function (errorObject) {
-        console.log("The read failed: " + errorObject.code);
-    });
-})
+				console.log(location)
+
+				const payload = {
+              	notification: {
+                  	title: 'Pickup Available',
+                 	body: 'Passenger Found'
+              		},
+              	data: {
+                  	Name: name,
+					ID: id,
+					Lat: lat.toString(),
+					Long: long.toString()
+              		}
+         	};
+			console.log('Note String')
+			 admin.messaging().sendToDevice(token, payload)
+				})
+			
+
+				
+
+			
+			
+
+			
+		    },   function (errorObject) {
+                    console.log("The read failed: " + errorObject.code);
+    			}
+        );
+	})

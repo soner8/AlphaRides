@@ -37,7 +37,7 @@ export default class ConnectingDriver extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            Name: this.props.navigation.state.params.Name,
             origin: this.props.navigation.state.params.origin,
             driverFound: false,
             driverId: this.props.navigation.state.params.driverId,
@@ -345,7 +345,7 @@ export default class ConnectingDriver extends Component {
 
                 // Inform Driver Of New Ride by adding passenger Id as a child
                 console.log('set drive')
-                driverRef.collection("NewRide").doc(user.uid).set({Id: user.uid})
+                driverRef.collection("NewRide").doc(user.uid).set({Id: user.uid, location: this.state.origin, Name: this.state.Name })
                 console.log('statussss')
                     
                     //Now call function to listen if driver cancels
